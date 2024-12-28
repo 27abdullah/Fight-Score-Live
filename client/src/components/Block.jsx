@@ -5,12 +5,57 @@ export function Block({ blockRound, currRound, totalRounds, socket }) {
     const [scoreA, setScoreA] = useState("10");
     const [scoreB, setScoreB] = useState("10");
     const [changed, setChanged] = useState(false);
+    const [statsA, setStatsA] = useState(0);
+    const [statsB, setStatsB] = useState(0);
 
     function updateScore(score, setScore) {
         if (score >= 0 && score <= 10) {
             setScore(score);
         }
     }
+
+    /**
+     * Give percentage on 0 - 1 scale.
+     * isUp bool for direction
+     */
+    function renderBarGraph(stats, isUp) {
+        console.log(statsA, statsB);
+        return statsA + statsB == 0 ? (
+            <div></div>
+        ) : (
+            <div
+                className={"bg-blue-500 w-32 mx-7"}
+                style={{
+                    height: 100 * (stats / (statsA + statsB)),
+                }}
+            ></div>
+        );
+    }
+
+    useEffect(() => {
+        console.log("use effect first mount");
+        function handleStats(stats) {
+            console.log("handlestats");
+            console.log(stats);
+            setStatsA(() => Number(stats.statsA));
+            setStatsB(() => Number(stats.statsB));
+        }
+
+        socket.on(`stats/${blockRound}`, handleStats);
+
+        if (currRound > blockRound) {
+            socket.emit("pullStats", blockRound, (response) => {
+                console.log("pullstats");
+                console.log(response);
+                setStatsA(() => Number(response.statsA));
+                setStatsB(() => Number(response.statsB));
+            });
+        }
+
+        return () => {
+            socket.off(`stats/${blockRound}`, handleStats);
+        };
+    }, []);
 
     useEffect(() => {
         setActive(currRound >= blockRound);
@@ -32,6 +77,7 @@ export function Block({ blockRound, currRound, totalRounds, socket }) {
     return (
         active && (
             <div>
+                <div>{statsA > 0 && renderBarGraph(statsA, true)}</div>
                 <div
                     className={`m-7 ${
                         blockRound == currRound
@@ -70,6 +116,7 @@ export function Block({ blockRound, currRound, totalRounds, socket }) {
                         }}
                     />
                 </div>
+                <div>{statsB > 0 && renderBarGraph(statsB, false)}</div>
             </div>
         )
     );

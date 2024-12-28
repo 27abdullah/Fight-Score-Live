@@ -6,6 +6,8 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const redis = require("redis");
 
+const wait = (s) => new Promise((resolve) => setTimeout(resolve, s * 1000));
+
 // Redis client
 const client = redis.createClient({
     host: "localhost", // Default Redis server
@@ -58,14 +60,27 @@ io.on("connection", async (socket) => {
         console.log(
             `${socket.id}: A=${data.scoreA} B=${data.scoreB}, r=${data.round}`
         );
-        if (data.scoreA > data.scoreB) {
-            client.incr(`${gameState.id}/${data.round - 1}/A`);
-        } else if (data.scoreA < data.scoreB) {
-            client.incr(`${gameState.id}/${data.round - 1}/B`);
-        } else {
-            client.incr(`${gameState.id}/${data.round - 1}/A`);
-            client.incr(`${gameState.id}/${data.round - 1}/B`);
+
+        if (data.round < gameState.currentRound - 1) {
+            console.log(`old data`);
+            return;
         }
+
+        if (data.scoreA > data.scoreB) {
+            client.incr(`${gameState.id}/${data.round}/A`);
+        } else if (data.scoreA < data.scoreB) {
+            client.incr(`${gameState.id}/${data.round}/B`);
+        } else {
+            client.incr(`${gameState.id}/${data.round}/A`);
+            client.incr(`${gameState.id}/${data.round}/B`);
+        }
+    });
+
+    socket.on("pullStats", async (round, callback) => {
+        callback({
+            statsA: await client.get(`${gameState.id}/${round}/A`),
+            statsB: await client.get(`${gameState.id}/${round}/B`),
+        });
     });
 
     socket.on("ready", () => {
@@ -77,12 +92,22 @@ io.on("connection", async (socket) => {
     });
 });
 
-app.get("/api/round", (req, res) => {
+app.get("/api/round", async (req, res) => {
     gameState.incRound();
     result = io.emit("incRound");
-    //Wait
-    //emit aggregates
-    res.json({ result });
+    await wait(2);
+    console.log(`${gameState.id}/${gameState.currentRound - 1}`);
+    stats = {
+        statsA: await client.get(
+            `${gameState.id}/${gameState.currentRound - 1}/A`
+        ),
+        statsB: await client.get(
+            `${gameState.id}/${gameState.currentRound - 1}/B`
+        ),
+        round: gameState.currentRound - 1,
+    };
+    io.emit(`stats/${gameState.currentRound - 1}`, stats);
+    res.json({ result, stats });
 });
 
 server.listen(4000, () => {

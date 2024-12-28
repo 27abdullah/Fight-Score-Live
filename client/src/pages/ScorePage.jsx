@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import Block from "../components/Block";
-
-const socket = io.connect("http://localhost:4000");
+import { useLocation } from "react-router-dom";
+import { socket } from "../socket";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
@@ -10,6 +10,8 @@ export function ScorePage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        socket.connect();
+
         // Socket listener to increment round
         const incRound = (data) => {
             if (currRound <= totalRounds) {
@@ -32,6 +34,7 @@ export function ScorePage() {
         return () => {
             socket.off("incRound", incRound);
             socket.off("init", init);
+            console.log("disconnect");
             socket.disconnect();
         };
     }, []);
