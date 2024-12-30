@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
-import Block from "../components/Block";
+import BlockPair from "../components/BlockPair";
 import { useLocation } from "react-router-dom";
 import { socket } from "../socket";
 
@@ -14,9 +14,7 @@ export function ScorePage() {
 
         // Socket listener to increment round
         const incRound = (data) => {
-            if (currRound <= totalRounds) {
-                setCurrRound((round) => round + 1);
-            }
+            setCurrRound((round) => round + 1);
         };
         socket.on("incRound", incRound);
 
@@ -25,6 +23,7 @@ export function ScorePage() {
             setTotalRounds(() => state.totalRounds);
             setCurrRound(() => state.currRound);
             setLoading(() => false);
+            console.log("Current round on init ==" + currRound);
         };
         socket.on("init", init);
 
@@ -46,7 +45,7 @@ export function ScorePage() {
         <>
             <div className="flex items-center justify-center h-[75vh]">
                 {blocks.map((i, _) => (
-                    <Block
+                    <BlockPair
                         key={i}
                         blockRound={i}
                         currRound={currRound}

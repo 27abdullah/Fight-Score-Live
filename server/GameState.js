@@ -7,9 +7,7 @@ class GameState {
     }
 
     incRound() {
-        if (this.currentRound < this.totalRounds) {
-            this.currentRound += 1;
-        }
+        this.currentRound += 1;
     }
 }
 

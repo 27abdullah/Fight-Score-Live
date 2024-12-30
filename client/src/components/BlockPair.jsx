@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function Block({ blockRound, currRound, totalRounds, socket }) {
+export function BlockPair({ blockRound, currRound, totalRounds, socket }) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState("10");
     const [scoreB, setScoreB] = useState("10");
@@ -58,6 +58,7 @@ export function Block({ blockRound, currRound, totalRounds, socket }) {
     }, []);
 
     useEffect(() => {
+        console.log("current round: " + currRound);
         setActive(currRound >= blockRound);
         // Round i is submitted when round i + 1 is active.
         if (
@@ -122,4 +123,4 @@ export function Block({ blockRound, currRound, totalRounds, socket }) {
     );
 }
 
-export default Block;
+export default BlockPair;
