@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
-import BlockPair from "../components/BlockPair";
+import Round from "../components/Round";
 import { useLocation } from "react-router-dom";
 import { socket } from "../socket";
 
@@ -45,7 +45,7 @@ export function ScorePage() {
         <>
             <div className="flex items-center justify-center h-[75vh]">
                 {blocks.map((i, _) => (
-                    <BlockPair
+                    <Round
                         key={i}
                         blockRound={i}
                         currRound={currRound}

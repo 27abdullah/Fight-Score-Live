@@ -16,3 +16,8 @@ Workflow
 3. clients incround in scorepage
 4. round inc hook sends results to server
 5. server sends stats
+
+Features:
+
+-   display changed (red border)
+-   comments -> process key words and display most common
