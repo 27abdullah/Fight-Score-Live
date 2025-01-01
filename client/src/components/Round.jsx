@@ -27,7 +27,7 @@ export function Round({ blockRound, currRound, totalRounds, socket }) {
                 JSON.stringify(scoreB)
             );
         }
-    }, [scoreA, scoreB]);
+    }, [scoreA, scoreB, changed]);
 
     useEffect(() => {
         console.log("use effect first mount");

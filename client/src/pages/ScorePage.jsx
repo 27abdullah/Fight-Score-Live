@@ -12,7 +12,9 @@ export function ScorePage() {
 
         // Socket listener to increment round
         const incRound = (data) => {
-            setCurrRound((round) => round + 1);
+            if (currRound <= totalRounds) {
+                setCurrRound((round) => round + 1);
+            }
         };
         socket.on("incRound", incRound);
 
