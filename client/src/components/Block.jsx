@@ -5,6 +5,7 @@ export function Block({
     score,
     setScore,
     setChanged,
+    changed,
 }) {
     function updateScore(score, setScore) {
         if (score >= 0 && score <= 10) {
@@ -16,7 +17,11 @@ export function Block({
         <>
             <div
                 className={`m-7 ${
-                    blockRound == currRound ? "border-4 border-green-600" : ""
+                    blockRound == currRound
+                        ? changed
+                            ? "border-4 border-green-500"
+                            : "border-4 border-orange-500"
+                        : ""
                 }`}
             >
                 <input
