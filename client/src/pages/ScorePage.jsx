@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
 import Round from "../components/Round";
-import { useLocation } from "react-router-dom";
 import { socket } from "../socket";
 
 export function ScorePage() {

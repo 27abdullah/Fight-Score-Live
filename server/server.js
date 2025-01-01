@@ -43,10 +43,6 @@ app.get("/api", (req, res) => {
     res.json({ fruits: ["apple", "orange", "banana"] });
 });
 
-// app.listen(8080, () => {
-//     console.log("Server started on 8080");
-// });
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
