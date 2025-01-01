@@ -89,6 +89,12 @@ io.on("connection", async (socket) => {
 });
 
 app.get("/api/round", async (req, res) => {
+    if (gameState.currentRound >= gameState.totalRounds + 1) {
+        console.log("Fight over");
+        res.json({ result: "Fight over" });
+        return;
+    }
+
     gameState.incRound();
     result = io.emit("incRound");
     await wait(2);
