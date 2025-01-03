@@ -10,6 +10,9 @@ export function Navbar() {
                 <Link to="/score-page">
                     <button className="px-4 pt-2 ">ScorePage</button>
                 </Link>
+                <Link to="/about">
+                    <button className="px-4 pt-2">About</button>
+                </Link>
             </div>
         </nav>
     );
