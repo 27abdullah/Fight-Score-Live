@@ -1,8 +1,9 @@
 # server
 
-card
+card: classes, reader from file, api
 auth
 api for card
+give server force reset client (init) api endpoint
 
 # client
 

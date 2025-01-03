@@ -37,7 +37,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.static("public"));
 
-const gameState = new GameState(5, "mma");
+const gameState = new GameState(5, "mma", "Islam M", "Dustin P");
 
 app.get("/api", (req, res) => {
     res.json({ fruits: ["apple", "orange", "banana"] });
@@ -80,11 +80,7 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("ready", () => {
-        socket.emit("init", {
-            totalRounds: gameState.totalRounds,
-            sport: gameState.sport,
-            currRound: gameState.currentRound,
-        });
+        socket.emit("init", gameState.objectify());
     });
 });
 

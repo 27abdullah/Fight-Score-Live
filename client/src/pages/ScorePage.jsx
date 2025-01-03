@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import Round from "../components/Round";
 import { socket } from "../socket";
+import NameTag from "../components/NameTag";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
     const [currRound, setCurrRound] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [fighterA, setFighterA] = useState("");
+    const [fighterB, setFighterB] = useState("");
 
     useEffect(() => {
         socket.connect();
@@ -22,8 +25,9 @@ export function ScorePage() {
         const init = (state) => {
             setTotalRounds(() => state.totalRounds);
             setCurrRound(() => state.currRound);
+            setFighterA(() => state.fighterA);
+            setFighterB(() => state.fighterB);
             setLoading(() => false);
-            console.log("Current round on init ==" + currRound);
         };
         socket.on("init", init);
 
@@ -42,7 +46,8 @@ export function ScorePage() {
     return loading ? (
         <h1>Loading...</h1>
     ) : (
-        <>
+        <div className="flex flex-col items-center justify-center">
+            <NameTag name={fighterA} />
             <div className="flex items-center justify-center h-[75vh]">
                 {blocks.map((i, _) => (
                     <Round
@@ -54,7 +59,8 @@ export function ScorePage() {
                     />
                 ))}
             </div>
-        </>
+            <NameTag name={fighterB} />
+        </div>
     );
 }
 
