@@ -3,6 +3,8 @@
 card: classes, reader from file, api
 auth
 api for card
+controller client
+persistence
 give server force reset client (init) api endpoint
 
 # client

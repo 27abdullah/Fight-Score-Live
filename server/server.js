@@ -5,26 +5,30 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const redis = require("redis");
+const fslSchema = require("./model/fsl.model");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const wait = (s) => new Promise((resolve) => setTimeout(resolve, s * 1000));
 
 // Redis client
-const client = redis.createClient({
+const redisClient = redis.createClient({
     host: "localhost", // Default Redis server
     port: 6379, // Default Redis port
 });
 
 // Handle Redis connection events
-client.on("connect", () => {
+redisClient.on("connect", () => {
     console.log("Connected to Redis");
 });
 
-client.on("error", (err) => {
+redisClient.on("error", (err) => {
     console.error("Redis error:", err);
 });
 
 async function startServer() {
-    await client.connect();
+    await redisClient.connect();
+    await mongoose.connect(process.env.MONGO_URI);
 
     // Your app logic goes here (like setting up routes, etc.)
 }
@@ -63,19 +67,19 @@ io.on("connection", async (socket) => {
         }
 
         if (data.scoreA > data.scoreB) {
-            client.incr(`${gameState.id}/${data.round}/A`);
+            redisClient.incr(`${gameState.id}/${data.round}/A`);
         } else if (data.scoreA < data.scoreB) {
-            client.incr(`${gameState.id}/${data.round}/B`);
+            redisClient.incr(`${gameState.id}/${data.round}/B`);
         } else {
-            client.incr(`${gameState.id}/${data.round}/A`);
-            client.incr(`${gameState.id}/${data.round}/B`);
+            redisClient.incr(`${gameState.id}/${data.round}/A`);
+            redisClient.incr(`${gameState.id}/${data.round}/B`);
         }
     });
 
     socket.on("pullStats", async (round, callback) => {
         callback({
-            statsA: await client.get(`${gameState.id}/${round}/A`),
-            statsB: await client.get(`${gameState.id}/${round}/B`),
+            statsA: await redisClient.get(`${gameState.id}/${round}/A`),
+            statsB: await redisClient.get(`${gameState.id}/${round}/B`),
         });
     });
 
@@ -96,16 +100,26 @@ app.get("/api/round", async (req, res) => {
     await wait(2);
     console.log(`${gameState.id}/${gameState.currentRound - 1}`);
     stats = {
-        statsA: await client.get(
+        statsA: await redisClient.get(
             `${gameState.id}/${gameState.currentRound - 1}/A`
         ),
-        statsB: await client.get(
+        statsB: await redisClient.get(
             `${gameState.id}/${gameState.currentRound - 1}/B`
         ),
         round: gameState.currentRound - 1,
     };
     io.emit(`stats/${gameState.currentRound - 1}`, stats);
     res.json({ result, stats });
+});
+// TEST EXAMPLE
+app.get("/api/persist", async (req, res) => {
+    try {
+        const example = new fslSchema({ fighterA: "test" });
+        await example.save();
+        res.status(201).json(example);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
 server.listen(4000, () => {

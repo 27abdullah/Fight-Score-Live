@@ -9,3 +9,14 @@ services:
         volumes:
             - ./data/redis:/data
         restart: always
+    mongodb:
+        image: mongo:latest
+        container_name: fsl-mongodb
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./data/mongodb:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: password
+        restart: always
