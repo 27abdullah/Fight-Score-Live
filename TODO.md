@@ -10,7 +10,7 @@ Give moderator controls to users
 
 # client
 
-fight names
+update name tag
 images
 pretty up bar graph + median score
 green/red to winner
