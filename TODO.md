@@ -1,20 +1,21 @@
 # server
 
-card: classes, reader from file, api <<
-auth
-api for card
-controller client
-persistence <<
-give server force reset client (init) api endpoint
-Give moderator controls to users
+-   auth
+-   controller client: reset, knockout, next round (for skipped fight), edit gamestate, force update
+-   Give moderator controls to users
+-   Median score
+-   make objects of config + functions: redis + all its functions, mongodb + all its functions, socketio
 
 # client
 
-update name tag
-images
-pretty up bar graph + median score <<
-green/red to winner
-word summaries or round/fight
-fights on right now
-Past fight records
-Summary of fight screen
+-   update name tag
+-   images
+-   green/red to winner
+-   word summaries of round/fight
+-   fights on right now page
+-   Past fight records
+-   Summary of fight screen
+
+card: classes, reader from file, basic api
+pretty up bar graph
+clear session after fight over

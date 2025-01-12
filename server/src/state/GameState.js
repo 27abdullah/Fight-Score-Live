@@ -6,6 +6,7 @@ class GameState {
         this.id = 12345;
         this.fighterA = fighterA;
         this.fighterB = fighterB;
+        this.outcome = "pending";
     }
 
     incRound() {

@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-const redisClient = require("./redis");
+const { redisClient, getRoundStats } = require("./redis");
 
 const configureSocket = (server, gameState) => {
     const io = new Server(server, {

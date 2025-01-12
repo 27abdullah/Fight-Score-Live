@@ -2,24 +2,19 @@ const express = require("express");
 const http = require("http");
 require("dotenv").config();
 
-const connectDatabase = require("./config/mongodb");
-const redisClient = require("./config/redis");
+const { connectDatabase, persist } = require("./config/mongodb");
+const { redisClient, getRoundStats, clearRounds } = require("./config/redis");
 const configureSocket = require("./config/socket");
 const cors = require("./config/cors");
 
-const {
-    persist,
-    incRound,
-    test,
-    setupModRoutes,
-} = require("./routes/moderator");
+const { incRound, test, setupModRoutes } = require("./routes/moderator");
 const { gameState } = require("./state/gameController");
 
 const app = express();
 const server = http.createServer(app);
 const io = configureSocket(server, gameState);
 
-setupModRoutes(gameState, io, redisClient);
+setupModRoutes(gameState, io);
 
 app.use(cors);
 app.get("/api/round", incRound);
