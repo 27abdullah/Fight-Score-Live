@@ -1,5 +1,6 @@
-const GameState = require("./GameState");
+const CardState = require("./CardState");
 
-const gameState = new GameState(3, "mma", "Islam M", "Dustin P");
+// Path from server
+const card = new CardState("MMA", "./example_card.txt");
 
-module.exports = { gameState };
+module.exports = { card };

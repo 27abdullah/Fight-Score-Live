@@ -1,9 +1,11 @@
+const { set } = require("mongoose");
+
 class GameState {
-    constructor(totalRounds, sport, fighterA, fighterB) {
+    constructor(totalRounds, sport, fighterA, fighterB, id) {
         this.totalRounds = totalRounds;
         this.sport = sport;
         this.currentRound = 1;
-        this.id = 12345;
+        this.id = id;
         this.fighterA = fighterA;
         this.fighterB = fighterB;
         this.outcome = "pending";
@@ -11,6 +13,13 @@ class GameState {
 
     incRound() {
         this.currentRound += 1;
+        if (this.currentRound > this.totalRounds) {
+            this.setOutcome("decision");
+        }
+    }
+
+    setOutcome(outcome) {
+        this.outcome = outcome;
     }
 
     objectify() {

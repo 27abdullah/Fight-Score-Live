@@ -1,0 +1,10 @@
+# GET http://localhost:4000/api/round
+
+# GET http://localhost:4000/api/test
+
+GET http://localhost:4000/api/next
+
+# POST http://localhost:4000/api/persist
+
+# Bump when server restarts
+POST http://localhost:4000/api/update

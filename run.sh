@@ -3,7 +3,7 @@
 function start() {
     
     cd server
-    docker-compose up -d
+    docker compose up -d
     npm run dev &
     SERVER_PID=$!
 
@@ -30,7 +30,7 @@ function stop() {
     fi
     
     cd server
-    docker-compose down
+    docker compose down
     
     echo "Stopped Fight-Score-Live"
     exit 0

@@ -7,19 +7,27 @@ const { redisClient, getRoundStats, clearRounds } = require("./config/redis");
 const configureSocket = require("./config/socket");
 const cors = require("./config/cors");
 
-const { incRound, test, setupModRoutes } = require("./routes/moderator");
-const { gameState } = require("./state/gameController");
+const {
+    incRound,
+    test,
+    setupModRoutes,
+    nextFight,
+    update,
+} = require("./routes/moderator");
+const { card } = require("./state/gameController");
 
 const app = express();
 const server = http.createServer(app);
-const io = configureSocket(server, gameState);
+const io = configureSocket(server, card);
 
-setupModRoutes(gameState, io);
+setupModRoutes(card, io);
 
 app.use(cors);
+app.post("/api/update", update);
 app.get("/api/round", incRound);
-app.get("/api/persist", persist);
 app.get("/api/test", test);
+app.get("/api/next", nextFight);
+app.post("/api/persist", persist); //TODO REMOVE?
 
 const startServer = async () => {
     await redisClient.connect();

@@ -64,8 +64,18 @@ export function Round({ blockRound, currRound, totalRounds, socket }) {
             });
         }
 
+        const reset = () => {
+            setScoreA(10);
+            setScoreB(10);
+            setStatsA(0);
+            setStatsB(0);
+            setChanged(false);
+        };
+        socket.on("init", reset);
+
         return () => {
             socket.off(`stats/${blockRound}`, handleStats);
+            socket.off("init", reset);
         };
     }, []);
 

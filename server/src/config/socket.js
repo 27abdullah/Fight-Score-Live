@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const { redisClient, getRoundStats } = require("./redis");
 
-const configureSocket = (server, gameState) => {
+const configureSocket = (server, card) => {
     const io = new Server(server, {
         cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
     });
@@ -13,6 +13,7 @@ const configureSocket = (server, gameState) => {
             console.log(
                 `${socket.id}: A=${data.scoreA} B=${data.scoreB}, r=${data.round}`
             );
+            const gameState = card.getCurrentFight();
 
             if (data.round < gameState.currentRound - 1) {
                 console.log(`old data`);
@@ -30,6 +31,7 @@ const configureSocket = (server, gameState) => {
         });
 
         socket.on("pullStats", async (round, callback) => {
+            const gameState = card.getCurrentFight();
             callback({
                 statsA: await redisClient.get(`${gameState.id}/${round}/A`),
                 statsB: await redisClient.get(`${gameState.id}/${round}/B`),
@@ -37,7 +39,10 @@ const configureSocket = (server, gameState) => {
         });
 
         socket.on("ready", () => {
-            socket.emit("init", gameState.objectify());
+            const gameState = card.getCurrentFight();
+            const state = gameState.objectify();
+            state["clear"] = false;
+            socket.emit("init", state);
         });
     });
 

@@ -23,6 +23,9 @@ export function ScorePage() {
 
         // Socket listener to initalise state
         const init = (state) => {
+            if (state.clear) {
+                sessionStorage.clear();
+            }
             setTotalRounds(() => state.totalRounds);
             setCurrRound(() => state.currRound);
             setFighterA(() => state.fighterA);
