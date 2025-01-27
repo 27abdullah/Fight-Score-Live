@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Round from "../components/Round";
+import Round from "../components/ScorePage/Round";
 import { socket } from "../socket";
-import NameTag from "../components/NameTag";
+import NameTag from "../components/ScorePage/NameTag";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);

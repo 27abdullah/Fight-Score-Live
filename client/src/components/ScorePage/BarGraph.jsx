@@ -5,7 +5,7 @@ export function BarGraph({ statsA, statsB, direction }) {
         <></>
     ) : (
         <div
-            className={"bg-blue-500 w-32 mx-7"}
+            className={"bg-blue-500 w-28 mx-7"}
             style={{
                 height: 100 * (stats / (statsA + statsB)),
             }}

@@ -30,7 +30,6 @@ export function Round({ blockRound, currRound, totalRounds, socket }) {
     }, [scoreA, scoreB, changed]);
 
     useEffect(() => {
-        console.log("use effect first mount");
         function handleStats(stats) {
             console.log("handlestats");
             console.log(stats);

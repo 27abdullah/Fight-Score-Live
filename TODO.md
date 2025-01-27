@@ -19,3 +19,8 @@
 card: classes, reader from file, basic api
 pretty up bar graph
 clear session after fight over
+
+Colour scheme:
+
+-   jet #2C2C2C
+-   gold #FFD700
