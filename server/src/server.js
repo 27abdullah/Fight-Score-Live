@@ -13,21 +13,27 @@ const {
     setupModRoutes,
     nextFight,
     update,
+    createCard,
+    logController,
 } = require("./routes/moderator");
-const { card } = require("./state/gameController");
+const { gameController } = require("./state/GameController");
+const { log } = require("console");
 
 const app = express();
 const server = http.createServer(app);
-const io = configureSocket(server, card);
+const io = configureSocket(server, gameController);
 
-setupModRoutes(card, io);
+setupModRoutes(gameController, io);
 
 app.use(cors);
+app.use(express.json()); // parse json req body
 app.post("/api/update", update);
-app.get("/api/round", incRound);
+app.post("/api/round", incRound);
 app.get("/api/test", test);
-app.get("/api/next", nextFight);
+app.post("/api/next", nextFight);
 app.post("/api/persist", persist); //TODO REMOVE?
+app.post("/api/card", createCard);
+app.get("/api/log/controller", logController);
 
 const startServer = async () => {
     await redisClient.connect();

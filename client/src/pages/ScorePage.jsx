@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Round from "../components/ScorePage/Round";
 import { socket } from "../socket";
+import { useSearchParams } from "react-router-dom";
 import NameTag from "../components/ScorePage/NameTag";
 
 export function ScorePage() {
@@ -9,12 +10,15 @@ export function ScorePage() {
     const [loading, setLoading] = useState(true);
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const id = searchParams.get("id");
 
     useEffect(() => {
         socket.connect();
+        socket.emit("register", id);
 
         // Socket listener to increment round
-        const incRound = (data) => {
+        const incRound = () => {
             if (currRound <= totalRounds) {
                 setCurrRound((round) => round + 1);
             }
@@ -35,7 +39,9 @@ export function ScorePage() {
         socket.on("init", init);
 
         // Ready to receive init state from server
-        socket.emit("ready");
+        socket.emit("ready", id, (response) => {
+            init(response);
+        });
 
         return () => {
             socket.off("incRound", incRound);
@@ -59,6 +65,7 @@ export function ScorePage() {
                         currRound={currRound}
                         totalRounds={totalRounds}
                         socket={socket}
+                        id={id}
                     />
                 ))}
             </div>

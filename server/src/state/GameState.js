@@ -1,5 +1,3 @@
-const { set } = require("mongoose");
-
 class GameState {
     constructor(totalRounds, sport, fighterA, fighterB, id) {
         this.totalRounds = totalRounds;
@@ -24,6 +22,8 @@ class GameState {
 
     objectify() {
         return {
+            id: this.id,
+            outcome: this.outcome,
             totalRounds: this.totalRounds,
             sport: this.sport,
             currRound: this.currentRound,

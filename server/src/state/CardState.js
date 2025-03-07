@@ -1,35 +1,29 @@
-const fs = require("fs");
-const readline = require("readline");
 const GameState = require("./GameState");
 const { v4: uuidv4 } = require("uuid");
 
 class CardState {
-    constructor(sport, dir) {
+    constructor(owner, name, fights, id) {
         this.fights = [];
         this.currentFight = 0;
-        this.sport = sport;
-        this.loadFights(dir);
+        this.owner = owner;
+        this.name = name;
+        this.id = id;
+        this.loadFights(fights);
     }
 
-    loadFights(dir) {
-        const fileStream = fs.createReadStream(dir);
-        const rl = readline.createInterface({
-            input: fileStream,
-            crlfDelay: Infinity,
-        });
-
-        rl.on("line", (line) => {
-            const split = line.split(",");
+    loadFights(fights) {
+        for (let i = 0; i < fights.length; i++) {
+            const fight = fights[i];
             const gameState = new GameState(
-                Number(split[2]),
-                this.sport,
-                split[0],
-                split[1],
+                fight.totalRounds,
+                fight.sport,
+                fight.fighterA,
+                fight.fighterB,
                 uuidv4()
             );
 
             this.fights.push(gameState);
-        });
+        }
     }
 
     nextFight() {
@@ -55,6 +49,16 @@ class CardState {
 
     end(outcome) {
         this.getCurrentFight().setOutcome(outcome);
+    }
+
+    jsonify() {
+        let result = {
+            owner: this.owner,
+            name: this.name,
+            currentFight: this.currentFight,
+            fights: [this.fights.map((fight) => fight.objectify())],
+        };
+        return result;
     }
 }
 

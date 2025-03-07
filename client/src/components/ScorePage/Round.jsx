@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Block from "./Block";
 import BarGraph from "./BarGraph";
 
-export function Round({ blockRound, currRound, totalRounds, socket }) {
+export function Round({ blockRound, currRound, totalRounds, socket, id }) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState(() => {
         const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
@@ -55,7 +55,7 @@ export function Round({ blockRound, currRound, totalRounds, socket }) {
             }
 
             // Get aggregate stats
-            socket.emit("pullStats", blockRound, (response) => {
+            socket.emit("pullStats", blockRound, id, (response) => {
                 console.log("pullstats");
                 console.log(response);
                 setStatsA(() => Number(response.statsA));
@@ -88,7 +88,7 @@ export function Round({ blockRound, currRound, totalRounds, socket }) {
             0 <= scoreA <= 10 &&
             0 <= scoreB <= 10
         ) {
-            socket.emit("roundResults", {
+            socket.emit("roundResults", id, {
                 round: currRound - 1,
                 scoreA: scoreA,
                 scoreB: scoreB,

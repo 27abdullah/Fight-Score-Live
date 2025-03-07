@@ -1,10 +1,42 @@
-# GET http://localhost:4000/api/round
 
-# GET http://localhost:4000/api/test
+# # GET http://localhost:4000/api/test
 
-GET http://localhost:4000/api/next
+# POST http://localhost:4000/api/next
 
-# POST http://localhost:4000/api/persist
+# # POST http://localhost:4000/api/persist
 
-# Bump when server restarts
-POST http://localhost:4000/api/update
+# # Bump when server restarts
+# POST http://localhost:4000/api/update
+
+# GET http://localhost:4000/api/log/controller
+
+
+### Create Card
+# POST http://localhost:4000/api/card
+# Content-Type: application/json
+
+# {
+#   "owner": "5f9d1b3b7f1f3b0017f3b3b1",
+#   "name": "Test Card",
+#   "fights": [
+#     {
+#       "totalRounds": 3,
+#       "sport": "MMA",
+#       "fighterA": "Fighter A",
+#       "fighterB": "Fighter B"
+#     },
+#     {
+#       "totalRounds": 5,
+#       "sport": "Boxing",
+#       "fighterA": "Fighter C",
+#       "fighterB": "Fighter D"
+#     }
+#   ]
+# }
+
+POST http://localhost:4000/api/round
+Content-Type: application/json
+
+{
+  "id": "5608c7c5-580d-4335-86ef-0e6b046bc97d"
+}

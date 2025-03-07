@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const { redisClient, getRoundStats } = require("./redis");
 
-const configureSocket = (server, card) => {
+const configureSocket = (server, gameController) => {
     const io = new Server(server, {
         cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
     });
@@ -9,11 +9,20 @@ const configureSocket = (server, card) => {
     io.on("connection", async (socket) => {
         console.log(`a user connected ${socket.id}`);
 
-        socket.on("roundResults", (data) => {
+        socket.on("register", (id) => {
+            socket.join(id);
+        });
+
+        socket.on("roundResults", (id, data) => {
             console.log(
                 `${socket.id}: A=${data.scoreA} B=${data.scoreB}, r=${data.round}`
             );
-            const gameState = card.getCurrentFight();
+            let gameState;
+            if (gameController.hasId(id)) {
+                gameState = gameController.getCard(id).getCurrentFight();
+            } else {
+                return;
+            }
 
             if (data.round < gameState.currentRound - 1) {
                 console.log(`old data`);
@@ -30,19 +39,31 @@ const configureSocket = (server, card) => {
             }
         });
 
-        socket.on("pullStats", async (round, callback) => {
-            const gameState = card.getCurrentFight();
+        socket.on("pullStats", async (round, id, callback) => {
+            let gameState;
+            if (gameController.hasId(id)) {
+                gameState = gameController.getCard(id).getCurrentFight();
+            } else {
+                return;
+            }
+
             callback({
                 statsA: await redisClient.get(`${gameState.id}/${round}/A`),
                 statsB: await redisClient.get(`${gameState.id}/${round}/B`),
             });
         });
 
-        socket.on("ready", () => {
-            const gameState = card.getCurrentFight();
+        socket.on("ready", (id, callback) => {
+            let gameState;
+            if (gameController.hasId(id)) {
+                gameState = gameController.getCard(id).getCurrentFight();
+            } else {
+                return;
+            }
+
             const state = gameState.objectify();
             state["clear"] = false;
-            socket.emit("init", state);
+            callback(state);
         });
     });
 
