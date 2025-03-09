@@ -1,7 +1,7 @@
 export function Block({
     name,
     blockRound,
-    currRound,
+    currentRound,
     score,
     setScore,
     setChanged,
@@ -17,7 +17,7 @@ export function Block({
         <>
             <div
                 className={`m-7 ${
-                    blockRound == currRound
+                    blockRound == currentRound
                         ? changed
                             ? "border-4 border-green-500"
                             : "border-4 border-orange-500"
@@ -29,7 +29,7 @@ export function Block({
                     type="number"
                     className="w-28 h-28 text-white text-center text-2xl"
                     value={score}
-                    readOnly={blockRound < currRound}
+                    readOnly={blockRound < currentRound}
                     onChange={(e) => {
                         updateScore(Number(e.target.value), setScore);
                         setChanged(() => true);

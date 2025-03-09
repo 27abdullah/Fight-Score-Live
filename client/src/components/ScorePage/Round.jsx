@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Block from "./Block";
 import BarGraph from "./BarGraph";
 
-export function Round({ blockRound, currRound, totalRounds, socket, id }) {
+export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState(() => {
         const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
@@ -17,7 +17,7 @@ export function Round({ blockRound, currRound, totalRounds, socket, id }) {
     const [statsB, setStatsB] = useState(0);
 
     useEffect(() => {
-        if (currRound >= blockRound && changed) {
+        if (currentRound >= blockRound && changed) {
             sessionStorage.setItem(
                 `${blockRound}/scoreA`,
                 JSON.stringify(scoreA)
@@ -39,7 +39,7 @@ export function Round({ blockRound, currRound, totalRounds, socket, id }) {
 
         socket.on(`stats/${blockRound}`, handleStats);
 
-        if (currRound > blockRound) {
+        if (currentRound > blockRound) {
             // Get individual score
             const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
             if (savedScoreA != null && savedScoreA >= 0 && savedScoreA <= 10) {
@@ -79,23 +79,23 @@ export function Round({ blockRound, currRound, totalRounds, socket, id }) {
     }, []);
 
     useEffect(() => {
-        setActive(currRound >= blockRound);
+        setActive(currentRound >= blockRound);
         // Round i is submitted when round i + 1 is active.
         if (
             changed &&
-            currRound === blockRound + 1 &&
-            currRound <= totalRounds + 1 &&
+            currentRound === blockRound + 1 &&
+            currentRound <= totalRounds + 1 &&
             0 <= scoreA <= 10 &&
             0 <= scoreB <= 10
         ) {
             socket.emit("roundResults", id, {
-                round: currRound - 1,
+                round: currentRound - 1,
                 scoreA: scoreA,
                 scoreB: scoreB,
             });
         }
         setChanged(() => false);
-    }, [currRound]);
+    }, [currentRound]);
 
     return (
         active && (
@@ -104,7 +104,7 @@ export function Round({ blockRound, currRound, totalRounds, socket, id }) {
                 <Block
                     name="scoreA"
                     blockRound={blockRound}
-                    currRound={currRound}
+                    currentRound={currentRound}
                     score={scoreA}
                     setScore={setScoreA}
                     setChanged={setChanged}
@@ -113,7 +113,7 @@ export function Round({ blockRound, currRound, totalRounds, socket, id }) {
                 <Block
                     name="scoreB"
                     blockRound={blockRound}
-                    currRound={currRound}
+                    currentRound={currentRound}
                     score={scoreB}
                     setScore={setScoreB}
                     setChanged={setChanged}

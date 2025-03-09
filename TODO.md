@@ -1,7 +1,7 @@
 # server
 
 -   auth
--   controller client: reset, knockout, next round (for skipped fight), edit gamestate, force update
+-   controller client: reset, knockout, next round (for skipped fight), edit cardState, force update
 -   Give moderator controls to users
 -   Median score
 -   make objects of config + functions: redis + all its functions, mongodb + all its functions, socketio

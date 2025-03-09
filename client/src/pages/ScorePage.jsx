@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import Round from "../components/ScorePage/Round";
 import { socket } from "../socket";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NameTag from "../components/ScorePage/NameTag";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
-    const [currRound, setCurrRound] = useState(1);
+    const [currentRound, setcurrentRound] = useState(1);
     const [loading, setLoading] = useState(true);
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
-    const [searchParams, setSearchParams] = useSearchParams();
-    const id = searchParams.get("id");
+    const { id } = useParams();
 
     useEffect(() => {
         socket.connect();
@@ -19,19 +18,23 @@ export function ScorePage() {
 
         // Socket listener to increment round
         const incRound = () => {
-            if (currRound <= totalRounds) {
-                setCurrRound((round) => round + 1);
+            if (currentRound <= totalRounds) {
+                setcurrentRound((round) => round + 1);
             }
         };
         socket.on("incRound", incRound);
 
         // Socket listener to initalise state
         const init = (state) => {
+            console.log(state.totalRounds);
+            console.log(state.currentRound);
+            console.log(state.fighterA);
+            console.log(state.fighterB);
             if (state.clear) {
                 sessionStorage.clear();
             }
             setTotalRounds(() => state.totalRounds);
-            setCurrRound(() => state.currRound);
+            setcurrentRound(() => state.currentRound);
             setFighterA(() => state.fighterA);
             setFighterB(() => state.fighterB);
             setLoading(() => false);
@@ -62,7 +65,7 @@ export function ScorePage() {
                     <Round
                         key={i}
                         blockRound={i}
-                        currRound={currRound}
+                        currentRound={currentRound}
                         totalRounds={totalRounds}
                         socket={socket}
                         id={id}

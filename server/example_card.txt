@@ -1,4 +1,0 @@
-Fighter A,Fighter B,2
-Fighter C,Fighter D,3
-Fighter E,Fighter F,4
-Fighter G,Fighter H,4

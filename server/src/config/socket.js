@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-const { redisClient, getRoundStats } = require("./redis");
+const { redisClient } = require("./redis");
 
 const configureSocket = (server, gameController) => {
     const io = new Server(server, {
@@ -13,55 +13,41 @@ const configureSocket = (server, gameController) => {
             socket.join(id);
         });
 
-        socket.on("roundResults", (id, data) => {
+        socket.on("roundResults", async (id, data) => {
             console.log(
                 `${socket.id}: A=${data.scoreA} B=${data.scoreB}, r=${data.round}`
             );
-            let gameState;
-            if (gameController.hasId(id)) {
-                gameState = gameController.getCard(id).getCurrentFight();
-            } else {
+            const cardState = await gameController.getCard(id);
+            if (cardState == null) return;
+
+            if (data.round != cardState.currentRound - 1) {
+                console.log(
+                    "roundResults mismatch: ",
+                    data.round,
+                    cardState.currentRound
+                );
                 return;
             }
 
-            if (data.round < gameState.currentRound - 1) {
-                console.log(`old data`);
-                return;
-            }
-
-            if (data.scoreA > data.scoreB) {
-                redisClient.incr(`${gameState.id}/${data.round}/A`);
-            } else if (data.scoreA < data.scoreB) {
-                redisClient.incr(`${gameState.id}/${data.round}/B`);
-            } else {
-                redisClient.incr(`${gameState.id}/${data.round}/A`);
-                redisClient.incr(`${gameState.id}/${data.round}/B`);
-            }
+            cardState.roundResults(data.scoreA, data.scoreB);
         });
 
         socket.on("pullStats", async (round, id, callback) => {
-            let gameState;
-            if (gameController.hasId(id)) {
-                gameState = gameController.getCard(id).getCurrentFight();
-            } else {
-                return;
-            }
+            const cardState = await gameController.getCard(id);
+            if (cardState == null) return;
+            if (round > cardState.currentRound - 1) return;
 
             callback({
-                statsA: await redisClient.get(`${gameState.id}/${round}/A`),
-                statsB: await redisClient.get(`${gameState.id}/${round}/B`),
+                statsA: await redisClient.get(`${cardState.id}/${round}/A`),
+                statsB: await redisClient.get(`${cardState.id}/${round}/B`),
             });
         });
 
-        socket.on("ready", (id, callback) => {
-            let gameState;
-            if (gameController.hasId(id)) {
-                gameState = gameController.getCard(id).getCurrentFight();
-            } else {
-                return;
-            }
-
-            const state = gameState.objectify();
+        socket.on("ready", async (id, callback) => {
+            if (!(await gameController.hasId(id))) return;
+            const cardState = await gameController.getCard(id);
+            if (cardState == null) return;
+            const state = cardState.jsonify();
             state["clear"] = false;
             callback(state);
         });

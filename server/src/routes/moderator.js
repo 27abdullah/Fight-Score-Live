@@ -1,7 +1,4 @@
-const fslSchema = require("../model/fsl.model");
-const { connectDatabase, persist } = require("../config/mongodb");
-const wait = require("../utils");
-const { redisClient, getRoundStats, clearRounds } = require("../config/redis");
+const { wait, IN_PROGRESS, FINISHED } = require("../utils");
 
 let gameController = null;
 let io = null;
@@ -13,50 +10,46 @@ function setupModRoutes(c, socket) {
 
 const incRound = async (req, res) => {
     const { id } = req.body;
-    let gameState;
-    if (gameController.hasId(id)) {
-        gameState = gameController.getCard(id).getCurrentFight();
-    } else {
-        return;
-    }
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) return;
 
-    if (gameState.currentRound >= gameState.totalRounds + 1) {
+    if (
+        cardState.currentRound >= cardState.totalRounds + 1 ||
+        cardState.state == FINISHED
+    ) {
         res.json({ result: "Fight over" });
         return;
     }
 
-    gameState.incRound();
+    cardState.incRound();
     const result = io.to(id).emit("incRound");
     await wait(1);
-    const stats = await getRoundStats(gameState);
+    const stats = await cardState.getPrevRoundStats();
     console.log(stats);
-    io.to(id).emit(`stats/${gameState.currentRound - 1}`, stats);
-
-    if (gameState.currentRound == gameState.totalRounds + 1) {
-        const outcome = await persist(gameState, redisClient);
-        res.json({ result, stats, outcome });
-        return;
-    }
+    io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
 
     res.json({ result, stats });
 };
 
-const nextFight = (req, res) => {
+const finish = async (req, res) => {
+    const { id, outcome } = req.body;
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) return;
+
+    cardState.finish(outcome);
+    res.json({ message: "Finished" });
+};
+
+const nextFight = async (req, res) => {
     const { id } = req.body;
-    let card;
-    if (gameController.hasId(id)) {
-        card = gameController.getCard(id);
-    } else {
-        return;
-    }
-    oldState = card.getCurrentFight();
-    clearRounds(oldState, oldState.totalRounds); //TODO
-    const gameState = card.nextFight();
-    if (gameState != null) {
-        const state = gameState.objectify();
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) return;
+
+    if (await cardState.nextFight()) {
+        const state = cardState.jsonify();
         state["clear"] = true;
         io.to(id).emit("init", state);
-        res.json({ gameState: gameState.objectify() });
+        res.json({ cardState: cardState.jsonify() });
     } else {
         res.json({ message: "No more fights" });
     }
@@ -64,17 +57,13 @@ const nextFight = (req, res) => {
 
 const update = async (req, res) => {
     const { id } = req.body;
-    let gameState;
-    if (gameController.hasId(id)) {
-        gameState = gameController.getCard(id).getCurrentFight();
-    } else {
-        return;
-    }
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) return;
 
-    const state = gameState.objectify();
+    const state = cardState.jsonify();
     state["clear"] = true;
     io.to(id).emit("init", state);
-    res.json({ gameState: gameState.objectify });
+    res.json({ cardState: state });
 };
 
 const test = async (req, res) => {
@@ -83,7 +72,7 @@ const test = async (req, res) => {
 
 const createCard = async (req, res) => {
     const { owner, name, fights } = req.body;
-    id = gameController.createCard(owner, name, fights); // string, string, list [rounds, sport, fighterA, fighterB]
+    id = gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
     res.json({ message: "Card created", id: id });
 };
 
@@ -99,4 +88,5 @@ module.exports = {
     update,
     createCard,
     logController,
+    finish,
 };

@@ -1,25 +1,33 @@
 const mongoose = require("mongoose");
 
-const fslSchema = new mongoose.Schema(
+const fightSchema = new mongoose.Schema(
     {
         fighterA: { type: String, required: true },
         fighterB: { type: String, required: true },
-        id: { type: String, required: true },
-        outcome: { type: String, required: true },
         sport: { type: String, required: true },
         totalRounds: { type: Number, required: true },
         stats: {
             statsA: {
                 type: [Number],
-                required: true,
+                required: false,
             },
             statsB: {
                 type: [Number],
-                required: true,
+                required: false,
+            },
+        },
+        outcome: {
+            round: {
+                type: Number,
+                required: false,
+            },
+            way: {
+                type: String,
+                required: false,
             },
         },
     },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("fslSchema", fslSchema);
+module.exports = fightSchema;
