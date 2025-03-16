@@ -9,7 +9,7 @@ class GameController {
     }
 
     async getCard(id) {
-        if (id == null) return false;
+        if (id == null) return null;
         if (!(await this.hasId(id))) {
             console.error("Could not find card with id:", id);
             return null;
@@ -73,25 +73,37 @@ class GameController {
         return true;
     }
 
-    clearCard(id) {
-        this.redis.del(id, (err, reply) => {
-            if (err) {
-                console.error("Error deleting key:", err);
-            }
-        });
+    async clearCard(id) {
+        if (!(await this.hasId(id))) {
+            console.error("Could not find card with id:", id);
+            return false;
+        }
+
+        const card = this.cards.get(id);
+
+        await card.clear();
         this.cards.delete(id);
+        return true;
     }
 
-    jsonify() {
-        result = [];
-        this.cards.forEach((id) => {
-            this.redis.get(id, (err, card) => {
-                if (err) {
-                    console.error("Error retrieving value:", err);
-                    return;
-                }
-                result.push(JSON.parse(card));
-            });
+    async loadFromRedis() {
+        // TODO NEXT - only load cards that are in progress, store live state in mongo
+        const ids = await cardSchema.distinct("_id");
+        ids.forEach((id) => {
+            if (!this.hasId(id.toString())) {
+                console.error("Could not find card in redis with id:", id);
+            }
+        });
+    }
+
+    jsonify(user = false) {
+        const result = [];
+        this.cards.forEach((fight) => {
+            if (user) {
+                result.push(fight.userJsonify());
+            } else {
+                result.push(fight.jsonify());
+            }
         });
         return result;
     }

@@ -55,6 +55,15 @@ const nextFight = async (req, res) => {
     }
 };
 
+const cleanUp = async (req, res) => {
+    const { id } = req.body;
+    if (await gameController.clearCard(id)) {
+        res.json({ message: "Cleaned up" });
+    } else {
+        res.json({ message: "Could not clean up" });
+    }
+};
+
 const update = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
@@ -89,4 +98,5 @@ module.exports = {
     createCard,
     logController,
     finish,
+    cleanUp,
 };

@@ -10,6 +10,17 @@ all live data stored in redis: id/stats...
 
 -   new client should only need redis info
 
+=== CHANGE IN APPROACH
+redis and server only out of sync when server goes down
+add delete to redis and removal from controller after fight is over
+add sync to master routes -> sync redis and game controller
+
+== TODO NEXT
+Model card-fight life cycle and track persistance
+
+====
+add sugar -> knockout animation, sub animation, robbery calculator!
+
 all socket stuff stored using one server: id/socketstuff
 
 memory: logic, {card ids → card name}

@@ -1,43 +1,51 @@
 
-# # GET http://localhost:4000/api/test
+@id=67d17ec4bc17a45b5001619d
 
-# POST http://localhost:4000/api/next
+GET http://localhost:4000/api/test
 
+###
 
-# # Bump when server restarts
-# POST http://localhost:4000/api/update
+POST http://localhost:4000/api/next
+Content-Type: application/json
+{
+  "id": "{{id}}"
+}
 
-# GET http://localhost:4000/api/log/controller
+###
+# Bump when server restarts
+POST http://localhost:4000/api/update
+###
+GET http://localhost:4000/api/log/controller
+###
+POST http://localhost:4000/api/round
+Content-Type: application/json
 
-# POST http://localhost:4000/api/round
-# Content-Type: application/json
+{
+  "id": "{{id}}"
+}
+###
+POST http://localhost:4000/api/card
+Content-Type: application/json
 
-# {
-#   "id": "67cd81476593acb8ca58abb7"
-# }
-
-# POST http://localhost:4000/api/card
-# Content-Type: application/json
-
-# {
-#   "owner": "5f9d1b3b7f1f3b0017f3b3b1",
-#   "name": "Test Card",
-#   "fights": [
-#     {
-#       "totalRounds": 3,
-#       "sport": "MMA",
-#       "fighterA": "Fighter AA",
-#       "fighterB": "Fighter BB"
-#     },
-#     {
-#       "totalRounds": 5,
-#       "sport": "Boxing",
-#       "fighterA": "Fighter CC",
-#       "fighterB": "Fighter DD"
-#     }
-#   ]
-# }
-
+{
+  "owner": "5f9d1b3b7f1f3b0017f3b3b1",
+  "name": "Test Card2",
+  "fights": [
+    {
+      "totalRounds": 3,
+      "sport": "MMA",
+      "fighterA": "Fighter AA",
+      "fighterB": "Fighter BB"
+    },
+    {
+      "totalRounds": 5,
+      "sport": "Boxing",
+      "fighterA": "Fighter CC",
+      "fighterB": "Fighter DD"
+    }
+  ]
+}
+###
 POST http://localhost:4000/api/round
 Content-Type: application/json
 
@@ -47,3 +55,16 @@ Content-Type: application/json
 }
 
 
+###
+
+GET http://localhost:4000/api/live-fights
+
+###
+
+
+POST http://localhost:4000/api/clean-up
+Content-Type: application/json
+
+{
+  "id": "67d17ec4bc17a45b5001619d"
+}

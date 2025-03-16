@@ -105,6 +105,21 @@ class CardState {
         this.persist(this.currentRound, outcome);
     }
 
+    /**
+     * Returns a JSON representation of the card for user consumption.
+     */
+    userJsonify() {
+        return {
+            id: this.id,
+            name: this.name,
+            currentFight: this.currentFight,
+            fighterA: this.fighterA,
+            fighterB: this.fighterB,
+            sport: this.sport,
+            currentRound: this.currentRound,
+        };
+    }
+
     jsonify() {
         return {
             id: this.id,
@@ -147,6 +162,20 @@ class CardState {
         await Promise.all(
             this.keys("B").map(async (key) => this.redis.del(key))
         );
+    }
+
+    async clearLiveState() {
+        this.redis.del(this.id, (err, reply) => {
+            if (err) {
+                console.error("Error deleting key:", err);
+                return false;
+            }
+        });
+    }
+
+    async clear() {
+        await this.clearFightStats();
+        await this.clearLiveState();
     }
 
     // Updates prev round results
