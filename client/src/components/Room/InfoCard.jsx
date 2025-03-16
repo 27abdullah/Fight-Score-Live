@@ -1,16 +1,32 @@
-function InfoCard({ eventName, hostName, eventDescription, eventLink }) {
+// key={i}
+// id={room.id}
+// eventName={room.name}
+// fighterA={room.fighterA}
+// fighterB={room.fighterB}
+// sport={room.sport}
+// currentRound={room.currentRound}
+
+import { useNavigate } from "react-router-dom";
+
+function InfoCard({ id, eventName, fighterA, fighterB, sport, currentRound }) {
+    const navigate = useNavigate();
+
+    const handleNavigate = (id) => {
+        navigate(`/score-page/${id}`);
+    };
+
     return (
         <div className="max-w-m p-6 bg-highlightBackground border border-headerPurple rounded-lg shadow-sm">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {eventName}
             </h5>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {eventDescription}
+                {`${fighterA} vs ${fighterB}: Round ${currentRound}`}
             </p>
 
             <div className="flex items-center justify-between">
                 <a
-                    href={eventLink}
+                    onClick={() => handleNavigate(id)}
                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                     Join room
@@ -30,7 +46,7 @@ function InfoCard({ eventName, hostName, eventDescription, eventLink }) {
                         />
                     </svg>
                 </a>
-                <p className="">{hostName}</p>
+                <p className="">{sport}</p>
             </div>
         </div>
     );

@@ -13,6 +13,10 @@ export function ScorePage() {
     const { id } = useParams();
 
     useEffect(() => {
+        if (!id) {
+            return;
+        }
+
         socket.connect();
         socket.emit("register", id);
 
@@ -26,10 +30,6 @@ export function ScorePage() {
 
         // Socket listener to initalise state
         const init = (state) => {
-            console.log(state.totalRounds);
-            console.log(state.currentRound);
-            console.log(state.fighterA);
-            console.log(state.fighterB);
             if (state.clear) {
                 sessionStorage.clear();
             }
@@ -49,7 +49,6 @@ export function ScorePage() {
         return () => {
             socket.off("incRound", incRound);
             socket.off("init", init);
-            console.log("disconnect");
             socket.disconnect();
         };
     }, []);

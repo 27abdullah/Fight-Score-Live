@@ -1,18 +1,38 @@
 import InfoCard from "../components/Room/InfoCard.jsx";
+import { useEffect, useState } from "react";
 
 function Rooms() {
-    const rooms = Array.from({ length: 10 }, (_, i) => i + 1);
+    const [liveRooms, setLiveRooms] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchLiveRooms = async () => {
+            const response = await fetch(
+                "http://localhost:4000/api/live-fights"
+            );
+            const data = await response.json();
+            setLiveRooms(data);
+            setLoading(false);
+        };
+
+        fetchLiveRooms();
+    }, []);
+
+    if (loading) {
+        return <h1>Loading...</h1>;
+    }
 
     return (
         <div className="flex flex-col items-center justify-center space-y-10">
-            {rooms.map((i, _) => (
+            {liveRooms.map((room, i) => (
                 <InfoCard
                     key={i}
-                    eventName={"Fury vs Usyk"}
-                    eventDescription={
-                        "Heavyweight championship of the world, hosted in Riyadh"
-                    }
-                    hostName={"Host: John Doe"}
+                    id={room.id}
+                    eventName={room.name}
+                    fighterA={room.fighterA}
+                    fighterB={room.fighterB}
+                    sport={room.sport}
+                    currentRound={room.currentRound}
                 />
             ))}
         </div>
