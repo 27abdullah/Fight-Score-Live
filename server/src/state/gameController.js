@@ -23,6 +23,7 @@ class GameController {
             owner: owner,
             name: name,
             fights: fights,
+            state: IN_PROGRESS,
         });
         card.save();
 
@@ -73,7 +74,7 @@ class GameController {
         return true;
     }
 
-    async clearCard(id) {
+    async endCard(id) {
         if (!(await this.hasId(id))) {
             console.error("Could not find card with id:", id);
             return false;
@@ -81,14 +82,17 @@ class GameController {
 
         const card = this.cards.get(id);
 
+        await cardSchema.findByIdAndUpdate(card.id, {
+            state: FINISHED,
+        });
         await card.clear();
         this.cards.delete(id);
         return true;
     }
 
-    async loadFromRedis() {
+    async loadFromMongo() {
         // TODO NEXT - only load cards that are in progress, store live state in mongo
-        const ids = await cardSchema.distinct("_id");
+        const ids = await cardSchema.distinct("_id", { state: IN_PROGRESS });
         ids.forEach((id) => {
             if (!this.hasId(id.toString())) {
                 console.error("Could not find card in redis with id:", id);

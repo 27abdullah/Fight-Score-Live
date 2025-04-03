@@ -3,7 +3,7 @@ const { wait, IN_PROGRESS, FINISHED } = require("../utils");
 
 class CardState {
     constructor(card, redis) {
-        this.currentFight = card.currentFight;
+        this.currentFight = card.currentFight; // Index into fights
         this.owner = card.owner;
         this.name = card.name;
         this.id = card.id.toString();
@@ -103,6 +103,7 @@ class CardState {
     finish(outcome) {
         this.state = FINISHED;
         this.persist(this.currentRound, outcome);
+        this.updateRedis(this.jsonify(), "finish");
     }
 
     /**

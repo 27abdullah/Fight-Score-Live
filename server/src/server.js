@@ -16,10 +16,10 @@ const {
     createCard,
     logController,
     finish,
-    cleanUp,
+    endCard,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
-const { gameController } = require("./state/GameController");
+const { gameController } = require("./state/gameController");
 
 const app = express();
 const server = http.createServer(app);
@@ -34,14 +34,14 @@ app.use(cors);
 app.use(express.json()); // parse json req body
 
 // Moderator routers
-app.post("/api/update", update);
+app.post("/api/card", createCard);
 app.post("/api/round", incRound);
-app.get("/api/test", test);
 app.post("/api/finish", finish);
 app.post("/api/next", nextFight);
-app.post("/api/clean-up", cleanUp);
-app.post("/api/card", createCard);
+app.post("/api/update", update);
+app.post("/api/end-card", endCard);
 app.get("/api/log/controller", logController);
+app.get("/api/test", test);
 
 // User routers
 app.get("/api/live-fights", displayLiveFights);
@@ -49,7 +49,7 @@ app.get("/api/live-fights", displayLiveFights);
 const startServer = async () => {
     await redisClient.connect();
     await connectDatabase();
-    await gameController.loadFromRedis();
+    await gameController.loadFromMongo();
 
     server.listen(4000, () => {
         console.log("Server listening on port 4000");

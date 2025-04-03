@@ -1,12 +1,12 @@
 
-@id=67d17ec4bc17a45b5001619d
+@id=67ee7617783d02984beb7d3d
 
 GET http://localhost:4000/api/test
 
 ###
-
 POST http://localhost:4000/api/next
 Content-Type: application/json
+
 {
   "id": "{{id}}"
 }
@@ -14,6 +14,11 @@ Content-Type: application/json
 ###
 # Bump when server restarts
 POST http://localhost:4000/api/update
+Content-Type: application/json
+
+{
+  "id": "{{id}}"
+}
 ###
 GET http://localhost:4000/api/log/controller
 ###
@@ -29,29 +34,29 @@ Content-Type: application/json
 
 {
   "owner": "5f9d1b3b7f1f3b0017f3b3b1",
-  "name": "Test Card2",
+  "name": "Fight over the YEAR!",
   "fights": [
     {
       "totalRounds": 3,
       "sport": "MMA",
-      "fighterA": "Fighter AA",
-      "fighterB": "Fighter BB"
+      "fighterA": "Puncher",
+      "fighterB": "Kicker"
     },
     {
-      "totalRounds": 5,
+      "totalRounds": 4,
       "sport": "Boxing",
-      "fighterA": "Fighter CC",
-      "fighterB": "Fighter DD"
+      "fighterA": "Lefty",
+      "fighterB": "Righty"
     }
   ]
 }
 ###
-POST http://localhost:4000/api/round
+POST http://localhost:4000/api/finish
 Content-Type: application/json
 
 {
-  "id": "67cd9b04f043db1846626922",
-  "outcome": "Disqualification"
+  "id": "{{id}}",
+  "outcome": "Knockout"
 }
 
 
@@ -62,9 +67,9 @@ GET http://localhost:4000/api/live-fights
 ###
 
 
-POST http://localhost:4000/api/clean-up
+POST http://localhost:4000/api/end-card
 Content-Type: application/json
 
 {
-  "id": "67d17ec4bc17a45b5001619d"
+  "id": "{{id}}"
 }

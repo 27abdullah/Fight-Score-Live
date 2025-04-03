@@ -1,23 +1,33 @@
 # server
 
--   auth
--   controller client: reset, knockout, next round (for skipped fight), edit cardState, force update
--   Give moderator controls to users
--   Median score
--   make objects of config + functions: redis + all its functions, mongodb + all its functions, socketio
+TODO
+
+-   track actual winner
+-   results page
+-   Median score + stats
+-   moderator controls: edit current round state
+
+-   change mongo to postgres
+-   authentication w/ supabase, JWT
+-   authorisation
+-   handle when server goes down
 
 # client
 
+-   Client state lifecycle
 -   update name tag
+-   fight outcome screen
+-   Sugar on info card
+-   Sugar on score page
+-   Colour scheme
+-   fight_id/fighterA/Score -> can score multiple fights at once and not lose past scores
+
 -   images
 -   green/red to winner
+-   Sugar on fight outcome, you guessed better than x% (can lodge vote on winner),robbery calculator
 -   word summaries of round/fight
--   fights on right now page
--   Past fight records
--   Summary of fight screen
+-   add past fight stats
 
-card: classes, reader from file, basic api
-pretty up bar graph
-clear session after fight over
+IDEAS
 
-Colour scheme:
+-   number of live viewers in room

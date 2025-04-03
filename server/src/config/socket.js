@@ -48,7 +48,6 @@ const configureSocket = (server, gameController) => {
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
             const state = cardState.jsonify();
-            state["clear"] = false;
             callback(state);
         });
     });

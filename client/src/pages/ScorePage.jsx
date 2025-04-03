@@ -30,9 +30,6 @@ export function ScorePage() {
 
         // Socket listener to initalise state
         const init = (state) => {
-            if (state.clear) {
-                sessionStorage.clear();
-            }
             setTotalRounds(() => state.totalRounds);
             setcurrentRound(() => state.currentRound);
             setFighterA(() => state.fighterA);
@@ -40,6 +37,11 @@ export function ScorePage() {
             setLoading(() => false);
         };
         socket.on("init", init);
+
+        const clearStorage = () => {
+            sessionStorage.clear();
+        };
+        socket.on("clearStorage", clearStorage);
 
         // Ready to receive init state from server
         socket.emit("ready", id, (response) => {
@@ -49,6 +51,7 @@ export function ScorePage() {
         return () => {
             socket.off("incRound", incRound);
             socket.off("init", init);
+            socket.off("clearStorage", clearStorage);
             socket.disconnect();
         };
     }, []);

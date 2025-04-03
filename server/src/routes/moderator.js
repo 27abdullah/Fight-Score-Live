@@ -11,7 +11,10 @@ function setupModRoutes(c, socket) {
 const incRound = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
-    if (cardState == null) return;
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
 
     if (
         cardState.currentRound >= cardState.totalRounds + 1 ||
@@ -34,7 +37,10 @@ const incRound = async (req, res) => {
 const finish = async (req, res) => {
     const { id, outcome } = req.body;
     const cardState = await gameController.getCard(id);
-    if (cardState == null) return;
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
 
     cardState.finish(outcome);
     res.json({ message: "Finished" });
@@ -43,21 +49,27 @@ const finish = async (req, res) => {
 const nextFight = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
-    if (cardState == null) return;
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
 
     if (await cardState.nextFight()) {
         const state = cardState.jsonify();
-        state["clear"] = true;
         io.to(id).emit("init", state);
+        io.to(id).emit("clearStorage");
         res.json({ cardState: cardState.jsonify() });
     } else {
-        res.json({ message: "No more fights" });
+        res.json({
+            message: "No more fights or current fight still in progress",
+        });
     }
 };
 
-const cleanUp = async (req, res) => {
+const endCard = async (req, res) => {
     const { id } = req.body;
-    if (await gameController.clearCard(id)) {
+    if (await gameController.endCard(id)) {
+        io.to(id).emit("clearStorage");
         res.json({ message: "Cleaned up" });
     } else {
         res.json({ message: "Could not clean up" });
@@ -67,11 +79,14 @@ const cleanUp = async (req, res) => {
 const update = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
-    if (cardState == null) return;
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
 
     const state = cardState.jsonify();
-    state["clear"] = true;
     io.to(id).emit("init", state);
+    io.to(id).emit("clearStorage");
     res.json({ cardState: state });
 };
 
@@ -98,5 +113,5 @@ module.exports = {
     createCard,
     logController,
     finish,
-    cleanUp,
+    endCard,
 };

@@ -6,6 +6,7 @@ const cardSchema = new mongoose.Schema(
         owner: { type: String, required: true },
         name: { type: String, required: true },
         fights: [fightSchema],
+        state: { type: Number, required: true },
     },
     { timestamps: true }
 );
