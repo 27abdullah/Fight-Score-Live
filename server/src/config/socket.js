@@ -20,6 +20,7 @@ const configureSocket = (server, gameController) => {
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
 
+            // Stale round results
             if (data.round != cardState.currentRound - 1) {
                 console.log(
                     "roundResults mismatch: ",
@@ -38,8 +39,15 @@ const configureSocket = (server, gameController) => {
             if (round > cardState.currentRound - 1) return;
 
             callback({
-                statsA: await redisClient.get(`${cardState.id}/${round}/A`),
-                statsB: await redisClient.get(`${cardState.id}/${round}/B`),
+                votesA: await redisClient.get(
+                    `${cardState.id}/${round}/votesA`
+                ),
+                votesB: await redisClient.get(
+                    `${cardState.id}/${round}/votesB`
+                ),
+                medianDiff: await redisClient.get(
+                    `${cardState.id}/${round}/median`
+                ),
             });
         });
 

@@ -7,14 +7,23 @@ const fightSchema = new mongoose.Schema(
         sport: { type: String, required: true },
         totalRounds: { type: Number, required: true },
         stats: {
-            statsA: {
+            medians: {
                 type: [Number],
-                required: false,
+                default: [],
             },
-            statsB: {
+            votesA: {
                 type: [Number],
-                required: false,
+                default: [],
             },
+            votesB: {
+                type: [Number],
+                default: [],
+            },
+            diffs: {
+                type: [[Number]],
+                default: [],
+            },
+            _id: false,
         },
         outcome: {
             round: {
@@ -25,6 +34,7 @@ const fightSchema = new mongoose.Schema(
                 type: String,
                 required: false,
             },
+            _id: false,
         },
     },
     { timestamps: true }

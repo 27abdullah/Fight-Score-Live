@@ -10,7 +10,10 @@ TODO
 -   change mongo to postgres
 -   authentication w/ supabase, JWT
 -   authorisation
--   handle when server goes down
+-   consider recovery when server goes down
+
+-   json/socket validation
+-   security
 
 # client
 
@@ -25,7 +28,6 @@ TODO
 -   images
 -   green/red to winner
 -   Sugar on fight outcome, you guessed better than x% (can lodge vote on winner),robbery calculator
--   word summaries of round/fight
 -   add past fight stats
 
 IDEAS

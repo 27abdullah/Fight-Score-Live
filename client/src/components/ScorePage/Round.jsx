@@ -13,8 +13,9 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
         return savedScoreB != null ? JSON.parse(savedScoreB) : 10;
     });
     const [changed, setChanged] = useState(false);
-    const [statsA, setStatsA] = useState(0);
-    const [statsB, setStatsB] = useState(0);
+    const [votesA, setVotesA] = useState(0);
+    const [votesB, setVotesB] = useState(0);
+    const [median, setMedian] = useState(0);
 
     useEffect(() => {
         if (currentRound >= blockRound && changed) {
@@ -31,10 +32,10 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
 
     useEffect(() => {
         function handleStats(stats) {
-            console.log("handlestats");
             console.log(stats);
-            setStatsA(() => Number(stats.statsA));
-            setStatsB(() => Number(stats.statsB));
+            setVotesA(() => Number(stats.votesA));
+            setVotesB(() => Number(stats.votesB));
+            setMedian(() => Number(stats.medianDiff));
         }
 
         socket.on(`stats/${blockRound}`, handleStats);
@@ -58,16 +59,16 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
             socket.emit("pullStats", blockRound, id, (response) => {
                 console.log("pullstats");
                 console.log(response);
-                setStatsA(() => Number(response.statsA));
-                setStatsB(() => Number(response.statsB));
+                setVotesA(() => Number(response.votesA));
+                setVotesB(() => Number(response.votesB));
             });
         }
 
         const reset = () => {
             setScoreA(10);
             setScoreB(10);
-            setStatsA(0);
-            setStatsB(0);
+            setVotesA(0);
+            setVotesB(0);
             setChanged(false);
         };
         socket.on("init", reset);
@@ -100,7 +101,7 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
     return (
         active && (
             <div>
-                <BarGraph statsA={statsA} statsB={statsB} direction={true} />
+                <BarGraph votesA={votesA} votesB={votesB} direction={true} />
                 <Block
                     name="scoreA"
                     blockRound={blockRound}
@@ -119,7 +120,7 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
                     setChanged={setChanged}
                     changed={changed}
                 />
-                <BarGraph statsA={statsA} statsB={statsB} direction={false} />
+                <BarGraph votesA={votesA} votesB={votesB} direction={false} />
             </div>
         )
     );

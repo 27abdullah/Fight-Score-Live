@@ -16,10 +16,10 @@ class CardState {
         this.state = card.state;
     }
 
-    keys(fighter) {
+    redisKeys(s) {
         return Array.from(
-            { length: this.currentRound + 1 },
-            (_, i) => `${this.id}/${i + 1}/${fighter}`
+            { length: this.currentRound },
+            (_, i) => `${this.id}/${i + 1}/${s}`
         );
     }
 
@@ -37,13 +37,32 @@ class CardState {
         }
 
         card.fights[this.currentFight].stats = {
-            statsA: await Promise.all(
-                this.keys("A").map(async (key) => this.redis.get(key))
+            votesA: await Promise.all(
+                this.redisKeys("votesA").map(async (key) => {
+                    const value = await this.redis.get(key);
+                    return Number(value ?? 0);
+                })
             ),
-            statsB: await Promise.all(
-                this.keys("B").map(async (key) => this.redis.get(key))
+            votesB: await Promise.all(
+                this.redisKeys("votesB").map(async (key) => {
+                    const value = await this.redis.get(key);
+                    return Number(value ?? 0);
+                })
+            ),
+            medians: await Promise.all(
+                this.redisKeys("median").map(async (key) => {
+                    const value = await this.redis.get(key);
+                    return Number(value ?? 0);
+                })
+            ),
+            diffs: await Promise.all(
+                this.redisKeys("diffs").map(async (key) => {
+                    const values = await this.redis.lRange(key, 0, -1);
+                    return values.map(Number);
+                })
             ),
         };
+
         card.fights[this.currentFight].outcome = {
             round: round,
             way: way,
@@ -145,23 +164,47 @@ class CardState {
     }
 
     async getPrevRoundStats() {
+        // Save and get the median of the differences
+        const diffs = await this.redis.lRange(
+            `${this.id}/${this.currentRound - 1}/diffs`,
+            0,
+            -1
+        );
+        diffs.sort((a, b) => Number(a) - Number(b));
+        let median = diffs[Math.floor(diffs.length / 2)];
+        if (median !== undefined) {
+            await this.redis.set(
+                `${this.id}/${this.currentRound - 1}/median`,
+                median
+            );
+        } else {
+            median = null;
+        }
+
         return {
-            statsA: await this.redis.get(
-                `${this.id}/${this.currentRound - 1}/A`
+            votesA: await this.redis.get(
+                `${this.id}/${this.currentRound - 1}/votesA`
             ),
-            statsB: await this.redis.get(
-                `${this.id}/${this.currentRound - 1}/B`
+            votesB: await this.redis.get(
+                `${this.id}/${this.currentRound - 1}/votesB`
             ),
-            round: this.currentRound - 1,
+            median: median,
         };
     }
 
+    // For ALL rounds up to and including currentRound
     async clearFightStats() {
         await Promise.all(
-            this.keys("A").map(async (key) => this.redis.del(key))
+            this.redisKeys("votesA").map(async (key) => this.redis.del(key))
         );
         await Promise.all(
-            this.keys("B").map(async (key) => this.redis.del(key))
+            this.redisKeys("votesB").map(async (key) => this.redis.del(key))
+        );
+        await Promise.all(
+            this.redisKeys("median").map(async (key) => this.redis.del(key))
+        );
+        await Promise.all(
+            this.redisKeys("diffs").map(async (key) => this.redis.del(key))
         );
     }
 
@@ -179,13 +222,24 @@ class CardState {
         await this.clearLiveState();
     }
 
-    // Updates prev round results
     async roundResults(scoreA, scoreB) {
+        // Differences in scores (A - B)
+        this.redis.rPush(
+            `${this.id}/${this.currentRound - 1}/diffs`,
+            String(scoreA - scoreB),
+            (err, reply) => {
+                if (err) {
+                    console.error("Error pushing to redis:", err);
+                }
+            }
+        );
+
+        // Number of people who voted for A or B
         if (scoreA >= scoreB) {
-            this.redis.incr(`${this.id}/${this.currentRound - 1}/A`);
+            this.redis.incr(`${this.id}/${this.currentRound - 1}/votesA`);
         }
         if (scoreA <= scoreB) {
-            this.redis.incr(`${this.id}/${this.currentRound - 1}/B`);
+            this.redis.incr(`${this.id}/${this.currentRound - 1}/votesB`);
         }
     }
 }

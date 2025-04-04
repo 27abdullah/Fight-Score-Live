@@ -26,7 +26,7 @@ const incRound = async (req, res) => {
 
     cardState.incRound();
     const result = io.to(id).emit("incRound");
-    await wait(1);
+    await wait(2);
     const stats = await cardState.getPrevRoundStats();
     console.log(stats);
     io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
