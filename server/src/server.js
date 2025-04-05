@@ -17,6 +17,7 @@ const {
     logController,
     finish,
     endCard,
+    setWinner,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
 const { gameController } = require("./state/gameController");
@@ -37,6 +38,7 @@ app.use(express.json()); // parse json req body
 app.post("/api/card", createCard);
 app.post("/api/round", incRound);
 app.post("/api/finish", finish);
+app.post("/api/set-winner", setWinner);
 app.post("/api/next", nextFight);
 app.post("/api/update", update);
 app.post("/api/end-card", endCard);

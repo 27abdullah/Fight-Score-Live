@@ -34,6 +34,10 @@ const fightSchema = new mongoose.Schema(
                 type: String,
                 required: false,
             },
+            winner: {
+                type: String,
+                required: false,
+            },
             _id: false,
         },
     },

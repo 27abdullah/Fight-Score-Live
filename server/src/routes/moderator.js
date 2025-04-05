@@ -1,4 +1,4 @@
-const { wait, IN_PROGRESS, FINISHED } = require("../utils");
+const { wait, IN_PROGRESS, FINISHED, SET_WINNER } = require("../utils");
 
 let gameController = null;
 let io = null;
@@ -8,11 +8,37 @@ function setupModRoutes(c, socket) {
     io = socket;
 }
 
+// Set winner on decision after final round
+const setWinner = async (req, res) => {
+    const { id, winner } = req.body;
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
+
+    if (cardState.state == IN_PROGRESS || cardState.state == FINISHED) {
+        res.json({
+            message: "State not in set winner",
+            state: cardState.state,
+        });
+        return;
+    }
+
+    await cardState.setWinner(winner);
+    res.json({ message: "Winner set" });
+};
+
 const incRound = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ message: "Card not found" });
+        return;
+    }
+
+    if (cardState.state == SET_WINNER) {
+        res.json({ message: "Please set winner of fight" });
         return;
     }
 
@@ -26,7 +52,7 @@ const incRound = async (req, res) => {
 
     cardState.incRound();
     const result = io.to(id).emit("incRound");
-    await wait(2);
+    await wait(1);
     const stats = await cardState.getPrevRoundStats();
     console.log(stats);
     io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
@@ -35,14 +61,19 @@ const incRound = async (req, res) => {
 };
 
 const finish = async (req, res) => {
-    const { id, outcome } = req.body;
+    const { id, outcome, winner } = req.body;
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ message: "Card not found" });
         return;
     }
 
-    cardState.finish(outcome);
+    if (cardState.state != IN_PROGRESS) {
+        res.json({ message: "Fight no longer in progess cannot finish" });
+        return;
+    }
+
+    cardState.finish(outcome, winner);
     res.json({ message: "Finished" });
 };
 
@@ -114,4 +145,5 @@ module.exports = {
     logController,
     finish,
     endCard,
+    setWinner,
 };

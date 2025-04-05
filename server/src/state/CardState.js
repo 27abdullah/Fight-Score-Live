@@ -1,5 +1,10 @@
 const cardSchema = require("../model/card.model");
-const { wait, IN_PROGRESS, FINISHED } = require("../utils");
+const { wait, IN_PROGRESS, FINISHED, SET_WINNER } = require("../utils");
+
+/**
+ * This class should do all the state validatino (IN_PROGRESS, FINISHED, etc.) and not
+ * moderator.js
+ */
 
 class CardState {
     constructor(card, redis) {
@@ -66,6 +71,7 @@ class CardState {
         card.fights[this.currentFight].outcome = {
             round: round,
             way: way,
+            winner: await this.redis.get(`${this.id}/winner`),
         };
         card.save();
 
@@ -106,23 +112,31 @@ class CardState {
     }
 
     incRound() {
-        if (this.state == FINISHED) {
-            console.log("Cannot increment round while finished");
+        if (this.state == FINISHED || this.state == SET_WINNER) {
+            console.log("Cannot increment round while state: ", this.state);
             return;
         }
         if (this.currentRound + 1 > this.totalRounds) {
-            this.state = FINISHED;
-            this.persist(this.currentRound, "decision");
+            this.state = SET_WINNER;
         }
 
         this.currentRound += 1;
         this.updateRedis(this.jsonify(), "incRound");
     }
 
-    finish(outcome) {
+    async setWinner(winner, outcome = "decision") {
+        await this.redis.set(`${this.id}/winner`, winner, (err, reply) => {
+            if (err) {
+                console.error("Error setting winner:", err);
+            }
+        });
         this.state = FINISHED;
-        this.persist(this.currentRound, outcome);
-        this.updateRedis(this.jsonify(), "finish");
+        await this.persist(this.currentRound, outcome);
+        await this.updateRedis(this.jsonify(), "setWinner");
+    }
+
+    async finish(outcome, winner) {
+        await this.setWinner(winner, outcome);
     }
 
     /**
@@ -155,12 +169,16 @@ class CardState {
         };
     }
 
-    updateRedis(newState, msg) {
-        this.redis.set(this.id, JSON.stringify(newState), (err, reply) => {
-            if (err) {
-                console.error(`Redis error on ${msg}: `, err);
+    async updateRedis(newState, msg) {
+        await this.redis.set(
+            this.id,
+            JSON.stringify(newState),
+            (err, reply) => {
+                if (err) {
+                    console.error(`Redis error on ${msg}: `, err);
+                }
             }
-        });
+        );
     }
 
     async getPrevRoundStats() {
@@ -194,18 +212,21 @@ class CardState {
 
     // For ALL rounds up to and including currentRound
     async clearFightStats() {
-        await Promise.all(
+        const votesA = Promise.all(
             this.redisKeys("votesA").map(async (key) => this.redis.del(key))
         );
-        await Promise.all(
+        const votesB = Promise.all(
             this.redisKeys("votesB").map(async (key) => this.redis.del(key))
         );
-        await Promise.all(
+        const median = Promise.all(
             this.redisKeys("median").map(async (key) => this.redis.del(key))
         );
-        await Promise.all(
+        const diff = Promise.all(
             this.redisKeys("diffs").map(async (key) => this.redis.del(key))
         );
+        const winner = this.redis.del(`${this.id}/winner`);
+
+        await Promise.all([votesA, votesB, median, diff, winner]);
     }
 
     async clearLiveState() {
