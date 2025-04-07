@@ -19,6 +19,7 @@ class CardState {
         this.currentRound = card.currentRound;
         this.redis = redis;
         this.state = card.state;
+        this.winner = card.winner; // "" | "A" | "B"
     }
 
     redisKeys(s) {
@@ -105,6 +106,7 @@ class CardState {
         this.totalRounds = nextFight.totalRounds;
         this.currentRound = 1;
         this.state = IN_PROGRESS;
+        this.winner = "";
 
         this.updateRedis(this.jsonify(), "nextFight");
 
@@ -131,6 +133,7 @@ class CardState {
             }
         });
         this.state = FINISHED;
+        this.winner = winner;
         await this.persist(this.currentRound, outcome);
         await this.updateRedis(this.jsonify(), "setWinner");
     }
@@ -151,6 +154,7 @@ class CardState {
             fighterB: this.fighterB,
             sport: this.sport,
             currentRound: this.currentRound,
+            winner: this.winner,
         };
     }
 
@@ -166,6 +170,7 @@ class CardState {
             totalRounds: this.totalRounds,
             currentRound: this.currentRound,
             state: this.state,
+            winner: this.winner,
         };
     }
 

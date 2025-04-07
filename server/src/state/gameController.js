@@ -40,6 +40,7 @@ class GameController {
             totalRounds: fights[0].totalRounds,
             currentRound: 1,
             state: IN_PROGRESS,
+            winner: "",
         };
         this.redis.set(id, JSON.stringify(currentFight), (err, reply) => {
             if (err) {

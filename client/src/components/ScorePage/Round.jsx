@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import Block from "./Block";
 import BarGraph from "./BarGraph";
 
-export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
+export function Round({
+    blockRound,
+    currentRound,
+    totalRounds,
+    socket,
+    id,
+    winner,
+}) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState(() => {
         const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
@@ -110,6 +117,7 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
                     setScore={setScoreA}
                     setChanged={setChanged}
                     changed={changed}
+                    winner={winner}
                 />
                 <Block
                     name="scoreB"
@@ -119,6 +127,7 @@ export function Round({ blockRound, currentRound, totalRounds, socket, id }) {
                     setScore={setScoreB}
                     setChanged={setChanged}
                     changed={changed}
+                    winner={winner}
                 />
                 <BarGraph votesA={votesA} votesB={votesB} direction={false} />
             </div>

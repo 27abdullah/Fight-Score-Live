@@ -1,12 +1,12 @@
 # server
 
--   track actual winner
 -   results page
 -   moderator controls: edit current round state
 
 -   change mongo to postgres
 -   authentication w/ supabase, JWT
 -   authorisation
+-   moderator panel
 -   consider recovery when server goes down
 
 -   json/socket validation (zod for api validation)

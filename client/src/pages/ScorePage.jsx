@@ -10,6 +10,7 @@ export function ScorePage() {
     const [loading, setLoading] = useState(true);
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
+    const [winner, setWinner] = useState("");
     const { id } = useParams();
 
     useEffect(() => {
@@ -35,6 +36,7 @@ export function ScorePage() {
             setFighterA(() => state.fighterA);
             setFighterB(() => state.fighterB);
             setLoading(() => false);
+            setWinner(() => state.winner);
         };
         socket.on("init", init);
 
@@ -42,6 +44,8 @@ export function ScorePage() {
             sessionStorage.clear();
         };
         socket.on("clearStorage", clearStorage);
+
+        socket.on("winner", setWinner);
 
         // Ready to receive init state from server
         socket.emit("ready", id, (response) => {
@@ -52,6 +56,7 @@ export function ScorePage() {
             socket.off("incRound", incRound);
             socket.off("init", init);
             socket.off("clearStorage", clearStorage);
+            socket.off("winner", setWinner);
             socket.disconnect();
         };
     }, []);
@@ -61,7 +66,7 @@ export function ScorePage() {
         <h1>Loading...</h1>
     ) : (
         <div className="flex flex-col items-center justify-center">
-            <NameTag name={fighterA} />
+            <NameTag name={fighterA} id={"A"} isWinner={winner} />
             <div className="flex items-center justify-center h-[75vh]">
                 {blocks.map((i, _) => (
                     <Round
@@ -71,10 +76,11 @@ export function ScorePage() {
                         totalRounds={totalRounds}
                         socket={socket}
                         id={id}
+                        winner={winner}
                     />
                 ))}
             </div>
-            <NameTag name={fighterB} />
+            <NameTag name={fighterB} id={"B"} isWinner={winner} />
         </div>
     );
 }
