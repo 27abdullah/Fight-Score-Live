@@ -16,12 +16,15 @@ function InfoCard({ id, eventName, fighterA, fighterB, sport, currentRound }) {
     };
 
     return (
-        <div className="max-w-m p-6 bg-highlightBackground border border-headerPurple rounded-lg shadow-sm">
+        <div className="max-w-m p-10 bg-highlightBackground border border-headerPurple rounded-lg shadow-sm">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {eventName}
             </h5>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {`${fighterA} vs ${fighterB}: Round ${currentRound}`}
+            <p className="mt-2 font-normal text-gray-700 dark:text-gray-400">
+                {`Live: ${fighterA} vs ${fighterB}`}
+            </p>
+            <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
+                {`Round: ${currentRound}`}
             </p>
 
             <div className="flex items-center justify-between">

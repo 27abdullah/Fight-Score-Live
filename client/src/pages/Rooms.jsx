@@ -32,7 +32,9 @@ function Rooms() {
                     fighterA={room.fighterA}
                     fighterB={room.fighterB}
                     sport={room.sport}
-                    currentRound={room.currentRound}
+                    currentRound={
+                        room.state == 0 ? room.currentRound : "Finished"
+                    }
                 />
             ))}
         </div>

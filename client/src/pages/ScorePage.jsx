@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Round from "../components/ScorePage/Round";
-import { socket } from "../socket";
+import { socket } from "../config/socket";
 import { useParams } from "react-router-dom";
 import NameTag from "../components/ScorePage/NameTag";
 

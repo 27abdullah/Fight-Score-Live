@@ -142,22 +142,6 @@ class CardState {
         await this.setWinner(winner, outcome);
     }
 
-    /**
-     * Returns a JSON representation of the card for user consumption.
-     */
-    userJsonify() {
-        return {
-            id: this.id,
-            name: this.name,
-            currentFight: this.currentFight,
-            fighterA: this.fighterA,
-            fighterB: this.fighterB,
-            sport: this.sport,
-            currentRound: this.currentRound,
-            winner: this.winner,
-        };
-    }
-
     jsonify() {
         return {
             id: this.id,

@@ -101,14 +101,10 @@ class GameController {
         });
     }
 
-    jsonify(user = false) {
+    jsonify() {
         const result = [];
         this.cards.forEach((fight) => {
-            if (user) {
-                result.push(fight.userJsonify());
-            } else {
-                result.push(fight.jsonify());
-            }
+            result.push(fight.jsonify());
         });
         return result;
     }

@@ -5,7 +5,7 @@ function setupUserRoutes(c) {
 }
 
 const displayLiveFights = async (req, res) => {
-    const fights = gameController.jsonify(true);
+    const fights = gameController.jsonify();
     res.json(fights);
 };
 
