@@ -17,7 +17,7 @@ class GameController {
         return this.cards.get(id);
     }
 
-    createCard(owner, name, fights) {
+    async createCard(owner, name, fights) {
         // Save card to mongo
         const card = new cardSchema({
             owner: owner,
@@ -42,11 +42,12 @@ class GameController {
             state: IN_PROGRESS,
             winner: "",
         };
-        this.redis.set(id, JSON.stringify(currentFight), (err, reply) => {
+        await this.redis.set(id, JSON.stringify(currentFight), (err, reply) => {
             if (err) {
                 console.error("Redis error on createCard:", err);
             }
         });
+        await this.redis.sAdd(`active-users/${id}`, "start");
 
         // Add card to map
         this.cards.set(id, new CardState(currentFight, this.redis));

@@ -29,7 +29,7 @@ const incRound = async (req, res) => {
         return;
     }
 
-    cardState.incRound();
+    await cardState.incRound();
     const result = io.to(id).emit("incRound");
     await wait(1);
     const stats = await cardState.getPrevRoundStats();
@@ -129,7 +129,7 @@ const test = async (req, res) => {
 
 const createCard = async (req, res) => {
     const { owner, name, fights } = req.body;
-    id = gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
+    id = await gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
     res.json({ message: "Card created", id: id });
 };
 

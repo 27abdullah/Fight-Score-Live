@@ -1,5 +1,5 @@
 
-@id=67f3b1f8abdea176ed87e157
+@id=68024d0842139de9b6deccac
 
 GET http://localhost:4000/api/test
 
@@ -44,7 +44,7 @@ Content-Type: application/json
 
 {
   "owner": "5f9d1b3b7f1f3b0017f3b3b1",
-  "name": "Fight of the YEAR!",
+  "name": "X vs DDY",
   "fights": [
     {
       "totalRounds": 3,

@@ -7,7 +7,7 @@ export function Round({
     currentRound,
     totalRounds,
     socket,
-    id,
+    roomId,
     winner,
 }) {
     const [active, setActive] = useState(false);
@@ -63,9 +63,7 @@ export function Round({
             }
 
             // Get aggregate stats
-            socket.emit("pullStats", blockRound, id, (response) => {
-                console.log("pullstats");
-                console.log(response);
+            socket.emit("pullStats", blockRound, roomId, (response) => {
                 setVotesA(() => Number(response.votesA));
                 setVotesB(() => Number(response.votesB));
             });
@@ -96,7 +94,7 @@ export function Round({
             0 <= scoreA <= 10 &&
             0 <= scoreB <= 10
         ) {
-            socket.emit("roundResults", id, {
+            socket.emit("roundResults", roomId, {
                 round: currentRound - 1,
                 scoreA: scoreA,
                 scoreB: scoreB,

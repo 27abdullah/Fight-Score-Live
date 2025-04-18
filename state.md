@@ -11,7 +11,7 @@ Redis and server: added via has with in progress from mongo
 Once per card
 -> Mod post @ /api/card
 MongoDB: create card { state = IN_PROGRESS}
-Redis: add current fight {state = IN_PROGRESS}
+Redis: add current fight {state = IN_PROGRESS} + active-users set
 Server: add CardState to GameControlller map
 
 ## Inc round
@@ -61,5 +61,5 @@ Socket emit: current card state + "clear" = true (removes session storage for ro
 
 Mongo: sets state = FINISHED
 Server: removes card from game controller map
-Redis (clearFightStats + clearLiveState): delete fight stats of fight and delete current fight object
+Redis (clearFightStats + clearLiveState): delete fight stats of fight and delete current fight object + delete active-users-set
 Socket emit: clear session

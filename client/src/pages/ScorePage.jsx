@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Round from "../components/ScorePage/Round";
-import { socket } from "../config/socket";
 import { useParams } from "react-router-dom";
 import NameTag from "../components/ScorePage/NameTag";
+import { useUser } from "../hooks/useUser";
+import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
@@ -11,15 +13,25 @@ export function ScorePage() {
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
     const [winner, setWinner] = useState("");
-    const { id } = useParams();
+    const { id: roomId } = useParams();
+    const { user } = useUser();
+    const navigate = useNavigate();
+    const socket = useRef(null);
 
     useEffect(() => {
-        if (!id) {
+        if (!user || !roomId) {
+            navigate("/");
             return;
         }
 
-        socket.connect();
-        socket.emit("register", id);
+        socket.current = io("http://localhost:4000", {
+            autoConnect: false,
+            extraHeaders: {
+                Authorization: `Bearer ${user.id}`,
+                roomid: roomId,
+            },
+        });
+        socket.current.connect();
 
         // Socket listener to increment round
         const incRound = () => {
@@ -27,7 +39,7 @@ export function ScorePage() {
                 setcurrentRound((round) => round + 1);
             }
         };
-        socket.on("incRound", incRound);
+        socket.current.on("incRound", incRound);
 
         // Socket listener to initalise state
         const init = (state) => {
@@ -38,26 +50,26 @@ export function ScorePage() {
             setLoading(() => false);
             setWinner(() => state.winner);
         };
-        socket.on("init", init);
+        socket.current.on("init", init);
 
         const clearStorage = () => {
             sessionStorage.clear();
         };
-        socket.on("clearStorage", clearStorage);
+        socket.current.on("clearStorage", clearStorage);
 
-        socket.on("winner", setWinner);
+        socket.current.on("winner", setWinner);
 
         // Ready to receive init state from server
-        socket.emit("ready", id, (response) => {
+        socket.current.emit("ready", roomId, (response) => {
             init(response);
         });
 
         return () => {
-            socket.off("incRound", incRound);
-            socket.off("init", init);
-            socket.off("clearStorage", clearStorage);
-            socket.off("winner", setWinner);
-            socket.disconnect();
+            socket.current.off("incRound", incRound);
+            socket.current.off("init", init);
+            socket.current.off("clearStorage", clearStorage);
+            socket.current.off("winner", setWinner);
+            socket.current.disconnect();
         };
     }, []);
 
@@ -74,8 +86,8 @@ export function ScorePage() {
                         blockRound={i}
                         currentRound={currentRound}
                         totalRounds={totalRounds}
-                        socket={socket}
-                        id={id}
+                        socket={socket.current}
+                        roomId={roomId}
                         winner={winner}
                     />
                 ))}

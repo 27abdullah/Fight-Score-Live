@@ -113,7 +113,7 @@ class CardState {
         return true;
     }
 
-    incRound() {
+    async incRound() {
         if (this.state == FINISHED || this.state == SET_WINNER) {
             console.log("Cannot increment round while state: ", this.state);
             return;
@@ -123,7 +123,7 @@ class CardState {
         }
 
         this.currentRound += 1;
-        this.updateRedis(this.jsonify(), "incRound");
+        await this.updateRedis(this.jsonify(), "incRound");
     }
 
     async setWinner(winner, outcome = "decision") {
@@ -219,7 +219,13 @@ class CardState {
     }
 
     async clearLiveState() {
-        this.redis.del(this.id, (err, reply) => {
+        await this.redis.del(this.id, (err, reply) => {
+            if (err) {
+                console.error("Error deleting key:", err);
+                return false;
+            }
+        });
+        await this.redis.del(`active-users/${this.id}`, (err, reply) => {
             if (err) {
                 console.error("Error deleting key:", err);
                 return false;

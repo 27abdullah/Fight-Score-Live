@@ -1,17 +1,49 @@
 const { Server } = require("socket.io");
 const { redisClient } = require("./redis");
 
+const isValidUserId = async (req) => {
+    const uid = req.headers["authorization"]?.split(" ")[1];
+    const roomId = req.headers["roomid"];
+    const isUUID =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uid || !roomId || !isUUID.test(uid)) return false;
+
+    const roomKey = `active-users/${roomId}`;
+    const roomExists = await redisClient.exists(roomKey);
+    if (!roomExists) return false;
+
+    const alreadyInRoom = await redisClient.sIsMember(roomKey, uid);
+    if (alreadyInRoom) return false;
+
+    await redisClient.sAdd(roomKey, uid);
+    // TODO: Validate UID with Supabase if needed
+
+    return true;
+};
+
 const configureSocket = (server, gameController) => {
     const io = new Server(server, {
         cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
+        allowRequest: async (req, callback) => {
+            if (await isValidUserId(req)) {
+                callback(null, true);
+            } else {
+                callback("Unauthorised", false);
+            }
+        },
     });
 
     io.on("connection", async (socket) => {
-        console.log(`a user connected ${socket.id}`);
-
-        socket.on("register", (id) => {
-            socket.join(id);
-        });
+        let userId;
+        let roomId;
+        try {
+            userId = socket.handshake.headers["authorization"]?.split(" ")[1];
+            roomId = socket.handshake.headers["roomid"];
+            socket.join(roomId);
+        } catch (err) {
+            socket.disconnect(true);
+        }
 
         socket.on("roundResults", async (id, data) => {
             console.log(
@@ -57,6 +89,10 @@ const configureSocket = (server, gameController) => {
             if (cardState == null) return;
             const state = cardState.jsonify();
             callback(state);
+        });
+
+        socket.on("disconnect", async (reason) => {
+            await redisClient.sRem(`active-users/${roomId}`, userId);
         });
     });
 

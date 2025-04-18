@@ -14,7 +14,7 @@ export default function Login() {
             password,
         });
         if (error) alert(error.message);
-        else navigate("/dashboard");
+        else navigate("/profile");
     };
 
     return (
