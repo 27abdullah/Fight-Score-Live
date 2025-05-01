@@ -10,8 +10,10 @@ export function UserProvider({ children }) {
     useEffect(() => {
         // On mount, get the session
         supabase.auth.getUser().then(({ data: { user }, error }) => {
-            if (!error) setUser(user);
-            setLoading(false);
+            if (!error) {
+                setUser(user);
+                setLoading(false);
+            }
         });
 
         // Listen for auth changes
