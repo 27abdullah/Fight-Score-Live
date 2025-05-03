@@ -14,7 +14,7 @@ export function ScorePage() {
     const [fighterB, setFighterB] = useState("");
     const [winner, setWinner] = useState("");
     const { id: roomId } = useParams();
-    const { user } = useUser();
+    const { user, token } = useUser();
     const navigate = useNavigate();
     const socket = useRef(null);
 
@@ -27,7 +27,7 @@ export function ScorePage() {
         socket.current = io("http://localhost:4000", {
             autoConnect: false,
             extraHeaders: {
-                Authorization: `Bearer ${user.id}`,
+                Authorization: `Bearer ${token}`,
                 roomid: roomId,
             },
         });

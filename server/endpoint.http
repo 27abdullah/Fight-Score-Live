@@ -1,11 +1,13 @@
 
 @id=68024d0842139de9b6deccac
+@token=hax
 
 GET http://localhost:4000/api/test
 
 ###
 POST http://localhost:4000/api/next
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": "{{id}}"
@@ -15,6 +17,11 @@ Content-Type: application/json
 # Bump when server restarts
 POST http://localhost:4000/api/update
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": "{{id}}"
+}
 
 {
   "id": "{{id}}"
@@ -24,6 +31,7 @@ GET http://localhost:4000/api/log/controller
 ###
 POST http://localhost:4000/api/round
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": "{{id}}"
@@ -32,6 +40,7 @@ Content-Type: application/json
 ###
 POST http://localhost:4000/api/set-winner
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": "{{id}}",
@@ -41,6 +50,7 @@ Content-Type: application/json
 ###
 POST http://localhost:4000/api/card
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "owner": "5f9d1b3b7f1f3b0017f3b3b1",
@@ -64,6 +74,7 @@ Content-Type: application/json
 ###
 POST http://localhost:4000/api/finish
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": "{{id}}",
@@ -81,6 +92,7 @@ GET http://localhost:4000/api/live-fights
 
 POST http://localhost:4000/api/end-card
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": "{{id}}"

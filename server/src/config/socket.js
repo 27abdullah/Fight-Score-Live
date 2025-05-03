@@ -1,13 +1,24 @@
 const { Server } = require("socket.io");
 const { redisClient } = require("./redis");
+const jwt = require("jsonwebtoken");
+const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 
 const isValidUserId = async (req) => {
-    const uid = req.headers["authorization"]?.split(" ")[1];
-    const roomId = req.headers["roomid"];
-    const isUUID =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return false;
+    }
+    const token = authHeader.split(" ")[1];
+    let payload;
+    try {
+        payload = jwt.verify(token, SUPABASE_JWT_SECRET);
+    } catch (err) {
+        return false;
+    }
 
-    if (!uid || !roomId || !isUUID.test(uid)) return false;
+    const uid = payload.sub;
+    const roomId = req.headers["roomid"];
+    if (!uid || !roomId) return false;
 
     const roomKey = `active-users/${roomId}`;
     const roomExists = await redisClient.exists(roomKey);
@@ -17,8 +28,6 @@ const isValidUserId = async (req) => {
     if (alreadyInRoom) return false;
 
     await redisClient.sAdd(roomKey, uid);
-    // TODO: Validate UID with Supabase if needed
-
     return true;
 };
 
@@ -38,7 +47,10 @@ const configureSocket = (server, gameController) => {
         let userId;
         let roomId;
         try {
-            userId = socket.handshake.headers["authorization"]?.split(" ")[1];
+            const token =
+                socket.handshake.headers["authorization"]?.split(" ")[1];
+            const payload = jwt.verify(token, SUPABASE_JWT_SECRET);
+            userId = payload.sub;
             roomId = socket.handshake.headers["roomid"];
             socket.join(roomId);
         } catch (err) {

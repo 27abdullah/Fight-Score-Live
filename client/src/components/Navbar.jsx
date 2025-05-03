@@ -33,6 +33,11 @@ export function Navbar() {
                         <button className="px-4 pt-2">Profile</button>
                     </Link>
                 )}
+                {!loading && user && (
+                    <Link to="/create-room">
+                        <button className="px-4 pt-2">Create Room</button>
+                    </Link>
+                )}
             </div>
         </nav>
     );

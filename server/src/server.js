@@ -6,7 +6,10 @@ const { connectDatabase } = require("./config/mongodb");
 const { redisClient } = require("./config/redis");
 const configureSocket = require("./config/socket");
 const cors = require("./config/cors");
-
+const {
+    verifySupabaseToken,
+    verifyTokenMatch,
+} = require("./routes/middleware");
 const {
     incRound,
     test,
@@ -30,22 +33,24 @@ gameController.setRedis(redisClient);
 setupModRoutes(gameController, io);
 setupUserRoutes(gameController);
 
-// TODO - make the id in the url not in the body
+// TODO - make the id in the url not in the body?
 app.use(cors);
 app.use(express.json()); // parse json req body
 
-// Moderator routers
-app.post("/api/card", createCard);
-app.post("/api/round", incRound);
-app.post("/api/finish", finish);
-app.post("/api/set-winner", setWinner);
-app.post("/api/next", nextFight);
-app.post("/api/update", update);
-app.post("/api/end-card", endCard);
+// Moderator routes
+app.post("/api/create-room", verifySupabaseToken, createCard);
+
+app.post("/api/round", verifySupabaseToken, verifyTokenMatch, incRound);
+app.post("/api/finish", verifySupabaseToken, verifyTokenMatch, finish);
+app.post("/api/set-winner", verifySupabaseToken, verifyTokenMatch, setWinner);
+app.post("/api/next", verifySupabaseToken, verifyTokenMatch, nextFight);
+app.post("/api/update", verifySupabaseToken, verifyTokenMatch, update);
+app.post("/api/end-card", verifySupabaseToken, verifyTokenMatch, endCard);
+
 app.get("/api/log/controller", logController);
 app.get("/api/test", test);
 
-// User routers
+// User routes
 app.get("/api/live-fights", displayLiveFights);
 
 const startServer = async () => {

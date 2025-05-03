@@ -6,6 +6,7 @@ export const UserContext = createContext();
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(null);
 
     useEffect(() => {
         // On mount, get the session
@@ -14,6 +15,11 @@ export function UserProvider({ children }) {
                 setUser(user);
                 setLoading(false);
             }
+        });
+
+        supabase.auth.getSession().then(({ data, error }) => {
+            if (error) return;
+            setToken(data.session?.access_token);
         });
 
         // Listen for auth changes
@@ -27,7 +33,7 @@ export function UserProvider({ children }) {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, loading }}>
+        <UserContext.Provider value={{ user, loading, token }}>
             {children}
         </UserContext.Provider>
     );

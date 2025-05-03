@@ -110,7 +110,7 @@ const endCard = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.body; //TODO get id from auth header and supabase
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ message: "Card not found" });
@@ -128,9 +128,16 @@ const test = async (req, res) => {
 };
 
 const createCard = async (req, res) => {
-    const { owner, name, fights } = req.body;
+    const { name, fights } = req.body;
+    const owner = req.user.sub;
+
+    // TODO
+    // Check owner has tokens
+
+    // Dec tokens
+
     id = await gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
-    res.json({ message: "Card created", id: id });
+    res.json({ message: "Card created", info: "success", id: id });
 };
 
 const logController = (req, res) => {

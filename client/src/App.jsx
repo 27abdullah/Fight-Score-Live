@@ -8,6 +8,7 @@ import Rooms from "./pages/Rooms";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import CreateRoom from "./pages/CreateRoom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
@@ -49,6 +50,14 @@ export function App() {
                             element={
                                 <AuthenticatedRoute>
                                     <Profile />
+                                </AuthenticatedRoute>
+                            }
+                        />
+                        <Route
+                            path="/create-room"
+                            element={
+                                <AuthenticatedRoute>
+                                    <CreateRoom />
                                 </AuthenticatedRoute>
                             }
                         />
