@@ -12,11 +12,15 @@ export function Round({
 }) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState(() => {
-        const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
+        const savedScoreA = sessionStorage.getItem(
+            `${roomId}/${blockRound}/scoreA`
+        );
         return savedScoreA != null ? JSON.parse(savedScoreA) : 10;
     });
     const [scoreB, setScoreB] = useState(() => {
-        const savedScoreB = sessionStorage.getItem(`${blockRound}/scoreB`);
+        const savedScoreB = sessionStorage.getItem(
+            `${roomId}/${blockRound}/scoreB`
+        );
         return savedScoreB != null ? JSON.parse(savedScoreB) : 10;
     });
     const [changed, setChanged] = useState(false);
@@ -27,11 +31,11 @@ export function Round({
     useEffect(() => {
         if (currentRound >= blockRound && changed) {
             sessionStorage.setItem(
-                `${blockRound}/scoreA`,
+                `${roomId}/${blockRound}/scoreA`,
                 JSON.stringify(scoreA)
             );
             sessionStorage.setItem(
-                `${blockRound}/scoreB`,
+                `${roomId}/${blockRound}/scoreB`,
                 JSON.stringify(scoreB)
             );
         }

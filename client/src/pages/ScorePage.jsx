@@ -59,6 +59,10 @@ export function ScorePage() {
 
         socket.current.on("winner", setWinner);
 
+        socket.current.on("endCard", () => {
+            navigate("/");
+        });
+
         // Ready to receive init state from server
         socket.current.emit("ready", roomId, (response) => {
             init(response);

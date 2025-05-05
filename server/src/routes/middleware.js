@@ -1,19 +1,18 @@
 const jwt = require("jsonwebtoken");
-
+const { gameController } = require("../state/gameController");
 const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 
-function verifySupabaseToken(req, res, next) {
+function getTokenFromHeaders(req) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ error: "Missing or invalid token" });
     }
+    console.log("authHeader", authHeader.split(" ")[1]);
+    return authHeader.split(" ")[1];
+}
 
-    const token = authHeader.split(" ")[1];
-
-    //TODO remove
-    if (token == "hax") {
-        next();
-    }
+function verifySupabaseToken(req, res, next) {
+    const token = getTokenFromHeaders(req);
 
     try {
         const payload = jwt.verify(token, SUPABASE_JWT_SECRET);
@@ -24,17 +23,11 @@ function verifySupabaseToken(req, res, next) {
     }
 }
 
-//TODO test
-function verifyTokenMatch(req, res, next) {
-    //TODO remove
-    if (token == "hax") {
-        next();
-    }
-
+async function verifyTokenMatch(req, res, next) {
     const { id } = req.body;
     const { sub } = req.user;
-
-    if (id !== sub) {
+    const owner = gameController.cards.get(id)?.owner;
+    if (owner !== sub) {
         return res.status(403).json({ error: "Token does not match ID" });
     }
 

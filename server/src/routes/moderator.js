@@ -1,4 +1,5 @@
 const { wait, IN_PROGRESS, FINISHED, SET_WINNER } = require("../utils");
+const supabase = require("../config/supabaseClient");
 
 let gameController = null;
 let io = null;
@@ -101,8 +102,10 @@ const nextFight = async (req, res) => {
 
 const endCard = async (req, res) => {
     const { id } = req.body;
+
     if (await gameController.endCard(id)) {
         io.to(id).emit("clearStorage");
+        io.to(id).emit("endCard");
         res.json({ message: "Cleaned up" });
     } else {
         res.json({ message: "Could not clean up" });
@@ -131,10 +134,33 @@ const createCard = async (req, res) => {
     const { name, fights } = req.body;
     const owner = req.user.sub;
 
-    // TODO
     // Check owner has tokens
+    const { data: user, error: fetchError } = await supabase
+        .from("profiles")
+        .select("roomtokens")
+        .eq("id", owner)
+        .single();
 
-    // Dec tokens
+    if (fetchError || !user || user.roomtokens <= 0) {
+        res.json({
+            message: "Could not create card",
+            info: "error",
+            id: owner,
+        });
+        return;
+    }
+
+    // Decrement tokens
+    const { data: updatedUser, error: updateError } = await supabase
+        .from("profiles")
+        .update({ roomtokens: user.roomtokens - 1 })
+        .eq("id", owner)
+        .select();
+
+    if (updateError) {
+        res.json({ message: "Could not create card", info: "error", id: id });
+        return;
+    }
 
     id = await gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
     res.json({ message: "Card created", info: "success", id: id });

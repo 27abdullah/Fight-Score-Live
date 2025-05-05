@@ -4,11 +4,11 @@ function start() {
     
     cd server
     docker compose up -d
-    npm run dev &
+    NODE_OPTIONS="--trace-deprecation" npm run dev &
     SERVER_PID=$!
 
     cd ../client
-    npm run dev &
+    NODE_OPTIONS="--trace-deprecation" npm run dev &
     CLIENT_PID=$!
 
     cd ../
