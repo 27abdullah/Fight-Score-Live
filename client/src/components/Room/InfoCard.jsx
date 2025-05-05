@@ -1,11 +1,3 @@
-// key={i}
-// id={room.id}
-// eventName={room.name}
-// fighterA={room.fighterA}
-// fighterB={room.fighterB}
-// sport={room.sport}
-// currentRound={room.currentRound}
-
 import { useNavigate } from "react-router-dom";
 
 function InfoCard({ id, eventName, fighterA, fighterB, sport, currentRound }) {

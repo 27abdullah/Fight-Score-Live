@@ -13,8 +13,8 @@ export function UserProvider({ children }) {
         supabase.auth.getUser().then(({ data: { user }, error }) => {
             if (!error) {
                 setUser(user);
-                setLoading(false);
             }
+            setLoading(false);
         });
 
         supabase.auth.getSession().then(({ data, error }) => {
