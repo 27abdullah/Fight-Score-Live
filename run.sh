@@ -4,11 +4,11 @@ function start() {
     
     cd server
     docker compose up -d
-    NODE_OPTIONS="--trace-deprecation" npm run dev &
+    NODE_OPTIONS="--disable-warning DEP0040" npm run dev &
     SERVER_PID=$!
 
     cd ../client
-    NODE_OPTIONS="--trace-deprecation" npm run dev &
+    NODE_OPTIONS="--disable-warning DEP0040" npm run dev &
     CLIENT_PID=$!
 
     cd ../
