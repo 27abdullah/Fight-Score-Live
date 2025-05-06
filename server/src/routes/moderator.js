@@ -39,6 +39,17 @@ const incRound = async (req, res) => {
     res.json({ result, stats });
 };
 
+const fetchRoom = async (req, res) => {
+    const id = req.params.id;
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) {
+        res.json({ message: "Card not found" });
+        return;
+    }
+
+    res.json({ cardState: cardState.jsonify() });
+};
+
 // Set winner on decision after final round
 const setWinner = async (req, res) => {
     const { id, winner } = req.body;
@@ -180,4 +191,5 @@ module.exports = {
     finish,
     endCard,
     setWinner,
+    fetchRoom,
 };

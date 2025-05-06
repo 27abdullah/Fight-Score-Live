@@ -8,7 +8,8 @@ const configureSocket = require("./config/socket");
 const cors = require("./config/cors");
 const {
     verifySupabaseToken,
-    verifyTokenMatch,
+    verifyTokenMatchBody,
+    verifyTokenMatchParams,
 } = require("./routes/middleware");
 const {
     incRound,
@@ -21,6 +22,7 @@ const {
     finish,
     endCard,
     setWinner,
+    fetchRoom,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
 const { gameController } = require("./state/gameController");
@@ -40,12 +42,23 @@ app.use(express.json()); // parse json req body
 // Moderator routes
 app.post("/api/create-room", verifySupabaseToken, createCard);
 
-app.post("/api/round", verifySupabaseToken, verifyTokenMatch, incRound);
-app.post("/api/finish", verifySupabaseToken, verifyTokenMatch, finish);
-app.post("/api/set-winner", verifySupabaseToken, verifyTokenMatch, setWinner);
-app.post("/api/next", verifySupabaseToken, verifyTokenMatch, nextFight);
-app.post("/api/update", verifySupabaseToken, verifyTokenMatch, update);
-app.post("/api/end-card", verifySupabaseToken, verifyTokenMatch, endCard);
+app.post("/api/round", verifySupabaseToken, verifyTokenMatchBody, incRound);
+app.post("/api/finish", verifySupabaseToken, verifyTokenMatchBody, finish);
+app.post(
+    "/api/set-winner",
+    verifySupabaseToken,
+    verifyTokenMatchBody,
+    setWinner
+);
+app.post("/api/next", verifySupabaseToken, verifyTokenMatchBody, nextFight);
+app.post("/api/update", verifySupabaseToken, verifyTokenMatchBody, update);
+app.post("/api/end-card", verifySupabaseToken, verifyTokenMatchBody, endCard);
+app.get(
+    "/api/fetch-room/:id",
+    verifySupabaseToken,
+    verifyTokenMatchParams,
+    fetchRoom
+);
 
 app.get("/api/log/controller", logController);
 app.get("/api/test", test);

@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import CreateRoom from "./pages/CreateRoom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import HostRoom from "./pages/HostRoom";
 
 export function App() {
     return (
@@ -58,6 +59,14 @@ export function App() {
                             element={
                                 <AuthenticatedRoute>
                                     <CreateRoom />
+                                </AuthenticatedRoute>
+                            }
+                        />
+                        <Route
+                            path="/host-room/:id"
+                            element={
+                                <AuthenticatedRoute>
+                                    <HostRoom />
                                 </AuthenticatedRoute>
                             }
                         />

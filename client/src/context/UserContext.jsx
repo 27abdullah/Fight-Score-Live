@@ -18,7 +18,10 @@ export function UserProvider({ children }) {
         });
 
         supabase.auth.getSession().then(({ data, error }) => {
-            if (error) return;
+            if (error) {
+                console.error("Error getting session:", error);
+                return;
+            }
             setToken(data.session?.access_token);
         });
 
