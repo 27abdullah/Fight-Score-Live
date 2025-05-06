@@ -7,7 +7,6 @@ function getTokenFromHeaders(req) {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ error: "Missing or invalid token" });
     }
-    console.log("authHeader", authHeader.split(" ")[1]);
     return authHeader.split(" ")[1];
 }
 
