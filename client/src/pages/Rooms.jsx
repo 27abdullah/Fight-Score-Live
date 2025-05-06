@@ -35,6 +35,7 @@ function Rooms() {
                     currentRound={
                         room.state == 0 ? room.currentRound : "Finished"
                     }
+                    owner={room.owner}
                 />
             ))}
         </div>
