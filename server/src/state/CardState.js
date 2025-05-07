@@ -16,6 +16,7 @@ class CardState {
         this.fighterB = card.fighterB;
         this.sport = card.sport;
         this.totalRounds = card.totalRounds;
+        this.totalFights = card.totalFights;
         this.currentRound = card.currentRound;
         this.redis = redis;
         this.state = card.state;
@@ -152,6 +153,7 @@ class CardState {
             fighterB: this.fighterB,
             sport: this.sport,
             totalRounds: this.totalRounds,
+            totalFights: this.totalFights,
             currentRound: this.currentRound,
             state: this.state,
             winner: this.winner,

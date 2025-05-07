@@ -38,6 +38,7 @@ class GameController {
             fighterB: fights[0].fighterB,
             sport: fights[0].sport,
             totalRounds: fights[0].totalRounds,
+            totalFights: fights.length,
             currentRound: 1,
             state: IN_PROGRESS,
             winner: "",
