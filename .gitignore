@@ -2,5 +2,5 @@
 */node_modules
 */data
 *.env*
-test.http
+endpoint.http
 TODOs.md

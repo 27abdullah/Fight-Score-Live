@@ -1,10 +1,15 @@
 import { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+import RoomInfoCard from "../components/HostRoom/RoomInfoCard";
+import Controls from "../components/HostRoom/Controls";
 
 function HostRoom() {
     const { token } = useUser();
     const { id: roomId } = useParams();
+    const [roomData, setRoomData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!roomId || !token) {
@@ -25,7 +30,8 @@ function HostRoom() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Room data:", data);
+                setRoomData(data.cardState);
+                setLoading(false);
             } else {
                 console.error("Failed to fetch room data");
             }
@@ -34,11 +40,23 @@ function HostRoom() {
         fetchRoomData();
     }, [token]);
 
+    if (loading || roomData == null) {
+        return <h1>Loading...</h1>;
+    }
+
     return (
-        <div>
-            <h1>Host Room</h1>
-            <p>This is the host room page.</p>
-        </div>
+        <>
+            <div className="flex flex-row justify-center space-x-5 p-10">
+                <Controls
+                    roomData={roomData}
+                    setRoomData={setRoomData}
+                    roomId={roomId}
+                    token={token}
+                />
+                <RoomInfoCard roomData={roomData} />
+            </div>
+        </>
     );
 }
+
 export default HostRoom;
