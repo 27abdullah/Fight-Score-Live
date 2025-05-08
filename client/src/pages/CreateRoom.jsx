@@ -91,7 +91,9 @@ export function CreateRoom() {
                     Create a Room
                 </h1>
                 <p className="text-xl">
-                    Create a room to start scoring fights with your friends!
+                    Create a room to start scoring fights with your friends! The
+                    last fight in the below list should correspond to the
+                    headliner event.
                 </p>
             </div>
             <div className="shadow-lg bg-highlightBackground rounded-lg p-6 w-full max-w-2xl">

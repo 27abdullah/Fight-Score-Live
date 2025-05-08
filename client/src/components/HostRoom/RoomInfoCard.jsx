@@ -17,14 +17,19 @@ function RoomInfoCard({ roomData }) {
                 {" "}
                 <div className="flex justify-between items-center mb-4 text-3xl">
                     <span>{fighterA}</span>
-                    <span>vs</span>
+                    <span>{"/"}</span>
                     <span>{fighterB}</span>
                 </div>
                 <p className="text-lg">
-                    Current Round: {currentRound} / {totalRounds}
+                    {currentRound <= totalRounds
+                        ? `Current Round: ${currentRound} / ${totalRounds}`
+                        : `Fight Finished`}
                 </p>
-                <p className="text-lg">Winner: {winner || "TBD"}</p>
-                <p className="text-lg">Sport: {sport}</p>
+                <p className="text-lg">
+                    {winner
+                        ? `Winner: ${winner == "A" ? fighterA : fighterB}`
+                        : ""}
+                </p>
             </div>
         </div>
     );

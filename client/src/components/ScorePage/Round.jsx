@@ -43,7 +43,6 @@ export function Round({
 
     useEffect(() => {
         function handleStats(stats) {
-            console.log(stats);
             setVotesA(() => Number(stats.votesA));
             setVotesB(() => Number(stats.votesB));
             setMedian(() => Number(stats.medianDiff));

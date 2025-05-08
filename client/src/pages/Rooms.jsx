@@ -22,6 +22,17 @@ function Rooms() {
         return <h1>Loading...</h1>;
     }
 
+    if (liveRooms.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen">
+                <h1 className="text-3xl">No fights on right now.</h1>
+                <h2 className="text-2xl">
+                    Go create a room or come back another time.
+                </h2>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col items-center justify-center space-y-10">
             {liveRooms.map((room, i) => (

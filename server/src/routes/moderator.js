@@ -11,14 +11,14 @@ function setupModRoutes(c, socket) {
 
 const incRound = async (req, res) => {
     const { id } = req.body;
-    const cardState = await gameController.getCard(id);
+    const cardState = await gameController.getCard(id); // TODO this already checked in middleware
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.json({ failMessage: "Card not found" });
         return;
     }
 
     if (cardState.state == SET_WINNER) {
-        res.json({ message: "Please set winner of fight" });
+        res.json({ failMessage: "Please set winner of fight" });
         return;
     }
 
@@ -26,7 +26,7 @@ const incRound = async (req, res) => {
         cardState.currentRound >= cardState.totalRounds + 1 ||
         cardState.state == FINISHED
     ) {
-        res.json({ result: "Fight over" });
+        res.json({ failMessage: "Fight already over" });
         return;
     }
 
@@ -35,8 +35,7 @@ const incRound = async (req, res) => {
     await wait(1);
     const stats = await cardState.getPrevRoundStats();
     io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
-
-    res.json({ result, stats });
+    res.json({ roomData: cardState.jsonify(), stats });
 };
 
 const fetchRoom = async (req, res) => {
@@ -55,46 +54,50 @@ const setWinner = async (req, res) => {
     const { id, winner } = req.body;
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.json({ failMessage: "Card not found" });
         return;
     }
 
     if (cardState.state == IN_PROGRESS || cardState.state == FINISHED) {
         res.json({
-            message: "State not in set winner",
-            state: cardState.state,
+            failMessage: "State not in set winner state",
         });
         return;
     }
 
     await cardState.setWinner(winner);
     io.to(id).emit("winner", winner);
-    res.json({ message: "Winner set" });
+    res.json({ roomData: cardState.jsonify() });
 };
 
 const finish = async (req, res) => {
     const { id, outcome, winner } = req.body;
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.json({ failMessage: "Card not found" });
+        return;
+    }
+
+    if (outcome == null || outcome == "" || (winner != "A" && winner != "B")) {
+        res.json({ failMessage: "Outcome or winner not set correctly" });
         return;
     }
 
     if (cardState.state != IN_PROGRESS) {
-        res.json({ message: "Fight no longer in progess cannot finish" });
+        res.json({ failMessage: "Fight no longer in progess, cannot finish" });
         return;
     }
 
-    cardState.finish(outcome, winner);
+    await cardState.finish(outcome, winner);
     io.to(id).emit("winner", winner);
-    res.json({ message: "Finished" });
+    res.json({ roomData: cardState.jsonify() });
 };
 
 const nextFight = async (req, res) => {
     const { id } = req.body;
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.json({ failMessage: "Card not found" });
         return;
     }
 
@@ -102,10 +105,10 @@ const nextFight = async (req, res) => {
         const state = cardState.jsonify();
         io.to(id).emit("init", state);
         io.to(id).emit("clearStorage");
-        res.json({ cardState: cardState.jsonify() });
+        res.json({ roomData: cardState.jsonify() });
     } else {
         res.json({
-            message: "No more fights or current fight still in progress",
+            failMessage: "No more fights or current fight still in progress",
         });
     }
 };
@@ -116,9 +119,9 @@ const endCard = async (req, res) => {
     if (await gameController.endCard(id)) {
         io.to(id).emit("clearStorage");
         io.to(id).emit("endCard");
-        res.json({ message: "Cleaned up" });
+        res.json({ end: true });
     } else {
-        res.json({ message: "Could not clean up" });
+        res.json({ failMessage: "Could not clean up" });
     }
 };
 
@@ -126,18 +129,14 @@ const update = async (req, res) => {
     const { id } = req.body; //TODO get id from auth header and supabase
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.json({ failMessage: "Card not found" });
         return;
     }
 
     const state = cardState.jsonify();
     io.to(id).emit("init", state);
     io.to(id).emit("clearStorage");
-    res.json({ cardState: state });
-};
-
-const test = async (req, res) => {
-    res.json({ message: "Test" });
+    res.json({ roomData: cardState.jsonify() });
 };
 
 const createCard = async (req, res) => {
@@ -178,6 +177,10 @@ const createCard = async (req, res) => {
 
 const logController = (req, res) => {
     res.json(gameController.jsonify());
+};
+
+const test = async (req, res) => {
+    res.json({ message: "Test" });
 };
 
 module.exports = {

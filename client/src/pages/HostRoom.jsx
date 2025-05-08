@@ -6,13 +6,14 @@ import RoomInfoCard from "../components/HostRoom/RoomInfoCard";
 import Controls from "../components/HostRoom/Controls";
 
 function HostRoom() {
-    const { token } = useUser();
+    const { user, token } = useUser();
     const { id: roomId } = useParams();
     const [roomData, setRoomData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState(null);
 
     useEffect(() => {
-        if (!roomId || !token) {
+        if (!roomId || !token || !user) {
             return;
         }
 
@@ -38,7 +39,7 @@ function HostRoom() {
         };
 
         fetchRoomData();
-    }, [token]);
+    }, [token, roomId, user]);
 
     if (loading || roomData == null) {
         return <h1>Loading...</h1>;
@@ -52,6 +53,7 @@ function HostRoom() {
                     setRoomData={setRoomData}
                     roomId={roomId}
                     token={token}
+                    setStats={setStats}
                 />
                 <RoomInfoCard roomData={roomData} />
             </div>

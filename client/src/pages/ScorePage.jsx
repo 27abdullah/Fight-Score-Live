@@ -19,8 +19,7 @@ export function ScorePage() {
     const socket = useRef(null);
 
     useEffect(() => {
-        if (!user || !roomId) {
-            navigate("/");
+        if (!user || !roomId || !token) {
             return;
         }
 
@@ -75,7 +74,7 @@ export function ScorePage() {
             socket.current.off("winner", setWinner);
             socket.current.disconnect();
         };
-    }, []);
+    }, [user, roomId, token]);
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
     return loading ? (

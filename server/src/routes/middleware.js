@@ -21,7 +21,7 @@ function verifySupabaseToken(req, res, next) {
     }
 }
 
-async function verifyTokenMatchBody(req, res, next) {
+function verifyTokenMatchBody(req, res, next) {
     const { id } = req.body;
     const { sub } = req.user;
     const owner = gameController.cards.get(id)?.owner;
@@ -32,7 +32,7 @@ async function verifyTokenMatchBody(req, res, next) {
     next();
 }
 
-async function verifyTokenMatchParams(req, res, next) {
+function verifyTokenMatchParams(req, res, next) {
     const id = req.params?.id;
     const { sub } = req.user;
     const owner = gameController.cards.get(id)?.owner;
