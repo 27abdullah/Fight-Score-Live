@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import RoomInfoCard from "../components/HostRoom/RoomInfoCard";
 import Controls from "../components/HostRoom/Controls";
+import StatInfoCard from "../components/HostRoom/StatInfoCard";
 
 function HostRoom() {
     const { user, token } = useUser();
@@ -60,6 +61,7 @@ function HostRoom() {
                     token={token}
                     roomId={roomId}
                 />
+                <StatInfoCard stats={stats} roomData={roomData} />
             </div>
         </>
     );
