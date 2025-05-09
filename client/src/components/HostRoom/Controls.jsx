@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Controls({ roomData, roomId, setRoomData, token, setStats }) {
     const [winner, setWinner] = useState("");
     const [outcome, setOutcome] = useState("");
+    const [waitForResponse, setWaitForResponse] = useState(false);
     const IN_PROGRESS = 0;
     const FINISHED = 1;
     const SET_WINNER = 2;
@@ -16,6 +17,7 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
     const handleRequest = async (endpoint, method, body) => {
         body.id = roomId;
         try {
+            setWaitForResponse(true);
             const response = await fetch(
                 `http://localhost:4000/api/${endpoint}`,
                 {
@@ -58,6 +60,8 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
             }
         } catch (error) {
             console.error(`Error with ${endpoint}:`, error);
+        } finally {
+            setWaitForResponse(false);
         }
     };
 
@@ -85,7 +89,12 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
             </button> */}
             {roomData.state == IN_PROGRESS ? (
                 <button
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded"
+                    disabled={waitForResponse}
+                    className={`px-4 py-2 rounded ${
+                        waitForResponse
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-blue-600 hover:bg-blue-700"
+                    }`}
                     onClick={() => handleRequest("round", "POST", {})}
                 >
                     {roomData.currentRound == roomData.totalRounds

@@ -114,6 +114,10 @@ class CardState {
         return true;
     }
 
+    async getLiveUserCount() {
+        return (await this.redis.SCARD(`active-users/${this.id}`)) - 1;
+    }
+
     async incRound() {
         if (this.state == FINISHED || this.state == SET_WINNER) {
             console.log("Cannot increment round while state: ", this.state);

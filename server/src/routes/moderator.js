@@ -139,6 +139,8 @@ const update = async (req, res) => {
     res.json({ roomData: cardState.jsonify() });
 };
 
+//
+
 const createCard = async (req, res) => {
     const { name, fights } = req.body;
     const owner = req.user.sub;
@@ -175,6 +177,26 @@ const createCard = async (req, res) => {
     res.json({ message: "Card created", info: "success", id: id });
 };
 
+//
+
+const getLiveUserCount = async (req, res) => {
+    const id = req.params.id;
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) {
+        res.json({ failMessage: "Card not found" });
+        return;
+    }
+
+    try {
+        const count = await cardState.getLiveUserCount();
+        res.json({ res: count });
+    } catch (err) {
+        console.error("Error getting user count:", err);
+        res.json({ res: "Could not get user count" });
+        return;
+    }
+};
+
 const logController = (req, res) => {
     res.json(gameController.jsonify());
 };
@@ -194,5 +216,6 @@ module.exports = {
     finish,
     endCard,
     setWinner,
+    getLiveUserCount,
     fetchRoom,
 };

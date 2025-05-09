@@ -55,7 +55,11 @@ function HostRoom() {
                     token={token}
                     setStats={setStats}
                 />
-                <RoomInfoCard roomData={roomData} />
+                <RoomInfoCard
+                    roomData={roomData}
+                    token={token}
+                    roomId={roomId}
+                />
             </div>
         </>
     );

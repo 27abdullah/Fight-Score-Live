@@ -23,6 +23,7 @@ const {
     endCard,
     setWinner,
     fetchRoom,
+    getLiveUserCount,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
 const { gameController } = require("./state/gameController");
@@ -58,6 +59,12 @@ app.get(
     verifySupabaseToken,
     verifyTokenMatchParams,
     fetchRoom
+);
+app.get(
+    "/api/user-count/:id",
+    verifySupabaseToken,
+    verifyTokenMatchParams,
+    getLiveUserCount
 );
 
 app.get("/api/log/controller", logController);

@@ -1,6 +1,7 @@
 import React from "react";
+import LiveButton from "./LiveButton";
 
-function RoomInfoCard({ roomData }) {
+function RoomInfoCard({ roomData, token, roomId }) {
     const {
         currentRound,
         fighterA,
@@ -14,7 +15,6 @@ function RoomInfoCard({ roomData }) {
     return (
         <div>
             <div className="shadow-lg bg-highlightBackground rounded-lg p-10">
-                {" "}
                 <div className="flex justify-between items-center mb-4 text-3xl">
                     <span>{fighterA}</span>
                     <span>{"/"}</span>
@@ -22,7 +22,7 @@ function RoomInfoCard({ roomData }) {
                 </div>
                 <p className="text-lg">
                     {currentRound <= totalRounds
-                        ? `Current Round: ${currentRound} / ${totalRounds}`
+                        ? `Round: ${currentRound} of ${totalRounds}`
                         : `Fight Finished`}
                 </p>
                 <p className="text-lg">
@@ -31,6 +31,7 @@ function RoomInfoCard({ roomData }) {
                         : ""}
                 </p>
             </div>
+            <LiveButton roomId={roomId} token={token} />
         </div>
     );
 }
