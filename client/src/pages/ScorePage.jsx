@@ -78,7 +78,14 @@ export function ScorePage() {
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
     return loading ? (
-        <h1>Loading...</h1>
+        <div className="flex flex-col items-center justify-center">
+            <div>
+                <h1>Loading...</h1>
+            </div>
+            <div className="mt-2">
+                <p>(Refresh in a couple seconds)</p>
+            </div>
+        </div>
     ) : (
         <div className="flex flex-col items-center justify-center">
             <NameTag name={fighterA} id={"A"} isWinner={winner} />

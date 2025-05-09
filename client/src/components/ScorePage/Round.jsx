@@ -52,13 +52,17 @@ export function Round({
 
         if (currentRound > blockRound) {
             // Get individual score
-            const savedScoreA = sessionStorage.getItem(`${blockRound}/scoreA`);
+            const savedScoreA = sessionStorage.getItem(
+                `${roomId}/${blockRound}/scoreA`
+            );
             if (savedScoreA != null && savedScoreA >= 0 && savedScoreA <= 10) {
                 setScoreA(savedScoreA);
             } else {
                 setScoreA("");
             }
-            const savedScoreB = sessionStorage.getItem(`${blockRound}/scoreB`);
+            const savedScoreB = sessionStorage.getItem(
+                `${roomId}/${blockRound}/scoreB`
+            );
             if (savedScoreB != null && savedScoreB >= 0 && savedScoreB <= 10) {
                 setScoreB(savedScoreB);
             } else {
