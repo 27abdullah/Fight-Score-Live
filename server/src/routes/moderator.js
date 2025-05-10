@@ -125,6 +125,24 @@ const endCard = async (req, res) => {
     }
 };
 
+const hostMessage = async (req, res) => {
+    const { id, message } = req.body;
+    const cardState = await gameController.getCard(id);
+    if (cardState == null) {
+        res.json({ failMessage: "Card not found" });
+        return;
+    }
+
+    if (message == null || message == "" || message.length > 30) {
+        res.json({ failMessage: "Message not set correctly" });
+        console.log(message);
+        return;
+    }
+
+    io.to(id).emit("hostMessage", message);
+    res.json({});
+};
+
 const update = async (req, res) => {
     const { id } = req.body; //TODO get id from auth header and supabase
     const cardState = await gameController.getCard(id);
@@ -218,4 +236,5 @@ module.exports = {
     setWinner,
     getLiveUserCount,
     fetchRoom,
+    hostMessage,
 };

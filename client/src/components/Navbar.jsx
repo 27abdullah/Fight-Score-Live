@@ -5,7 +5,7 @@ export function Navbar() {
     const { user, loading } = useUser();
 
     return (
-        <nav className="flex items-center justify-center px-4 pt-4 pb-10">
+        <nav className="flex items-center justify-center px-4 pt-4 pb-4">
             <div className="flex space-x-4">
                 <Link to="/">
                     <button className="px-4 pt-2">Home</button>

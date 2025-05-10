@@ -24,6 +24,7 @@ const {
     setWinner,
     fetchRoom,
     getLiveUserCount,
+    hostMessage,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
 const { gameController } = require("./state/gameController");
@@ -54,6 +55,12 @@ app.post(
 app.post("/api/next", verifySupabaseToken, verifyTokenMatchBody, nextFight);
 app.post("/api/update", verifySupabaseToken, verifyTokenMatchBody, update);
 app.post("/api/end-card", verifySupabaseToken, verifyTokenMatchBody, endCard);
+app.post(
+    "/api/host-message",
+    verifySupabaseToken,
+    verifyTokenMatchBody,
+    hostMessage
+);
 app.get(
     "/api/fetch-room/:id",
     verifySupabaseToken,

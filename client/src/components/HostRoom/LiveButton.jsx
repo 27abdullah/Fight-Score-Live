@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-// import { IconEye } from "lucide-react";
 
 export default function LiveButton({ roomId, token }) {
-    const [response, setResponse] = useState("");
+    const placeholder = "Get Live User Count";
+    const [response, setResponse] = useState(placeholder);
 
     const handleClick = async () => {
         try {
@@ -19,7 +19,7 @@ export default function LiveButton({ roomId, token }) {
             );
             const data = await res.json();
             setResponse(`There are ${data.res} active users!`);
-            setTimeout(() => setResponse(""), 3000);
+            setTimeout(() => setResponse(placeholder), 3000);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -33,14 +33,9 @@ export default function LiveButton({ roomId, token }) {
                     onClick={handleClick}
                     whileTap={{ scale: 0.9 }}
                 >
-                    Get Live User Count
+                    {response}
                 </motion.button>
             </div>
-            {response && (
-                <div className="relative flex items-center justify-center mt-4 bg-gray-800 text-white py-2 rounded-lg shadow-lg">
-                    {response}
-                </div>
-            )}
         </>
     );
 }

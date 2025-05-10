@@ -28,7 +28,7 @@ export function Block({
                 <input
                     name={name}
                     type="number"
-                    className="w-28 h-28 text-white text-center text-2xl"
+                    className="w-24 h-24 text-white text-center text-2xl"
                     value={score}
                     readOnly={blockRound < currentRound}
                     onChange={(e) => {

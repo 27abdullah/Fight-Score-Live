@@ -5,6 +5,7 @@ import NameTag from "../components/ScorePage/NameTag";
 import { useUser } from "../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import ScrollingBanner from "../components/ScorePage/ScrollingBanner";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
@@ -15,11 +16,13 @@ export function ScorePage() {
     const [winner, setWinner] = useState("");
     const { id: roomId } = useParams();
     const { user, token } = useUser();
+    const [hostMessage, setHostMessage] = useState("");
+    const [roomName, setRoomName] = useState("");
     const navigate = useNavigate();
     const socket = useRef(null);
 
     useEffect(() => {
-        if (!user || !roomId || !token) {
+        if (!user || !token || !roomId) {
             return;
         }
 
@@ -48,6 +51,7 @@ export function ScorePage() {
             setFighterB(() => state.fighterB);
             setLoading(() => false);
             setWinner(() => state.winner);
+            setRoomName(() => state.name);
         };
         socket.current.on("init", init);
 
@@ -62,6 +66,11 @@ export function ScorePage() {
             navigate("/");
         });
 
+        socket.current.on("hostMessage", (message) => {
+            console.log("Host message: ", message);
+            setHostMessage(message);
+        });
+
         // Ready to receive init state from server
         socket.current.emit("ready", roomId, (response) => {
             init(response);
@@ -72,6 +81,8 @@ export function ScorePage() {
             socket.current.off("init", init);
             socket.current.off("clearStorage", clearStorage);
             socket.current.off("winner", setWinner);
+            socket.current.off("endCard");
+            socket.current.off("hostMessage", setHostMessage);
             socket.current.disconnect();
         };
     }, [user, roomId, token]);
@@ -88,6 +99,25 @@ export function ScorePage() {
         </div>
     ) : (
         <div className="flex flex-col items-center justify-center">
+            <ScrollingBanner
+                items={
+                    hostMessage != ""
+                        ? [
+                              `You are scoring ${roomName}`,
+                              "|",
+                              `${hostMessage}`,
+                              "|",
+                              "Round: " + currentRound,
+                              "|",
+                          ]
+                        : [
+                              `You are scoring ${roomName}`,
+                              "|",
+                              "Round: " + currentRound,
+                              "|",
+                          ]
+                }
+            />
             <NameTag name={fighterA} id={"A"} isWinner={winner} />
             <div className="flex items-center justify-center h-[75vh]">
                 {blocks.map((i, _) => (

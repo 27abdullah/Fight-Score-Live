@@ -60,6 +60,7 @@ function HostRoom() {
                     roomData={roomData}
                     token={token}
                     roomId={roomId}
+                    user={user}
                 />
                 <StatInfoCard stats={stats} roomData={roomData} />
             </div>

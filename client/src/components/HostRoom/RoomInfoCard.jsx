@@ -1,7 +1,8 @@
 import React from "react";
 import LiveButton from "./LiveButton";
+import Broadcast from "./Broadcast";
 
-function RoomInfoCard({ roomData, token, roomId }) {
+function RoomInfoCard({ roomData, token, roomId, user }) {
     const {
         currentRound,
         fighterA,
@@ -30,6 +31,7 @@ function RoomInfoCard({ roomData, token, roomId }) {
                         ? `Winner: ${winner == "A" ? fighterA : fighterB}`
                         : ""}
                 </p>
+                <Broadcast user={user} roomId={roomId} token={token} />
             </div>
             <LiveButton roomId={roomId} token={token} />
         </div>
