@@ -10,6 +10,7 @@ export default function Profile() {
     const [elo, setElo] = useState(null);
     const [roomtokens, setRoomTokens] = useState(null);
     const [ispremium, setIsPremium] = useState(null);
+    const [instagram, setInstagram] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const handleLogout = async () => {
@@ -21,13 +22,14 @@ export default function Profile() {
         async function fetchUserData() {
             const { data, error } = await supabase
                 .from("profiles")
-                .select("ispremium, roomtokens, elo")
+                .select("ispremium, roomtokens, elo, instagram")
                 .single();
 
             if (!error) {
                 setElo(data.elo);
                 setRoomTokens(data.roomtokens);
                 setIsPremium(data.ispremium);
+                setInstagram(data.instagram);
                 setLoading(false);
             }
         }
@@ -45,6 +47,7 @@ export default function Profile() {
                     <p>Elo: {elo}</p>
                     <p>Room Tokens: {roomtokens}</p>
                     <p>Is Premium: {ispremium ? "Yes" : "No"}</p>
+                    {instagram && <p>Instagram: {instagram}</p>}
                 </div>
             )}
             <button onClick={handleLogout}>Log Out</button>

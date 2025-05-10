@@ -6,6 +6,7 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [displayName, setDisplayName] = useState("");
+    const [instagram, setInstagram] = useState(null);
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
@@ -16,6 +17,7 @@ function SignUp() {
             options: {
                 data: {
                     display_name: displayName,
+                    instagram: instagram,
                 },
             },
         });
@@ -29,19 +31,28 @@ function SignUp() {
     return (
         <form onSubmit={handleSignup}>
             <input
+                required
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
             />
             <input
+                required
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
             <input
+                required
                 type="text"
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Display Name"
+            />
+            <input
+                required
+                type="text"
+                onChange={(e) => setInstagram(e.target.value)}
+                placeholder="Instgram Handle (optional)"
             />
             <button type="submit">Sign Up</button>
         </form>
