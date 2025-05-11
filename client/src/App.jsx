@@ -15,8 +15,8 @@ import HostRoom from "./pages/HostRoom";
 
 export function App() {
     return (
-        <Router>
-            <UserProvider>
+        <UserProvider>
+            <Router>
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/" element={<Home />} />
@@ -72,8 +72,8 @@ export function App() {
                         />
                     </Route>
                 </Routes>
-            </UserProvider>
-        </Router>
+            </Router>
+        </UserProvider>
     );
 }
 

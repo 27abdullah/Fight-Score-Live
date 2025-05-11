@@ -12,6 +12,7 @@ export default function Profile() {
     const [ispremium, setIsPremium] = useState(null);
     const [instagram, setInstagram] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [displayName, setDisplayName] = useState(null);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -22,7 +23,7 @@ export default function Profile() {
         async function fetchUserData() {
             const { data, error } = await supabase
                 .from("profiles")
-                .select("ispremium, roomtokens, elo, instagram")
+                .select("ispremium, roomtokens, elo, instagram, display_name")
                 .single();
 
             if (!error) {
@@ -30,6 +31,7 @@ export default function Profile() {
                 setRoomTokens(data.roomtokens);
                 setIsPremium(data.ispremium);
                 setInstagram(data.instagram);
+                setDisplayName(data.display_name);
                 setLoading(false);
             }
         }
@@ -39,7 +41,7 @@ export default function Profile() {
     return (
         <div>
             <h1>Profile</h1>
-            <p>Welcome, {user.user_metadata.display_name}</p>
+            <p>Welcome, {displayName}</p>
             {loading ? (
                 <p>Loading...</p>
             ) : (
