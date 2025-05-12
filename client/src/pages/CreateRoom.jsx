@@ -108,6 +108,7 @@ export function CreateRoom() {
                             onChange={(e) => setRoomName(e.target.value)}
                             className="w-full p-2 border rounded"
                             required
+                            maxLength={25}
                         />
                     </div>
 
@@ -161,6 +162,8 @@ export function CreateRoom() {
                             <input
                                 type="number"
                                 value={fight.totalRounds}
+                                min="1"
+                                max="15"
                                 onChange={(e) => {
                                     const val = parseInt(e.target.value, 10);
                                     if (Number.isInteger(val) && val > 0) {
@@ -196,6 +199,7 @@ export function CreateRoom() {
                                 }
                                 className="w-full p-2 border rounded mb-2"
                                 required
+                                maxLength={30}
                             />
 
                             <label className="block text-sm mb-1">
@@ -213,6 +217,7 @@ export function CreateRoom() {
                                 }
                                 className="w-full p-2 border rounded"
                                 required
+                                maxLength={30}
                             />
                         </div>
                     ))}

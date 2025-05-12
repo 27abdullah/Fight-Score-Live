@@ -28,7 +28,7 @@ const {
     hostMessage,
 } = require("./routes/moderator");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
-const { gameController } = require("./state/gameController");
+const { gameController } = require("./state/GameController");
 
 const app = express();
 const server = http.createServer(app);
@@ -97,5 +97,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-// Cron jobs
