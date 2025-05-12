@@ -2,7 +2,8 @@ const express = require("express");
 const http = require("http");
 require("dotenv").config();
 
-const { connectDatabase } = require("./config/mongodb");
+const cron = require("node-cron");
+const { connectDatabase, endOldCards } = require("./config/mongodb");
 const { redisClient } = require("./config/redis");
 const configureSocket = require("./config/socket");
 const cors = require("./config/cors");
@@ -88,6 +89,13 @@ const startServer = async () => {
     server.listen(4000, () => {
         console.log("Server listening on port 4000");
     });
+
+    cron.schedule("0 0 * * *", async () => {
+        console.log("Running cron job to end old cards");
+        await endOldCards(gameController);
+    });
 };
 
 startServer();
+
+// Cron jobs
