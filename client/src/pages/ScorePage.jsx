@@ -91,7 +91,7 @@ export function ScorePage() {
     return loading ? (
         <div className="flex flex-col items-center justify-center">
             <div>
-                <h1>Loading...</h1>
+                <h1></h1>
             </div>
             <div className="mt-2">
                 <p>(Refresh in a couple seconds)</p>

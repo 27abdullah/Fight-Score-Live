@@ -43,7 +43,7 @@ export default function Profile() {
             <h1>Profile</h1>
             <p>Welcome, {displayName}</p>
             {loading ? (
-                <p>Loading...</p>
+                <p></p>
             ) : (
                 <div>
                     <p>Elo: {elo}</p>
