@@ -4,7 +4,11 @@ const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 
 function getTokenFromHeaders(req) {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (
+        !authHeader ||
+        !authHeader.startsWith("Bearer ") ||
+        authHeader.split(" ").length !== 2
+    ) {
         return res.status(401).json({ error: "Missing or invalid token" });
     }
     return authHeader.split(" ")[1];

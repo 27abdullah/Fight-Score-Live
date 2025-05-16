@@ -1,5 +1,6 @@
 const { wait, IN_PROGRESS, FINISHED, SET_WINNER } = require("../utils");
 const supabase = require("../config/supabaseClient");
+const { validationResult, matchedData } = require("express-validator");
 
 let gameController = null;
 let io = null;
@@ -10,7 +11,15 @@ function setupModRoutes(c, socket) {
 }
 
 const incRound = async (req, res) => {
-    const { id } = req.body;
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id } = matchedData(req);
     const cardState = await gameController.getCard(id); // TODO this already checked in middleware
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -39,7 +48,14 @@ const incRound = async (req, res) => {
 };
 
 const fetchRoom = async (req, res) => {
-    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+    const { id } = matchedData(req);
+
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ message: "Card not found" });
@@ -51,7 +67,14 @@ const fetchRoom = async (req, res) => {
 
 // Set winner on decision after final round
 const setWinner = async (req, res) => {
-    const { id, winner } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -71,7 +94,15 @@ const setWinner = async (req, res) => {
 };
 
 const finish = async (req, res) => {
-    const { id, outcome, winner } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id, outcome, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -94,7 +125,14 @@ const finish = async (req, res) => {
 };
 
 const nextFight = async (req, res) => {
-    const { id } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -114,7 +152,14 @@ const nextFight = async (req, res) => {
 };
 
 const endCard = async (req, res) => {
-    const { id } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id } = matchedData(req);
 
     if (await gameController.endCard(id)) {
         io.to(id).emit("clearStorage");
@@ -126,7 +171,14 @@ const endCard = async (req, res) => {
 };
 
 const hostMessage = async (req, res) => {
-    const { id, message } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id, message } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -135,7 +187,6 @@ const hostMessage = async (req, res) => {
 
     if (message == null || message == "" || message.length > 30) {
         res.json({ failMessage: "Message not set correctly" });
-        console.log(message);
         return;
     }
 
@@ -144,7 +195,14 @@ const hostMessage = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    const { id } = req.body; //TODO get id from auth header and supabase
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -160,7 +218,14 @@ const update = async (req, res) => {
 //
 
 const createCard = async (req, res) => {
-    const { name, fights } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { name, fights } = matchedData(req);
     const owner = req.user.sub;
 
     // Check owner has tokens
@@ -198,7 +263,14 @@ const createCard = async (req, res) => {
 //
 
 const getLiveUserCount = async (req, res) => {
-    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            failMessage: "Invalid data",
+        });
+    }
+
+    const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -209,7 +281,6 @@ const getLiveUserCount = async (req, res) => {
         const count = await cardState.getLiveUserCount();
         res.json({ res: count });
     } catch (err) {
-        console.error("Error getting user count:", err);
         res.json({ res: "Could not get user count" });
         return;
     }
