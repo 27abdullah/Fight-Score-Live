@@ -12,7 +12,6 @@ function setupModRoutes(c, socket) {
 
 const incRound = async (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
     if (!errors.isEmpty()) {
         return res.status(422).json({
             failMessage: "Invalid data",
@@ -96,7 +95,6 @@ const setWinner = async (req, res) => {
 const finish = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors);
         return res.status(422).json({
             failMessage: "Invalid data",
         });
