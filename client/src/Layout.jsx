@@ -1,25 +1,29 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "./components/navbar";
 import { FlashBar } from "./components/FlashBar";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export function Layout() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [flashMessage, setFlashMessage] = useState(null);
 
     useEffect(() => {
         if (location.state?.flashMessage) {
             setFlashMessage(location.state.flashMessage);
+
             const timeout = setTimeout(() => {
                 setFlashMessage(null);
-            }, 2500);
+                navigate(location.pathname, { replace: true, state: {} });
+            }, 2000);
+
             return () => {
                 clearTimeout(timeout);
                 setFlashMessage(null);
+                navigate(location.pathname, { replace: true, state: {} });
             };
         }
-    }, [location]);
+    }, [location, navigate]);
 
     return (
         <div className="flex flex-col h-screen">
