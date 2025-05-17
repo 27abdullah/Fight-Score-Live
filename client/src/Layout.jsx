@@ -15,7 +15,7 @@ export function Layout() {
             const timeout = setTimeout(() => {
                 setFlashMessage(null);
                 navigate(location.pathname, { replace: true, state: {} });
-            }, 2000);
+            }, 1800);
 
             return () => {
                 clearTimeout(timeout);

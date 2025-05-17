@@ -32,21 +32,13 @@ const createRoomValidation = [
 
 const finishValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner")
-        .isString()
-        .notEmpty()
-        .escape()
-        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH }),
+    body("winner").isString().notEmpty().escape().isIn(["A", "B"]),
     body("outcome").isString().notEmpty().isIn(FIGHT_OUTCOMES),
 ];
 
 const setWinnerValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner")
-        .isString()
-        .notEmpty()
-        .escape()
-        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH }),
+    body("winner").isString().notEmpty().escape().isIn(["A", "B"]),
 ];
 
 const bodyIdValidation = [body("id").isString().notEmpty().isMongoId()];

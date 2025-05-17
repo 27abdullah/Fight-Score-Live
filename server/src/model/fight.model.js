@@ -63,8 +63,7 @@ const fightSchema = new mongoose.Schema(
             winner: {
                 type: String,
                 required: false,
-                minlength: 1,
-                maxlength: FIGHTER_NAME_MAX_LENGTH,
+                enum: ["A", "B"],
             },
             _id: false,
         },

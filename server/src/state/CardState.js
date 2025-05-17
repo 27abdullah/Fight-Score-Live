@@ -131,7 +131,7 @@ class CardState {
         await this.updateRedis(this.jsonify(), "incRound");
     }
 
-    async setWinner(winner, outcome = "decision") {
+    async setWinner(winner, outcome = "Decision") {
         await this.redis.set(`${this.id}/winner`, winner, (err, reply) => {
             if (err) {
                 console.error("Error setting winner:", err);

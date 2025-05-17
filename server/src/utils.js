@@ -21,7 +21,14 @@ const SPORTS = [
     "Judo",
     "Sambo",
 ];
-const FIGHT_OUTCOMES = ["Knockout", "TKO", "DQ", "Submission", "No Contest"];
+const FIGHT_OUTCOMES = [
+    "Knockout",
+    "TKO",
+    "DQ",
+    "Submission",
+    "No Contest",
+    "Decision",
+];
 
 module.exports = {
     wait,
