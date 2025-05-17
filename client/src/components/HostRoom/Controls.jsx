@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SetWinner from "./Controls/SetWinner";
+import NextFight from "./Controls/NextFight";
+import NextRound from "./Controls/NextRound";
+import EndCard from "./Controls/EndCard";
+import Finish from "./Controls/Finish";
 
 function Controls({ roomData, roomId, setRoomData, token, setStats }) {
     const [winner, setWinner] = useState("");
@@ -73,12 +78,7 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
         <div className="flex flex-col space-y-4 p-10 bg-highlightBackground text-white rounded-lg">
             {roomData.state == FINISHED &&
             roomData.totalFights > roomData.currentFight + 1 ? (
-                <button
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded"
-                    onClick={() => handleRequest("next", "POST", {})}
-                >
-                    Next Fight
-                </button>
+                <NextFight handleRequest={handleRequest} />
             ) : null}
             {/* TODO add form*/}
             {/* <button
@@ -88,94 +88,36 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
                 Update
             </button> */}
             {roomData.state == IN_PROGRESS ? (
-                <button
-                    disabled={waitForResponse}
-                    className={`px-4 py-2 rounded ${
-                        waitForResponse
-                            ? "bg-gray-500 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700"
-                    }`}
-                    onClick={() => handleRequest("round", "POST", {})}
-                >
-                    {roomData.currentRound == roomData.totalRounds
-                        ? "To Decision"
-                        : "Next Round"}
-                </button>
+                <NextRound
+                    waitForResponse={waitForResponse}
+                    roomData={roomData}
+                    handleRequest={handleRequest}
+                />
             ) : null}
 
             {roomData.state == SET_WINNER ? (
-                <>
-                    <button
-                        disabled={!winner}
-                        className={`px-4 py-2 rounded ${
-                            winner
-                                ? "bg-blue-600 hover:bg-blue-700"
-                                : "bg-gray-500 cursor-not-allowed"
-                        }`}
-                        onClick={() =>
-                            handleRequest("set-winner", "POST", { winner })
-                        }
-                    >
-                        Set Winner
-                    </button>
-                    <select
-                        className="p-2 rounded bg-gray-700 mb-2"
-                        value={winner}
-                        onChange={handleInputChange(setWinner)}
-                    >
-                        <option value="" disabled>
-                            Select Winner
-                        </option>
-                        <option value="A">{roomData.fighterA}</option>
-                        <option value="B">{roomData.fighterB}</option>
-                    </select>
-                </>
+                <SetWinner
+                    winner={winner}
+                    setWinner={setWinner}
+                    roomData={roomData}
+                    handleRequest={handleRequest}
+                    handleInputChange={handleInputChange}
+                />
             ) : null}
             {roomData.state == IN_PROGRESS ? (
-                <>
-                    <button
-                        className={`px-4 py-2 rounded ${
-                            outcome && winner
-                                ? "bg-blue-600 hover:bg-blue-700"
-                                : "bg-gray-500 cursor-not-allowed"
-                        }`}
-                        onClick={() =>
-                            handleRequest("finish", "POST", { outcome, winner })
-                        }
-                        disabled={!outcome || !winner}
-                    >
-                        Finish (K.O., etc.)
-                    </button>
-
-                    <input
-                        required
-                        className="p-2 rounded bg-gray-700 mb-2"
-                        placeholder="Outcome"
-                        value={outcome}
-                        onChange={handleInputChange(setOutcome)}
-                    />
-                    <select
-                        required
-                        className="p-2 rounded bg-gray-700 mb-2"
-                        value={winner}
-                        onChange={handleInputChange(setWinner)}
-                    >
-                        <option value="" disabled>
-                            Select Winner
-                        </option>
-                        <option value="A">{roomData.fighterA}</option>
-                        <option value="B">{roomData.fighterB}</option>
-                    </select>
-                </>
+                <Finish
+                    outcome={outcome}
+                    winner={winner}
+                    handleRequest={handleRequest}
+                    handleInputChange={handleInputChange}
+                    setOutcome={setOutcome}
+                    roomData={roomData}
+                    setWinner={setWinner}
+                />
             ) : null}
             {roomData.state == FINISHED &&
             roomData.totalFights == roomData.currentFight + 1 ? (
-                <button
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded"
-                    onClick={() => handleRequest("end-card", "POST", {})}
-                >
-                    End Card
-                </button>
+                <EndCard handleRequest={handleRequest} />
             ) : null}
         </div>
     );
