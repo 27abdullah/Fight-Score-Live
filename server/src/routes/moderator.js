@@ -10,7 +10,13 @@ function setupModRoutes(c, socket) {
     io = socket;
 }
 
-const incRound = async (req, res) => {
+function asyncHandler(fn) {
+    return function (req, res, next) {
+        Promise.resolve(fn(req, res, next)).catch(next);
+    };
+}
+
+const incRound = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -44,9 +50,9 @@ const incRound = async (req, res) => {
     const stats = await cardState.getPrevRoundStats();
     io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
     res.json({ roomData: cardState.jsonify(), stats });
-};
+});
 
-const fetchRoom = async (req, res) => {
+const fetchRoom = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -62,10 +68,10 @@ const fetchRoom = async (req, res) => {
     }
 
     res.json({ cardState: cardState.jsonify() });
-};
+});
 
 // Set winner on decision after final round
-const setWinner = async (req, res) => {
+const setWinner = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -90,9 +96,9 @@ const setWinner = async (req, res) => {
     await cardState.setWinner(winner);
     io.to(id).emit("winner", winner);
     res.json({ roomData: cardState.jsonify() });
-};
+});
 
-const finish = async (req, res) => {
+const finish = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -120,9 +126,9 @@ const finish = async (req, res) => {
     await cardState.finish(outcome, winner);
     io.to(id).emit("winner", winner);
     res.json({ roomData: cardState.jsonify() });
-};
+});
 
-const nextFight = async (req, res) => {
+const nextFight = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -147,9 +153,9 @@ const nextFight = async (req, res) => {
             failMessage: "No more fights or current fight still in progress",
         });
     }
-};
+});
 
-const endCard = async (req, res) => {
+const endCard = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -166,9 +172,9 @@ const endCard = async (req, res) => {
     } else {
         res.json({ failMessage: "Could not clean up" });
     }
-};
+});
 
-const hostMessage = async (req, res) => {
+const hostMessage = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -190,9 +196,9 @@ const hostMessage = async (req, res) => {
 
     io.to(id).emit("hostMessage", message);
     res.json({});
-};
+});
 
-const update = async (req, res) => {
+const update = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -211,18 +217,17 @@ const update = async (req, res) => {
     io.to(id).emit("init", state);
     io.to(id).emit("clearStorage");
     res.json({ roomData: cardState.jsonify() });
-};
+});
 
 //
 
-const createCard = async (req, res) => {
+const createCard = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
             failMessage: "Invalid data",
         });
     }
-
     const { name, fights } = matchedData(req);
     const owner = req.user.sub;
 
@@ -256,11 +261,11 @@ const createCard = async (req, res) => {
 
     id = await gameController.createCard(owner, name, fights); // string, string, list [{rounds, sport, fighterA, fighterB}]
     res.json({ message: "Card created", info: "success", id: id });
-};
+});
 
 //
 
-const getLiveUserCount = async (req, res) => {
+const getLiveUserCount = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -282,13 +287,13 @@ const getLiveUserCount = async (req, res) => {
         res.json({ res: "Could not get user count" });
         return;
     }
-};
+});
 
 const logController = (req, res) => {
     res.json(gameController.jsonify());
 };
 
-const test = async (req, res) => {
+const test = (req, res) => {
     res.json({ message: "Test" });
 };
 

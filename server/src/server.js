@@ -23,6 +23,7 @@ const {
     verifySupabaseToken,
     verifyTokenMatchBody,
     verifyTokenMatchParams,
+    errorHandler,
 } = require("./routes/middleware");
 const {
     incRound,
@@ -138,19 +139,30 @@ app.get("/api/test", test);
 // User routes
 app.get("/api/live-fights", displayLiveFights);
 
+// Error handling middleware
+app.use(errorHandler);
+
 const startServer = async () => {
-    await redisClient.connect();
-    await connectDatabase();
-    await gameController.loadFromMongo();
+    try {
+        await redisClient.connect();
+        await connectDatabase();
+        await gameController.loadFromMongo();
 
-    server.listen(4000, () => {
-        console.log("Server listening on port 4000");
-    });
+        server.listen(4000, () => {
+            console.log("Server listening on port 4000");
+        });
 
-    cron.schedule("0 0 * * *", async () => {
-        console.log("Running cron job to end old cards");
-        await endOldCards(gameController);
-    });
+        cron.schedule("0 0 * * *", async () => {
+            try {
+                await gameController.endOldCards();
+            } catch (error) {
+                console.error("Error ending old cards (cron):", error);
+            }
+        });
+    } catch (error) {
+        console.error("Error starting server:", error);
+        process.exit(1);
+    }
 };
 
 startServer();
