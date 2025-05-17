@@ -73,8 +73,7 @@ const setWinner = async (req, res) => {
         });
     }
 
-    const { id, raw_winner } = matchedData(req);
-    const winner = raw_winner.trim();
+    const { id, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -101,8 +100,7 @@ const finish = async (req, res) => {
         });
     }
 
-    const { id, outcome, raw_winner } = matchedData(req);
-    const winner = raw_winner.trim();
+    const { id, outcome, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -178,8 +176,7 @@ const hostMessage = async (req, res) => {
         });
     }
 
-    const { id, raw_message } = matchedData(req);
-    const message = raw_message.trim();
+    const { id, message } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
@@ -226,8 +223,7 @@ const createCard = async (req, res) => {
         });
     }
 
-    const { raw_name, fights } = matchedData(req);
-    const name = raw_name.trim();
+    const { name, fights } = matchedData(req);
     const owner = req.user.sub;
 
     // Check owner has tokens

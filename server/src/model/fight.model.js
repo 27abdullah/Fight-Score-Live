@@ -13,14 +13,12 @@ const fightSchema = new mongoose.Schema(
             required: true,
             minlength: 1,
             maxlength: FIGHTER_NAME_MAX_LENGTH,
-            trim: true,
         },
         fighterB: {
             type: String,
             required: true,
             minlength: 1,
             maxlength: FIGHTER_NAME_MAX_LENGTH,
-            trim: true,
         },
         sport: {
             type: String,
@@ -67,7 +65,6 @@ const fightSchema = new mongoose.Schema(
                 required: false,
                 minlength: 1,
                 maxlength: FIGHTER_NAME_MAX_LENGTH,
-                trim: true,
             },
             _id: false,
         },
