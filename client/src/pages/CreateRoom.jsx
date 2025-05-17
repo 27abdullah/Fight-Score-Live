@@ -154,6 +154,10 @@ export function CreateRoom() {
                                 <option value="Kickboxing">Kickboxing</option>
                                 <option value="Kickboxing">Wrestling</option>
                                 <option value="Kickboxing">BJJ</option>
+                                <option value="Kickboxing">Karate</option>
+                                <option value="Kickboxing">Taekwondo</option>
+                                <option value="Kickboxing">Judo</option>
+                                <option value="Kickboxing">Sambo</option>
                             </select>
 
                             <label className="block text-sm mb-1">

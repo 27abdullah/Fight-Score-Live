@@ -1,31 +1,52 @@
 const { param, body } = require("express-validator");
+const {
+    FIGHTER_NAME_MAX_LENGTH,
+    FIGHT_NAME_MAX_LENGTH,
+    MAX_TOTAL_ROUNDS,
+    MAX_FIGHTS,
+    MAX_HOST_MESSAGE_LENGTH,
+    FIGHT_OUTCOMES,
+    SPORTS,
+} = require("../utils");
 
 const createRoomValidation = [
-    body("name").isString().notEmpty().escape(),
-    body("fights").isArray({ min: 1, max: 20 }),
-    body("fights.*.sport").isString().notEmpty().escape(),
+    body("name")
+        .isString()
+        .notEmpty()
+        .escape()
+        .isLength({ min: 1, max: FIGHT_NAME_MAX_LENGTH }),
+    body("fights").isArray({ min: 1, max: MAX_FIGHTS }),
+    body("fights.*.sport").isString().notEmpty().escape().isIn(SPORTS),
     body("fights.*.fighterA")
         .isString()
         .notEmpty()
-        .isLength({ min: 1, max: 20 })
+        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH })
         .escape(),
     body("fights.*.fighterB")
         .isString()
         .notEmpty()
-        .isLength({ min: 1, max: 20 })
+        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH })
         .escape(),
-    body("fights.*.totalRounds").isInt({ min: 1, max: 15 }),
+    body("fights.*.totalRounds").isInt({ min: 1, max: MAX_TOTAL_ROUNDS }),
 ];
 
 const finishValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner").isString().notEmpty().escape().isLength({ min: 1, max: 20 }),
-    body("outcome").isString().notEmpty().isIn(["KO", "TKO", "DQ"]),
+    body("winner")
+        .isString()
+        .notEmpty()
+        .escape()
+        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH }),
+    body("outcome").isString().notEmpty().isIn(FIGHT_OUTCOMES),
 ];
 
 const setWinnerValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner").isString().notEmpty().escape().isLength({ min: 1, max: 20 }),
+    body("winner")
+        .isString()
+        .notEmpty()
+        .escape()
+        .isLength({ min: 1, max: FIGHTER_NAME_MAX_LENGTH }),
 ];
 
 const bodyIdValidation = [body("id").isString().notEmpty().isMongoId()];
@@ -36,7 +57,7 @@ const hostMessageValidation = [
         .isString()
         .notEmpty()
         .escape()
-        .isLength({ min: 1, max: 30 }),
+        .isLength({ min: 1, max: MAX_HOST_MESSAGE_LENGTH }),
 ];
 
 const paramIdValidation = [param("id").isString().notEmpty().isMongoId()];
