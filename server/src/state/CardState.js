@@ -82,18 +82,12 @@ class CardState {
 
     async nextFight() {
         if (this.state == IN_PROGRESS) {
-            console.log("Cannot go to next fight while in progress");
             return false;
         }
 
         const card = await cardSchema.findById(this.id);
 
-        if (!card) {
-            console.log("Error finding card:", err);
-            return false;
-        }
-
-        if (this.currentFight >= card.fights.length - 1) {
+        if (!card || this.currentFight >= card.fights.length - 1) {
             return false;
         }
 
@@ -119,19 +113,33 @@ class CardState {
     }
 
     async incRound() {
-        if (this.state == FINISHED || this.state == SET_WINNER) {
-            console.log("Cannot increment round while state: ", this.state);
-            return;
+        if (
+            this.state == FINISHED ||
+            this.state == SET_WINNER ||
+            this.currentRound > this.totalRounds
+        ) {
+            // LOG - "Cannot increment round"
+            return false;
         }
+
         if (this.currentRound + 1 > this.totalRounds) {
             this.state = SET_WINNER;
         }
 
         this.currentRound += 1;
         await this.updateRedis(this.jsonify(), "incRound");
+        return true;
     }
 
     async setWinner(winner, outcome = "Decision") {
+        if (
+            // Cannot have decision if fight unfinished
+            (this.state == IN_PROGRESS && outcome == "Decision") ||
+            this.state == FINISHED
+        ) {
+            return false;
+        }
+
         await this.redis.set(`${this.id}/winner`, winner, (err, reply) => {
             if (err) {
                 console.error("Error setting winner:", err);
@@ -141,10 +149,14 @@ class CardState {
         this.winner = winner;
         await this.persist(this.currentRound, outcome);
         await this.updateRedis(this.jsonify(), "setWinner");
+        return true;
     }
 
     async finish(outcome, winner) {
-        await this.setWinner(winner, outcome);
+        if (this.state != IN_PROGRESS) {
+            return false;
+        }
+        return await this.setWinner(winner, outcome);
     }
 
     jsonify() {
@@ -240,8 +252,7 @@ class CardState {
     }
 
     async clear() {
-        await this.clearFightStats();
-        await this.clearLiveState();
+        await Promise.all([this.clearFightStats(), this.clearLiveState()]);
     }
 
     async roundResults(scoreA, scoreB) {

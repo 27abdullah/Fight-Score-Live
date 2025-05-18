@@ -25,27 +25,19 @@ const incRound = asyncHandler(async (req, res) => {
     }
 
     const { id } = matchedData(req);
-    const cardState = await gameController.getCard(id); // TODO this already checked in middleware
+    const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
         return;
     }
 
-    if (cardState.state == SET_WINNER) {
-        res.json({ failMessage: "Please set winner of fight" });
+    const result = await cardState.incRound();
+    if (!result) {
+        res.status(400).json({ failMessage: "Could not increment round" });
         return;
     }
 
-    if (
-        cardState.currentRound >= cardState.totalRounds + 1 ||
-        cardState.state == FINISHED
-    ) {
-        res.json({ failMessage: "Fight already over" });
-        return;
-    }
-
-    await cardState.incRound();
-    const result = io.to(id).emit("incRound");
+    io.to(id).emit("incRound");
     await wait(1);
     const stats = await cardState.getPrevRoundStats();
     io.to(id).emit(`stats/${cardState.currentRound - 1}`, stats);
@@ -59,18 +51,17 @@ const fetchRoom = asyncHandler(async (req, res) => {
             failMessage: "Invalid data",
         });
     }
-    const { id } = matchedData(req);
 
+    const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ message: "Card not found" });
+        res.status(400).json({ failMessage: "Card not found" });
         return;
     }
 
     res.json({ cardState: cardState.jsonify() });
 });
 
-// Set winner on decision after final round
 const setWinner = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,18 +73,16 @@ const setWinner = asyncHandler(async (req, res) => {
     const { id, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.status(400).json({ failMessage: "Card not found" });
         return;
     }
 
-    if (cardState.state == IN_PROGRESS || cardState.state == FINISHED) {
-        res.json({
-            failMessage: "State not in set winner state",
-        });
+    const result = await cardState.setWinner(winner);
+    if (!result) {
+        res.status(400).json({ failMessage: "Could not set winner" });
         return;
     }
 
-    await cardState.setWinner(winner);
     io.to(id).emit("winner", winner);
     res.json({ roomData: cardState.jsonify() });
 });
@@ -113,12 +102,12 @@ const finish = asyncHandler(async (req, res) => {
         return;
     }
 
-    if (cardState.state != IN_PROGRESS) {
-        res.json({ failMessage: "Fight no longer in progess, cannot finish" });
+    const result = await cardState.finish(outcome, winner);
+    if (!result) {
+        res.status(400).json({ failMessage: "Could not finish fight" });
         return;
     }
 
-    await cardState.finish(outcome, winner);
     io.to(id).emit("winner", winner);
     res.json({ roomData: cardState.jsonify() });
 });
@@ -138,16 +127,18 @@ const nextFight = asyncHandler(async (req, res) => {
         return;
     }
 
-    if (await cardState.nextFight()) {
-        const state = cardState.jsonify();
-        io.to(id).emit("init", state);
-        io.to(id).emit("clearStorage");
-        res.json({ roomData: cardState.jsonify() });
-    } else {
-        res.json({
-            failMessage: "No more fights or current fight still in progress",
+    const result = await cardState.nextFight();
+    if (!result) {
+        res.status(400).json({
+            failMessage: "Could not go to next fight",
         });
+        return;
     }
+
+    const state = cardState.jsonify();
+    io.to(id).emit("init", state);
+    io.to(id).emit("clearStorage");
+    res.json({ roomData: cardState.jsonify() });
 });
 
 const endCard = asyncHandler(async (req, res) => {
@@ -181,11 +172,6 @@ const hostMessage = asyncHandler(async (req, res) => {
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
         res.json({ failMessage: "Card not found" });
-        return;
-    }
-
-    if (message == null || message == "" || message.length > 30) {
-        res.json({ failMessage: "Message not set correctly" });
         return;
     }
 
@@ -243,7 +229,7 @@ const createCard = asyncHandler(async (req, res) => {
     }
 
     // Decrement tokens
-    const { data: updatedUser, error: updateError } = await supabase
+    const { error: updateError } = await supabase
         .from("profiles")
         .update({ roomtokens: user.roomtokens - 1 })
         .eq("id", owner)
