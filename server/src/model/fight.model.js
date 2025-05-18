@@ -3,6 +3,7 @@ const {
     FIGHTER_NAME_MAX_LENGTH,
     SPORTS,
     MAX_TOTAL_ROUNDS,
+    WINNERS,
     FIGHT_OUTCOMES,
 } = require("../utils");
 
@@ -63,7 +64,7 @@ const fightSchema = new mongoose.Schema(
             winner: {
                 type: String,
                 required: false,
-                enum: ["A", "B"],
+                enum: WINNERS,
             },
             _id: false,
         },

@@ -6,6 +6,7 @@ const {
     MAX_FIGHTS,
     MAX_HOST_MESSAGE_LENGTH,
     FIGHT_OUTCOMES,
+    WINNERS,
     SPORTS,
 } = require("../utils");
 
@@ -32,13 +33,13 @@ const createRoomValidation = [
 
 const finishValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner").isString().notEmpty().escape().isIn(["A", "B"]),
+    body("winner").isString().notEmpty().escape().isIn(WINNERS),
     body("outcome").isString().notEmpty().isIn(FIGHT_OUTCOMES),
 ];
 
 const setWinnerValidation = [
     body("id").isString().notEmpty().isMongoId(),
-    body("winner").isString().notEmpty().escape().isIn(["A", "B"]),
+    body("winner").isString().notEmpty().escape().isIn(WINNERS),
 ];
 
 const bodyIdValidation = [body("id").isString().notEmpty().isMongoId()];

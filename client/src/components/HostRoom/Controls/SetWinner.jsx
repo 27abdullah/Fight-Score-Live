@@ -28,6 +28,7 @@ export default function SetWinner({
                 </option>
                 <option value="A">{roomData.fighterA}</option>
                 <option value="B">{roomData.fighterB}</option>
+                <option value="Draw">Draw</option>
             </select>
         </>
     );

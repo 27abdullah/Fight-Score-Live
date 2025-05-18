@@ -113,11 +113,6 @@ const finish = asyncHandler(async (req, res) => {
         return;
     }
 
-    if (outcome == null || outcome == "" || (winner != "A" && winner != "B")) {
-        res.json({ failMessage: "Outcome or winner not set correctly" });
-        return;
-    }
-
     if (cardState.state != IN_PROGRESS) {
         res.json({ failMessage: "Fight no longer in progess, cannot finish" });
         return;

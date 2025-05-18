@@ -9,6 +9,7 @@ const FIGHT_NAME_MAX_LENGTH = 20;
 const MAX_TOTAL_ROUNDS = 15;
 const MAX_FIGHTS = 20;
 const MAX_HOST_MESSAGE_LENGTH = 30;
+const WINNERS = ["A", "B", "Draw"];
 const SPORTS = [
     "Boxing",
     "MMA",
@@ -36,6 +37,7 @@ module.exports = {
     FINISHED,
     SET_WINNER,
     STATES,
+    WINNERS,
     SPORTS,
     FIGHTER_NAME_MAX_LENGTH,
     FIGHT_NAME_MAX_LENGTH,
