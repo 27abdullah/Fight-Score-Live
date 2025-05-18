@@ -20,20 +20,20 @@ const incRound = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 
     const result = await cardState.incRound();
     if (!result) {
-        res.status(400).json({ failMessage: "Could not increment round" });
+        res.status(400).json({ error: "Could not increment round" });
         return;
     }
 
@@ -48,14 +48,14 @@ const fetchRoom = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.status(400).json({ failMessage: "Card not found" });
+        res.status(400).json({ error: "Card not found" });
         return;
     }
 
@@ -66,20 +66,20 @@ const setWinner = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.status(400).json({ failMessage: "Card not found" });
+        res.status(400).json({ error: "Card not found" });
         return;
     }
 
     const result = await cardState.setWinner(winner);
     if (!result) {
-        res.status(400).json({ failMessage: "Could not set winner" });
+        res.status(400).json({ error: "Could not set winner" });
         return;
     }
 
@@ -91,20 +91,20 @@ const finish = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id, outcome, winner } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 
     const result = await cardState.finish(outcome, winner);
     if (!result) {
-        res.status(400).json({ failMessage: "Could not finish fight" });
+        res.status(400).json({ error: "Could not finish fight" });
         return;
     }
 
@@ -116,21 +116,21 @@ const nextFight = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 
     const result = await cardState.nextFight();
     if (!result) {
         res.status(400).json({
-            failMessage: "Could not go to next fight",
+            error: "Could not go to next fight",
         });
         return;
     }
@@ -145,7 +145,7 @@ const endCard = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
@@ -156,7 +156,7 @@ const endCard = asyncHandler(async (req, res) => {
         io.to(id).emit("endCard");
         res.json({ end: true });
     } else {
-        res.json({ failMessage: "Could not clean up" });
+        res.json({ error: "Could not clean up" });
     }
 });
 
@@ -164,14 +164,14 @@ const hostMessage = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id, message } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 
@@ -183,14 +183,14 @@ const update = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 
@@ -206,7 +206,7 @@ const createCard = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
     const { name, fights } = matchedData(req);
@@ -250,14 +250,14 @@ const getLiveUserCount = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            failMessage: "Invalid data",
+            error: "Invalid data",
         });
     }
 
     const { id } = matchedData(req);
     const cardState = await gameController.getCard(id);
     if (cardState == null) {
-        res.json({ failMessage: "Card not found" });
+        res.json({ error: "Card not found" });
         return;
     }
 

@@ -11,6 +11,7 @@ const { redisClient } = require("./config/redis");
 const configureSocket = require("./config/socket");
 const { setupUserRoutes, displayLiveFights } = require("./routes/user");
 const { gameController } = require("./state/gameController");
+const logHttp = require("./config/logger");
 const {
     createRoomValidation,
     bodyIdValidation,
@@ -54,6 +55,7 @@ gameController.setRedis(redisClient);
 setupModRoutes(gameController, io);
 setupUserRoutes(gameController);
 
+app.use(logHttp);
 app.use(limiter);
 app.use(helmet());
 app.use(cors);

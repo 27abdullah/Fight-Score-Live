@@ -34,7 +34,7 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
                     body: JSON.stringify(body),
                 }
             );
-            const data = await response.json(); //  roomData, stats, failMessage, end
+            const data = await response.json(); //  roomData, stats, error, end
 
             if (data.end) {
                 navigate(`/rooms`, {
@@ -47,7 +47,7 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
                 });
             }
 
-            if (data.failMessage) {
+            if (data.error) {
                 return;
             }
             if (data.stats) {
