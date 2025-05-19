@@ -1,14 +1,12 @@
 const pino = require("pino");
 
-const logger = pino({
-    transport: {
-        target: "pino-pretty",
-        options: {
-            translateTime: "SYS:standard",
-            ignore: "pid,hostname",
-        },
-    },
-});
+const logger = pino(
+    pino.destination({
+        dest: "./logs.txt",
+        minLength: 8192, // Buffer before writing
+        sync: false, // Asynchronous logging
+    })
+);
 
 const logHttp = (req, res, next) => {
     const startTime = Date.now();
@@ -29,17 +27,10 @@ const logHttp = (req, res, next) => {
                 duration: Date.now() - startTime,
                 error: res.error,
             });
-        } else {
-            logger.info({
-                url: req.url,
-                status: res.statusCode,
-                start: startTime,
-                duration: Date.now() - startTime,
-            });
         }
     });
 
     next();
 };
 
-module.exports = logHttp;
+module.exports = { logHttp, logger };

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { gameController } = require("../state/gameController");
 const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
+const { logger } = require("../config/logger");
 
 function getTokenFromHeaders(req) {
     const authHeader = req.headers.authorization;
@@ -49,7 +50,12 @@ function verifyTokenMatchParams(req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-    console.error(err.stack);
+    logger.fatal({
+        url: req.url,
+        client: req.headers?.authorization,
+        stack: err.stack,
+        error: err.message,
+    });
     res.status(500).json({ error: "Internal server error" });
 }
 
