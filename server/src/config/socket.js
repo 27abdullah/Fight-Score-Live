@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 
 const isValidUserId = async (req) => {
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers?.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return false;
     }
@@ -57,20 +57,26 @@ const configureSocket = (server, gameController) => {
             socket.disconnect(true);
         }
 
+        if (!userId || !roomId) {
+            socket.disconnect(true);
+            return;
+        }
+
         socket.on("roundResults", async (id, data) => {
-            console.log(
-                `${socket.id}: A=${data.scoreA} B=${data.scoreB}, r=${data.round}`
-            );
+            scores = [10, 9, 8, 7];
+            if (
+                !id ||
+                !data ||
+                !scores.includes(data.scoreA) ||
+                !scores.includes(data.scoreB)
+            )
+                return;
+
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
 
             // Stale round results
             if (data.round != cardState.currentRound - 1) {
-                console.log(
-                    "roundResults mismatch: ",
-                    data.round,
-                    cardState.currentRound
-                );
                 return;
             }
 
@@ -78,9 +84,11 @@ const configureSocket = (server, gameController) => {
         });
 
         socket.on("pullStats", async (round, id, callback) => {
+            if (!id || !round) return;
+
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
-            if (round > cardState.currentRound - 1) return;
+            if (round > cardState.currentRound - 1 || round < 0) return;
 
             callback({
                 votesA: await redisClient.get(
@@ -96,6 +104,7 @@ const configureSocket = (server, gameController) => {
         });
 
         socket.on("ready", async (id, callback) => {
+            if (!id) return;
             if (!(await gameController.hasId(id))) return;
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
@@ -103,7 +112,7 @@ const configureSocket = (server, gameController) => {
             callback(state);
         });
 
-        socket.on("disconnect", async (reason) => {
+        socket.on("disconnect", async () => {
             await redisClient.sRem(`active-users/${roomId}`, userId);
         });
     });

@@ -73,6 +73,7 @@ export function Round({
             socket.emit("pullStats", blockRound, roomId, (response) => {
                 setVotesA(() => Number(response.votesA));
                 setVotesB(() => Number(response.votesB));
+                // Median diff also available
             });
         }
 

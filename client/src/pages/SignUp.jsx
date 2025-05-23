@@ -58,7 +58,6 @@ function SignUp() {
                         autoComplete="given-name"
                     />
                     <input
-                        required
                         type="text"
                         onChange={(e) => setInstagram(e.target.value)}
                         placeholder="Instgram Handle (optional)"
