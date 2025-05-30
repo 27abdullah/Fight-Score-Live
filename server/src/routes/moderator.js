@@ -136,8 +136,8 @@ const nextFight = asyncHandler(async (req, res) => {
     }
 
     const state = cardState.jsonify();
-    io.to(id).emit("init", state);
     io.to(id).emit("clearStorage");
+    io.to(id).emit("init", state);
     res.json({ roomData: cardState.jsonify() });
 });
 

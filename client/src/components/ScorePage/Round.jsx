@@ -48,7 +48,7 @@ export function Round({
             setMedian(() => Number(stats.medianDiff));
         }
 
-        socket.on(`stats/${blockRound}`, handleStats);
+        socket.current.on(`stats/${blockRound}`, handleStats);
 
         if (currentRound > blockRound) {
             // Get individual score
@@ -70,7 +70,7 @@ export function Round({
             }
 
             // Get aggregate stats
-            socket.emit("pullStats", blockRound, roomId, (response) => {
+            socket.current.emit("pullStats", blockRound, roomId, (response) => {
                 setVotesA(() => Number(response.votesA));
                 setVotesB(() => Number(response.votesB));
                 // Median diff also available
@@ -84,13 +84,13 @@ export function Round({
             setVotesB(0);
             setChanged(false);
         };
-        socket.on("init", reset);
+        socket.current.on("init", reset);
 
         return () => {
-            socket.off(`stats/${blockRound}`, handleStats);
-            socket.off("init", reset);
+            socket.current.off(`stats/${blockRound}`, handleStats);
+            socket.current.off("init", reset);
         };
-    }, []);
+    }, [currentRound]);
 
     useEffect(() => {
         setActive(currentRound >= blockRound);
@@ -102,7 +102,7 @@ export function Round({
             0 <= scoreA <= 10 &&
             0 <= scoreB <= 10
         ) {
-            socket.emit("roundResults", roomId, {
+            socket.current.emit("roundResults", roomId, {
                 round: currentRound - 1,
                 scoreA: scoreA,
                 scoreB: scoreB,

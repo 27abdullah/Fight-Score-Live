@@ -67,7 +67,6 @@ export function ScorePage() {
         });
 
         socket.current.on("hostMessage", (message) => {
-            console.log("Host message: ", message);
             setHostMessage(message);
         });
 
@@ -126,7 +125,7 @@ export function ScorePage() {
                         blockRound={i}
                         currentRound={currentRound}
                         totalRounds={totalRounds}
-                        socket={socket.current}
+                        socket={socket}
                         roomId={roomId}
                         winner={winner}
                     />
