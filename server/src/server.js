@@ -38,7 +38,6 @@ const {
     endCard,
     setWinner,
     fetchRoom,
-    getLiveUserCount,
     hostMessage,
 } = require("./routes/moderator");
 
@@ -125,13 +124,6 @@ app.get(
     verifySupabaseToken,
     verifyTokenMatchParams,
     fetchRoom
-);
-app.get(
-    "/api/user-count/:id",
-    paramIdValidation,
-    verifySupabaseToken,
-    verifyTokenMatchParams,
-    getLiveUserCount
 );
 
 // Testing routes

@@ -47,7 +47,7 @@ export default function Broadcast({ user, roomId, token }) {
                 className={`px-4 py-2 mx-2  text-white rounded-lg ${
                     wait
                         ? "bg-gray-500 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
+                        : "bg-red-900 hover:bg-red-1000"
                 }`}
             >
                 Broadcast

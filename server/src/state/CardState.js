@@ -108,10 +108,6 @@ class CardState {
         return true;
     }
 
-    async getLiveUserCount() {
-        return (await this.redis.SCARD(`active-users/${this.id}`)) - 1;
-    }
-
     async incRound() {
         if (
             this.state == FINISHED ||
@@ -243,21 +239,34 @@ class CardState {
                 return false;
             }
         });
-        await this.redis.del(`active-users/${this.id}`, (err, reply) => {
-            if (err) {
-                console.error("Error deleting key:", err);
-                return false;
-            }
-        });
     }
 
     async clear() {
         await Promise.all([this.clearFightStats(), this.clearLiveState()]);
     }
 
-    async roundResults(scoreA, scoreB) {
+    async roundResults(scoreA, scoreB, userId) {
+        // Check user not submitted to round already
+        const hasVoted = await this.redis.sIsMember(
+            `${this.id}/votes/${this.currentFight}/${this.currentRound}`,
+            userId
+        );
+        if (hasVoted) {
+            return;
+        }
+
+        await this.redis.sAdd(
+            `${this.id}/votes/${this.currentFight}/${this.currentRound}`,
+            userId,
+            (err, reply) => {
+                if (err) {
+                    console.error("Error adding to redis:", err);
+                }
+            }
+        );
+
         // Differences in scores (A - B)
-        this.redis.rPush(
+        await this.redis.rPush(
             `${this.id}/${this.currentRound - 1}/diffs`,
             String(scoreA - scoreB),
             (err, reply) => {
@@ -269,10 +278,10 @@ class CardState {
 
         // Number of people who voted for A or B
         if (scoreA >= scoreB) {
-            this.redis.incr(`${this.id}/${this.currentRound - 1}/votesA`);
+            await this.redis.incr(`${this.id}/${this.currentRound - 1}/votesA`);
         }
         if (scoreA <= scoreB) {
-            this.redis.incr(`${this.id}/${this.currentRound - 1}/votesB`);
+            await this.redis.incr(`${this.id}/${this.currentRound - 1}/votesB`);
         }
     }
 }

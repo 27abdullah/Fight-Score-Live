@@ -20,14 +20,9 @@ const isValidUserId = async (req) => {
     const roomId = req.headers["roomid"];
     if (!uid || !roomId) return false;
 
-    const roomKey = `active-users/${roomId}`;
-    const roomExists = await redisClient.exists(roomKey);
+    const roomExists = await redisClient.exists(roomId);
     if (!roomExists) return false;
 
-    const alreadyInRoom = await redisClient.sIsMember(roomKey, uid);
-    if (alreadyInRoom) return false;
-
-    await redisClient.sAdd(roomKey, uid);
     return true;
 };
 
@@ -52,6 +47,7 @@ const configureSocket = (server, gameController) => {
             const payload = jwt.verify(token, SUPABASE_JWT_SECRET);
             userId = payload.sub;
             roomId = socket.handshake.headers["roomid"];
+
             socket.join(roomId);
         } catch (err) {
             socket.disconnect(true);
@@ -61,6 +57,9 @@ const configureSocket = (server, gameController) => {
             socket.disconnect(true);
             return;
         }
+
+        socket.data.userId = userId;
+        socket.data.roomId = roomId;
 
         socket.on("roundResults", async (id, data) => {
             scores = [10, 9, 8, 7];
@@ -80,7 +79,11 @@ const configureSocket = (server, gameController) => {
                 return;
             }
 
-            cardState.roundResults(data.scoreA, data.scoreB);
+            cardState.roundResults(
+                data.scoreA,
+                data.scoreB,
+                socket.data.userId
+            );
         });
 
         socket.on("pullStats", async (round, id, callback) => {
@@ -110,10 +113,6 @@ const configureSocket = (server, gameController) => {
             if (cardState == null) return;
             const state = cardState.jsonify();
             callback(state);
-        });
-
-        socket.on("disconnect", async () => {
-            await redisClient.sRem(`active-users/${roomId}`, userId);
         });
     });
 

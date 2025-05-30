@@ -3,7 +3,7 @@ const pino = require("pino");
 const logger = pino(
     pino.destination({
         dest: "./logs.txt",
-        minLength: 8192, // Buffer before writing
+        minLength: 2000, // Buffer before writing
         sync: false, // Asynchronous logging
     })
 );

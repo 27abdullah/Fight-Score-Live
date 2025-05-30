@@ -246,30 +246,6 @@ const createCard = asyncHandler(async (req, res) => {
 
 //
 
-const getLiveUserCount = asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({
-            error: "Invalid data",
-        });
-    }
-
-    const { id } = matchedData(req);
-    const cardState = await gameController.getCard(id);
-    if (cardState == null) {
-        res.json({ error: "Card not found" });
-        return;
-    }
-
-    try {
-        const count = await cardState.getLiveUserCount();
-        res.json({ res: count });
-    } catch (err) {
-        res.json({ res: "Could not get user count" });
-        return;
-    }
-});
-
 const logController = (req, res) => {
     res.json(gameController.jsonify());
 };
@@ -289,7 +265,6 @@ module.exports = {
     finish,
     endCard,
     setWinner,
-    getLiveUserCount,
     fetchRoom,
     hostMessage,
 };

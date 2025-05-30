@@ -1,6 +1,6 @@
 const cardSchema = require("../model/card.model");
 const CardState = require("./CardState");
-const { wait, IN_PROGRESS, FINISHED } = require("../utils");
+const { IN_PROGRESS, FINISHED, MAX_TOTAL_ROUNDS } = require("../utils");
 
 class GameController {
     constructor() {
@@ -48,7 +48,24 @@ class GameController {
                 console.error("Redis error on createCard:", err);
             }
         });
-        await this.redis.sAdd(`active-users/${id}`, "start");
+
+        // Set vote sets for each round in each fight
+        for (let i = 0; i < fights.length; i++) {
+            for (let j = 1; j <= fights[i].totalRounds; j++) {
+                await this.redis.sAdd(
+                    `${id}/votes/${i}/${j}`, // fight id / votes / fight index / round
+                    "",
+                    (err, reply) => {
+                        if (err) {
+                            console.error(
+                                `Redis error on adding ${id}/votes/${i}/${j}`,
+                                err
+                            );
+                        }
+                    }
+                );
+            }
+        }
 
         // Add card to map
         this.cards.set(id, new CardState(currentFight, this.redis));
@@ -77,6 +94,25 @@ class GameController {
         return true;
     }
 
+    async clearRoundSets(card) {
+        console.log("Clearing round sets for all fights");
+        for (let i = 0; i < card.totalFights; i++) {
+            for (let j = 1; j <= MAX_TOTAL_ROUNDS; j++) {
+                await this.redis.del(
+                    `${card.id}/votes/${i}/${j}`,
+                    (err, reply) => {
+                        if (err) {
+                            console.error(
+                                `Error deleting ${card.id}/votes/${i}/${j}:`,
+                                err
+                            );
+                        }
+                    }
+                );
+            }
+        }
+    }
+
     async endCard(id) {
         if (!(await this.hasId(id))) {
             console.error("Could not find card with id:", id);
@@ -85,16 +121,16 @@ class GameController {
 
         const card = this.cards.get(id);
 
+        await this.clearRoundSets(card);
+        await card.clear();
+        this.cards.delete(id);
         await cardSchema.findByIdAndUpdate(card.id, {
             state: FINISHED,
         });
-        await card.clear();
-        this.cards.delete(id);
         return true;
     }
 
     async loadFromMongo() {
-        // TODO NEXT - only load cards that are in progress, store live state in mongo
         const ids = await cardSchema.distinct("_id", { state: IN_PROGRESS });
         ids.forEach((id) => {
             if (!this.hasId(id.toString())) {
