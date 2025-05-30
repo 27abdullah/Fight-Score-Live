@@ -24,7 +24,6 @@ export default function Broadcast({ user, roomId, token }) {
                 }),
             });
             const data = await res.json();
-            console.log("Host message response:", data);
             setTimeout(() => setWait(false), 1000 * 60 * 5); // 5 minutes
         } catch (error) {
             console.error("Error fetching data:", error);
