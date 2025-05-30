@@ -95,9 +95,12 @@ class GameController {
     }
 
     async clearRoundSets(card) {
+        const { fights: fightLengths } = await cardSchema.findById(
+            card.id,
+            "fights.totalRounds"
+        );
         for (let i = 0; i < card.totalFights; i++) {
-            for (let j = 1; j <= MAX_TOTAL_ROUNDS; j++) {
-                //TODO dont use MAX_TOTAL_ROUNDS, pull from fight totalRounds
+            for (let j = 1; j <= fightLengths[i].totalRounds; j++) {
                 await this.redis.del(
                     `${card.id}/votes/${i}/${j}`,
                     (err, reply) => {

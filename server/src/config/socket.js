@@ -74,14 +74,10 @@ const configureSocket = (server, gameController) => {
             const cardState = await gameController.getCard(id);
             if (cardState == null) return;
 
-            // Stale round results
-            if (data.round != cardState.currentRound - 1) {
-                return;
-            }
-
             cardState.roundResults(
                 data.scoreA,
                 data.scoreB,
+                data.round,
                 socket.data.userId
             );
         });

@@ -245,18 +245,28 @@ class CardState {
         await Promise.all([this.clearFightStats(), this.clearLiveState()]);
     }
 
-    async roundResults(scoreA, scoreB, userId) {
+    async roundResults(scoreA, scoreB, round, userId) {
+        // Set round results for previous round
+
+        if (
+            round != this.currentRound - 1 ||
+            Number(round) > this.totalRounds
+        ) {
+            return;
+        }
+
         // Check user not submitted to round already
         const hasVoted = await this.redis.sIsMember(
-            `${this.id}/votes/${this.currentFight}/${this.currentRound}`,
+            `${this.id}/votes/${this.currentFight}/${this.currentRound - 1}`,
             userId
         );
+
         if (hasVoted) {
             return;
         }
 
         await this.redis.sAdd(
-            `${this.id}/votes/${this.currentFight}/${this.currentRound}`,
+            `${this.id}/votes/${this.currentFight}/${this.currentRound - 1}`,
             userId,
             (err, reply) => {
                 if (err) {
