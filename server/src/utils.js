@@ -9,6 +9,7 @@ const FIGHT_NAME_MAX_LENGTH = 20;
 const MAX_TOTAL_ROUNDS = 15;
 const MAX_FIGHTS = 20;
 const MAX_HOST_MESSAGE_LENGTH = 30;
+const HOST_MESSAGE_THROTTLE = 30 * 1000; // seconds
 const WINNERS = ["A", "B", "Draw"];
 const SPORTS = [
     "Boxing",
@@ -35,6 +36,7 @@ module.exports = {
     wait,
     IN_PROGRESS,
     FINISHED,
+    HOST_MESSAGE_THROTTLE,
     SET_WINNER,
     STATES,
     WINNERS,

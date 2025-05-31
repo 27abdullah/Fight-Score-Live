@@ -1,5 +1,10 @@
 const cardSchema = require("../model/card.model");
-const { wait, IN_PROGRESS, FINISHED, SET_WINNER } = require("../utils");
+const {
+    HOST_MESSAGE_THROTTLE,
+    IN_PROGRESS,
+    FINISHED,
+    SET_WINNER,
+} = require("../utils");
 
 /**
  * This class should do all the state validatino (IN_PROGRESS, FINISHED, etc.) and not
@@ -21,6 +26,7 @@ class CardState {
         this.redis = redis;
         this.state = card.state;
         this.winner = card.winner; // "" | "A" | "B"
+        this.lastBroadcast = 0;
     }
 
     redisKeys(s) {
@@ -78,6 +84,15 @@ class CardState {
         card.save();
 
         return true;
+    }
+
+    canBroadcast() {
+        const now = Date.now();
+        if (now - this.lastBroadcast > HOST_MESSAGE_THROTTLE) {
+            this.lastBroadcast = now;
+            return true;
+        }
+        return false;
     }
 
     async nextFight() {

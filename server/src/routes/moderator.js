@@ -136,7 +136,6 @@ const nextFight = asyncHandler(async (req, res) => {
     }
 
     const state = cardState.jsonify();
-    io.to(id).emit("clearStorage");
     io.to(id).emit("init", state);
     res.json({ roomData: cardState.jsonify() });
 });
@@ -152,7 +151,6 @@ const endCard = asyncHandler(async (req, res) => {
     const { id } = matchedData(req);
 
     if (await gameController.endCard(id)) {
-        io.to(id).emit("clearStorage");
         io.to(id).emit("endCard");
         res.json({ end: true });
     } else {
@@ -175,8 +173,12 @@ const hostMessage = asyncHandler(async (req, res) => {
         return;
     }
 
-    io.to(id).emit("hostMessage", message);
-    res.json({});
+    if (cardState.canBroadcast()) {
+        io.to(id).emit("hostMessage", message);
+        res.json({});
+    } else {
+        res.status(400).json({ error: "Cannot broadcast message" });
+    }
 });
 
 const update = asyncHandler(async (req, res) => {

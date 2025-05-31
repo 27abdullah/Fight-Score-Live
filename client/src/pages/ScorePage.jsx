@@ -45,6 +45,7 @@ export function ScorePage() {
 
         // Socket listener to initalise state
         const init = (state) => {
+            sessionStorage.clear();
             setTotalRounds(() => state.totalRounds);
             setcurrentRound(() => state.currentRound);
             setFighterA(() => state.fighterA);
@@ -63,6 +64,8 @@ export function ScorePage() {
         socket.current.on("winner", setWinner);
 
         socket.current.on("endCard", () => {
+            sessionStorage.clear();
+            socket.current.disconnect();
             navigate("/");
         });
 
