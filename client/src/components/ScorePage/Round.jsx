@@ -9,17 +9,18 @@ export function Round({
     socket,
     roomId,
     winner,
+    currentFight,
 }) {
     const [active, setActive] = useState(false);
     const [scoreA, setScoreA] = useState(() => {
         const savedScoreA = sessionStorage.getItem(
-            `${roomId}/${blockRound}/scoreA`
+            `${roomId}/${currentFight}/${blockRound}/scoreA`
         );
         return savedScoreA != null ? JSON.parse(savedScoreA) : 10;
     });
     const [scoreB, setScoreB] = useState(() => {
         const savedScoreB = sessionStorage.getItem(
-            `${roomId}/${blockRound}/scoreB`
+            `${roomId}/${currentFight}/${blockRound}/scoreB`
         );
         return savedScoreB != null ? JSON.parse(savedScoreB) : 10;
     });
@@ -31,11 +32,11 @@ export function Round({
     useEffect(() => {
         if (currentRound >= blockRound && changed) {
             sessionStorage.setItem(
-                `${roomId}/${blockRound}/scoreA`,
+                `${roomId}/${currentFight}/${blockRound}/scoreA`,
                 JSON.stringify(scoreA)
             );
             sessionStorage.setItem(
-                `${roomId}/${blockRound}/scoreB`,
+                `${roomId}/${currentFight}/${blockRound}/scoreB`,
                 JSON.stringify(scoreB)
             );
         }
@@ -53,7 +54,7 @@ export function Round({
         if (currentRound > blockRound) {
             // Get individual score
             const savedScoreA = sessionStorage.getItem(
-                `${roomId}/${blockRound}/scoreA`
+                `${roomId}/${currentFight}/${blockRound}/scoreA`
             );
             if (savedScoreA != null && savedScoreA >= 0 && savedScoreA <= 10) {
                 setScoreA(savedScoreA);
@@ -61,7 +62,7 @@ export function Round({
                 setScoreA("");
             }
             const savedScoreB = sessionStorage.getItem(
-                `${roomId}/${blockRound}/scoreB`
+                `${roomId}/${currentFight}/${blockRound}/scoreB`
             );
             if (savedScoreB != null && savedScoreB >= 0 && savedScoreB <= 10) {
                 setScoreB(savedScoreB);

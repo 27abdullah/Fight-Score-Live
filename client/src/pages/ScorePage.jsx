@@ -18,6 +18,7 @@ export function ScorePage() {
     const { user, token } = useUser();
     const [hostMessage, setHostMessage] = useState("");
     const [roomName, setRoomName] = useState("");
+    const [currentFight, setCurrentFight] = useState(0);
     const navigate = useNavigate();
     const socket = useRef(null);
 
@@ -45,7 +46,6 @@ export function ScorePage() {
 
         // Socket listener to initalise state
         const init = (state) => {
-            sessionStorage.clear();
             setTotalRounds(() => state.totalRounds);
             setcurrentRound(() => state.currentRound);
             setFighterA(() => state.fighterA);
@@ -53,6 +53,7 @@ export function ScorePage() {
             setLoading(() => false);
             setWinner(() => state.winner);
             setRoomName(() => state.name);
+            setCurrentFight(() => state.currentFight);
         };
         socket.current.on("init", init);
 
@@ -131,6 +132,7 @@ export function ScorePage() {
                         socket={socket}
                         roomId={roomId}
                         winner={winner}
+                        currentFight={currentFight}
                     />
                 ))}
             </div>
