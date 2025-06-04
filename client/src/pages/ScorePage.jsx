@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import Round from "../components/ScorePage/Round";
 import { useParams } from "react-router-dom";
 import NameTag from "../components/ScorePage/NameTag";
+import Grid from "../components/ScorePage/Grid";
+import Loading from "../components/ScorePage/Loading";
 import { useUser } from "../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -92,52 +94,53 @@ export function ScorePage() {
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
     return loading ? (
-        <div className="flex flex-col items-center justify-center">
-            <div>
-                <h1></h1>
-            </div>
-            <div className="mt-2">
-                <p>(Refresh in a couple seconds)</p>
-            </div>
-        </div>
+        <Loading />
     ) : (
-        <div className="flex flex-col items-center justify-center">
-            <ScrollingBanner
-                items={
-                    hostMessage != ""
-                        ? [
-                              `You are scoring ${roomName}`,
-                              "|",
-                              `${hostMessage}`,
-                              "|",
-                              "Round: " + currentRound,
-                              "|",
-                          ]
-                        : [
-                              `You are scoring ${roomName}`,
-                              "|",
-                              "Round: " + currentRound,
-                              "|",
-                          ]
-                }
-            />
-            <NameTag name={fighterA} id={"A"} isWinner={winner} />
-            <div className="flex items-center justify-center h-[75vh]">
-                {blocks.map((i, _) => (
-                    <Round
-                        key={i}
-                        blockRound={i}
-                        currentRound={currentRound}
-                        totalRounds={totalRounds}
-                        socket={socket}
-                        roomId={roomId}
-                        winner={winner}
-                        currentFight={currentFight}
-                    />
-                ))}
-            </div>
-            <NameTag name={fighterB} id={"B"} isWinner={winner} />
-        </div>
+        <Grid
+            Banner={
+                <ScrollingBanner
+                    items={
+                        hostMessage != ""
+                            ? [
+                                  `You are scoring ${roomName}`,
+                                  "|",
+                                  `${hostMessage}`,
+                                  "|",
+                                  currentRound > totalRounds
+                                      ? "Fight Over"
+                                      : "Round: " + currentRound,
+                                  "|",
+                              ]
+                            : [
+                                  `You are scoring ${roomName}`,
+                                  "|",
+                                  currentRound > totalRounds
+                                      ? "Fight Over"
+                                      : "Round: " + currentRound,
+                                  "|",
+                              ]
+                    }
+                />
+            }
+            NameTagA={<NameTag name={fighterA} id={"A"} isWinner={winner} />}
+            NameTagB={<NameTag name={fighterB} id={"B"} isWinner={winner} />}
+            Rounds={
+                <div className="flex items-center justify-center h-[75vh]">
+                    {blocks.map((i) => (
+                        <Round
+                            key={i}
+                            blockRound={i}
+                            currentRound={currentRound}
+                            totalRounds={totalRounds}
+                            socket={socket}
+                            roomId={roomId}
+                            winner={winner}
+                            currentFight={currentFight}
+                        />
+                    ))}
+                </div>
+            }
+        />
     );
 }
 

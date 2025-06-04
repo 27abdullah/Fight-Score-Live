@@ -32,7 +32,7 @@ export function Layout() {
                 message={flashMessage?.message}
                 type={flashMessage?.type}
             />
-            <main className="flex-grow flex items-center justify-center">
+            <main className="flex-grow flex flex-col overflow-hidden items-center justify-center">
                 <Outlet />
             </main>
         </div>
