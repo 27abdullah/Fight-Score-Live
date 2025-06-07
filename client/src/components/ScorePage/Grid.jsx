@@ -18,7 +18,9 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
 
                     {/* Rounds */}
                     <div className="flex-1 overflow-x-auto overflow-y-hidden">
-                        <div className="flex w-max gap-4 p-4">{Rounds}</div>
+                        <div className="flex w-max gap-4 p-4 items-center h-full">
+                            {Rounds}
+                        </div>
                     </div>
                 </div>
 

@@ -114,7 +114,7 @@ export function Round({
 
     return (
         active && (
-            <div>
+            <div className="border flex flex-col items-center justify-center h-[80vh] max-h-full px-4">
                 <BarGraph votesA={votesA} votesB={votesB} direction={true} />
                 <Block
                     name="scoreA"

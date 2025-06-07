@@ -17,7 +17,7 @@ export function Block({
     return (
         <>
             <div
-                className={`m-7 ${
+                className={`m-3 sm:m-7 ${
                     blockRound == currentRound && winner === ""
                         ? changed
                             ? "border-4 border-green-500"
@@ -28,7 +28,7 @@ export function Block({
                 <input
                     name={name}
                     type="number"
-                    className="w-24 h-24 text-white text-center text-2xl"
+                    className="w-16 sm:w-18 md:w-24 h-16 sm:h-18 md:h-24 text-white text-center text-2xl " //TODO
                     value={score}
                     readOnly={blockRound < currentRound}
                     onChange={(e) => {

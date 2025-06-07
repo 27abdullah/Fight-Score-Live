@@ -10,7 +10,7 @@ export default function ScrollingBanner({ items }) {
                     className="inline-flex gap-4 min-w-full"
                     animate={{ x: ["100%", "-100%"] }}
                     transition={{
-                        duration: 20,
+                        duration: 60,
                         repeat: Infinity,
                         ease: "linear",
                     }}
