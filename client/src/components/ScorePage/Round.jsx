@@ -114,29 +114,43 @@ export function Round({
 
     return (
         active && (
-            <div className="border flex flex-col items-center justify-center h-[80vh] max-h-full px-4">
-                <BarGraph votesA={votesA} votesB={votesB} direction={true} />
-                <Block
-                    name="scoreA"
-                    blockRound={blockRound}
-                    currentRound={currentRound}
-                    score={scoreA}
-                    setScore={setScoreA}
-                    setChanged={setChanged}
-                    changed={changed}
-                    winner={winner}
-                />
-                <Block
-                    name="scoreB"
-                    blockRound={blockRound}
-                    currentRound={currentRound}
-                    score={scoreB}
-                    setScore={setScoreB}
-                    setChanged={setChanged}
-                    changed={changed}
-                    winner={winner}
-                />
-                <BarGraph votesA={votesA} votesB={votesB} direction={false} />
+            <div className="border grid grid-rows-[1fr_auto_1fr] items-center mx-3 sm:mx-6">
+                <div className="border flex justify-center h-full items-end">
+                    <BarGraph
+                        votesA={votesA}
+                        votesB={votesB}
+                        direction={true}
+                    />
+                </div>
+                <div className="border flex flex-col items-center">
+                    <Block
+                        name="scoreA"
+                        blockRound={blockRound}
+                        currentRound={currentRound}
+                        score={scoreA}
+                        setScore={setScoreA}
+                        setChanged={setChanged}
+                        changed={changed}
+                        winner={winner}
+                    />
+                    <Block
+                        name="scoreB"
+                        blockRound={blockRound}
+                        currentRound={currentRound}
+                        score={scoreB}
+                        setScore={setScoreB}
+                        setChanged={setChanged}
+                        changed={changed}
+                        winner={winner}
+                    />
+                </div>
+                <div className="border flex justify-center h-full items-start">
+                    <BarGraph
+                        votesA={votesA}
+                        votesB={votesB}
+                        direction={false}
+                    />
+                </div>
             </div>
         )
     );

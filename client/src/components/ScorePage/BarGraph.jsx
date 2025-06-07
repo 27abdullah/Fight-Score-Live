@@ -6,10 +6,10 @@ export function BarGraph({ votesA, votesB, direction }) {
     ) : (
         // TODO: wdith size
         <div
-            className={"bg-blue-500 w-16 sm:w-18 md:w-24 mx-7"}
-            style={{
-                height: 140 * (stats / (votesA + votesB)),
-            }}
+            className={"bg-blue-500 w-16 sm:w-18 md:w-24 h-[10vh] md:h-[15vh]"}
+            // style={{
+            //     height: 140 * (stats / (votesA + votesB)),
+            // }}
         ></div>
     );
 }

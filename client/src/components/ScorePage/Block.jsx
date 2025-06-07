@@ -17,7 +17,7 @@ export function Block({
     return (
         <>
             <div
-                className={`m-3 sm:m-7 ${
+                className={`m-3 sm:m-5 ${
                     blockRound == currentRound && winner === ""
                         ? changed
                             ? "border-4 border-green-500"

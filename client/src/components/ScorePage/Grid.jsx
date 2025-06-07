@@ -12,7 +12,7 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
                 {/* Scrollable Rounds Section */}
                 <div className="rounded bg-slate-600 overflow-hidden min-h-0 min-w-0 flex flex-col">
                     {/* Mobile-only sidebar below Rounds */}
-                    <div className="md:hidden p-4 bg-purple-900 rounded h-32">
+                    <div className="md:hidden p-4 bg-purple-900 rounded h-[25%]">
                         Mobile Sidebar
                     </div>
 
