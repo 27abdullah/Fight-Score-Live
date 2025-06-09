@@ -25,6 +25,10 @@ export function Layout() {
         }
     }, [location, navigate]);
 
+    const overflow = location.pathname.includes("/score-page") // NOTE score-page is the only page that needs overflow hidden
+        ? "overflow-hidden"
+        : "";
+
     return (
         <div className="flex flex-col h-screen">
             <Navbar />
@@ -32,7 +36,9 @@ export function Layout() {
                 message={flashMessage?.message}
                 type={flashMessage?.type}
             />
-            <main className="flex-grow flex flex-col overflow-hidden items-center justify-center">
+            <main
+                className={`flex-grow flex flex-col ${overflow} items-center justify-center`}
+            >
                 <Outlet />
             </main>
         </div>

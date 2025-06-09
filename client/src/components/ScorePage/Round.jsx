@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Block from "./Block";
 import BarGraph from "./BarGraph";
+import RoundNumber from "./RoundNumber";
 
 export function Round({
     blockRound,
@@ -114,15 +115,15 @@ export function Round({
 
     return (
         active && (
-            <div className="border grid grid-rows-[1fr_auto_1fr] items-center mx-3 sm:mx-6">
-                <div className="border flex justify-center h-full items-end">
+            <div className=" grid grid-rows-[1fr_auto_1fr] items-center mx-1 sm:mx-2 md:mx-6">
+                <div className=" flex justify-center h-full items-end">
                     <BarGraph
                         votesA={votesA}
                         votesB={votesB}
                         direction={true}
                     />
                 </div>
-                <div className="border flex flex-col items-center">
+                <div className=" flex flex-col items-center">
                     <Block
                         name="scoreA"
                         blockRound={blockRound}
@@ -132,7 +133,9 @@ export function Round({
                         setChanged={setChanged}
                         changed={changed}
                         winner={winner}
+                        direction={true}
                     />
+                    <RoundNumber blockRound={blockRound} />
                     <Block
                         name="scoreB"
                         blockRound={blockRound}
@@ -142,9 +145,10 @@ export function Round({
                         setChanged={setChanged}
                         changed={changed}
                         winner={winner}
+                        direction={false}
                     />
                 </div>
-                <div className="border flex justify-center h-full items-start">
+                <div className=" flex justify-center h-full items-start">
                     <BarGraph
                         votesA={votesA}
                         votesB={votesB}

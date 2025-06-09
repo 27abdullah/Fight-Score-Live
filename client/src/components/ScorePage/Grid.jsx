@@ -2,13 +2,13 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
     return (
         <div className="flex flex-col h-screen w-screen overflow-hidden">
             {/* Top: Banner and NameTagA */}
-            <div className="flex flex-col gap-2 p-2">
+            <div className="flex flex-col gap-2 pt-2 pb-2">
                 <div className="rounded overflow-hidden">{Banner}</div>
                 <div className="rounded overflow-hidden">{NameTagA}</div>
             </div>
 
             {/* Main content with Rounds + Sidebar */}
-            <div className="flex-grow min-h-0 min-w-0 p-2 flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-2">
+            <div className="flex-grow min-h-0 min-w-0 pt-2 pb-2 flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-2">
                 {/* Scrollable Rounds Section */}
                 <div className="rounded bg-slate-600 overflow-hidden min-h-0 min-w-0 flex flex-col">
                     {/* Mobile-only sidebar below Rounds */}
@@ -31,7 +31,7 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
             </div>
 
             {/* Bottom: NameTagB pinned to bottom */}
-            <div className="p-2 rounded overflow-hidden">{NameTagB}</div>
+            <div className="pt-2 pb-4 rounded overflow-hidden">{NameTagB}</div>
         </div>
     );
 }
