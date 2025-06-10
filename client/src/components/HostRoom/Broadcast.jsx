@@ -34,7 +34,7 @@ export default function Broadcast({ user, roomId, token }) {
     };
 
     return (
-        <div className="flex items-center mt-4 rounded-lg">
+        <div className="flex items-center justify-center mt-4 rounded-lg">
             <input
                 type="text"
                 maxLength={20}
