@@ -12,6 +12,9 @@ export default function Broadcast({ user, roomId, token }) {
         try {
             setMessage("");
             setWait(true);
+            const fullMessage = `${
+                user.user_metadata.display_name || user.user_metadata.full_name
+            } (Host): ${message}`;
             const res = await fetch(`http://localhost:4000/api/host-message/`, {
                 method: "POST",
                 headers: {
@@ -19,7 +22,7 @@ export default function Broadcast({ user, roomId, token }) {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    message: `${user.user_metadata.display_name} (Host): ${message}`,
+                    message: fullMessage,
                     id: roomId,
                 }),
             });
