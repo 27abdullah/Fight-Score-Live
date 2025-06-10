@@ -13,7 +13,7 @@ export function BarGraph({ votesA, votesB, direction }) {
         : "rgba(59, 130, 246, 0.9"; // Tailwind blue-500
 
     return votesA + votesB === 0 || stats <= 0 ? null : (
-        <div className="w-16 sm:w-18 md:w-24 h-[10vh] md:h-[15vh]">
+        <div className="w-16 sm:w-20 md:w-24 h-[10vh] md:h-[15vh]">
             <svg
                 width="100%"
                 height="100%"

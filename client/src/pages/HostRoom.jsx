@@ -47,8 +47,14 @@ function HostRoom() {
     }
 
     return (
-        <>
-            <div className="flex flex-row justify-center space-x-5 p-10">
+        <div className="border w-screen h-screen overflow-hidden p-2 flex items-center justify-center">
+            <div className="border flex flex-col gap-4 h-full overflow-hidden w-full max-w-2xl">
+                <RoomInfoCard
+                    roomData={roomData}
+                    token={token}
+                    roomId={roomId}
+                    user={user}
+                />
                 <Controls
                     roomData={roomData}
                     setRoomData={setRoomData}
@@ -56,15 +62,11 @@ function HostRoom() {
                     token={token}
                     setStats={setStats}
                 />
-                <RoomInfoCard
-                    roomData={roomData}
-                    token={token}
-                    roomId={roomId}
-                    user={user}
-                />
-                <StatInfoCard stats={stats} roomData={roomData} />
+                <div className="overflow-y-auto min-h-0">
+                    <StatInfoCard stats={stats} roomData={roomData} />
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
