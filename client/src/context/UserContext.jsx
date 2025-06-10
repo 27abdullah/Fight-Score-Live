@@ -9,26 +9,18 @@ export function UserProvider({ children }) {
     const [token, setToken] = useState(null);
 
     useEffect(() => {
-        // On mount, get the session
-        supabase.auth.getUser().then(({ data: { user }, error }) => {
-            if (!error) {
-                setUser(user);
+        supabase.auth.getSession().then(({ data: { session }, error }) => {
+            if (!error && session) {
+                setUser(session.user);
+                setToken(session.access_token);
             }
             setLoading(false);
         });
 
-        supabase.auth.getSession().then(({ data, error }) => {
-            if (error) {
-                console.error("Error getting session:", error);
-                return;
-            }
-            setToken(data.session?.access_token);
-        });
-
-        // Listen for auth changes
         const { data: listener } = supabase.auth.onAuthStateChange(
-            (event, session) => {
+            (_event, session) => {
                 setUser(session?.user || null);
+                setToken(session?.access_token || null);
             }
         );
 

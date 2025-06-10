@@ -43,7 +43,7 @@ function HostRoom() {
     }, [token, roomId, user]);
 
     if (loading || roomData == null) {
-        return <h1></h1>; //TODO make a better
+        return <h1 className="text-lg">Please refresh in a couple seconds</h1>; //TODO make a better
     }
 
     return (
