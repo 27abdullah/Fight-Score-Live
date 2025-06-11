@@ -47,8 +47,8 @@ function HostRoom() {
     }
 
     return (
-        <div className="border w-screen h-screen overflow-hidden p-2 flex items-center justify-center">
-            <div className="border flex flex-col gap-4 h-full overflow-hidden w-full max-w-2xl">
+        <div className="w-screen h-screen overflow-hidden p-2 flex items-center justify-center">
+            <div className="flex flex-col gap-4 h-full overflow-hidden w-full max-w-2xl">
                 <RoomInfoCard
                     roomData={roomData}
                     token={token}
