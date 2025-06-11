@@ -30,7 +30,7 @@ export function Layout() {
         : "";
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen w-screen">
             <Navbar />
             <FlashBar
                 message={flashMessage?.message}
