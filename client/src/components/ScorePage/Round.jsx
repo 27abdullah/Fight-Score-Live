@@ -115,7 +115,7 @@ export function Round({
 
     return (
         active && (
-            <div className=" grid grid-rows-[1fr_auto_1fr] items-center mx-1 sm:mx-2 md:mx-6">
+            <div className=" grid grid-rows-[1fr_auto_1fr] items-center mx-2 md:mx-6">
                 <div className=" flex justify-center h-full items-end">
                     <BarGraph
                         votesA={votesA}
