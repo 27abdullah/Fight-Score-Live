@@ -29,42 +29,36 @@ export function Navbar() {
         setMenuOpen(false);
     };
 
+    const buttonClass =
+        "px-4 py-2 text-left w-full hover:border-transparent hover:md:border-blue-500";
     const navItems = (
         <>
             <Link to="/" onClick={handleNavClick}>
-                <button className="px-4 py-2 text-left w-full">Home</button>
+                <button className={buttonClass}>Home</button>
             </Link>
             <Link to="/rooms" onClick={handleNavClick}>
-                <button className="px-4 py-2 text-left w-full">Rooms</button>
+                <button className={buttonClass}>Rooms</button>
             </Link>
             <Link to="/about" onClick={handleNavClick}>
-                <button className="px-4 py-2 text-left w-full">About</button>
+                <button className={buttonClass}>About</button>
             </Link>
             {!loading && !user && (
                 <>
                     <Link to="/login" onClick={handleNavClick}>
-                        <button className="px-4 py-2 text-left w-full">
-                            Login
-                        </button>
+                        <button className={buttonClass}>Login</button>
                     </Link>
                     <Link to="/signup" onClick={handleNavClick}>
-                        <button className="px-4 py-2 text-left w-full">
-                            Sign Up
-                        </button>
+                        <button className={buttonClass}>Sign Up</button>
                     </Link>
                 </>
             )}
             {!loading && user && (
                 <>
                     <Link to="/profile" onClick={handleNavClick}>
-                        <button className="px-4 py-2 text-left w-full">
-                            Profile
-                        </button>
+                        <button className={buttonClass}>Profile</button>
                     </Link>
                     <Link to="/create-room" onClick={handleNavClick}>
-                        <button className="px-4 py-2 text-left w-full">
-                            Create Room
-                        </button>
+                        <button className={buttonClass}>Create Room</button>
                     </Link>
                 </>
             )}
@@ -79,10 +73,10 @@ export function Navbar() {
             </div>
 
             {/* Mobile Navbar Header */}
-            <div className="sm:hidden flex items-center justify-between px-4 py-3 border-b border-gray-700">
+            <div className="sm:hidden flex items-center justify-between px-4 py-3 ">
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className="text-white text-2xl"
+                    className="text-white text-2xl border-b border-black"
                 >
                     ☰
                 </button>
