@@ -8,6 +8,7 @@ import { useUser } from "../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import ScrollingBanner from "../components/ScorePage/ScrollingBanner";
+import WinnerScreen from "../components/ScorePage/WinnerScreen";
 
 export function ScorePage() {
     const [totalRounds, setTotalRounds] = useState(5);
@@ -15,7 +16,7 @@ export function ScorePage() {
     const [loading, setLoading] = useState(true);
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
-    const [winner, setWinner] = useState("");
+    const [winner, setWinner] = useState(""); // Winner is "A", "B", "Draw", or "". Only set when STATE == FINISHED
     const { id: roomId } = useParams();
     const { user, token } = useUser();
     const [hostMessage, setHostMessage] = useState("");
@@ -93,9 +94,16 @@ export function ScorePage() {
     }, [user, roomId, token]);
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
-    return loading ? (
-        <Loading />
-    ) : (
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    if (winner != "") {
+        return <WinnerScreen winner={winner} />;
+    }
+
+    return (
         <Grid
             Banner={
                 <ScrollingBanner
