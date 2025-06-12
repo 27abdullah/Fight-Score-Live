@@ -73,14 +73,21 @@ export function Navbar() {
             </div>
 
             {/* Mobile Navbar Header */}
-            <div className="sm:hidden flex items-center justify-between px-4 py-3 ">
+            <div className="sm:hidden relative flex items-center justify-between px-4 py-3">
+                {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="text-white text-2xl border-b border-black"
                 >
                     ☰
                 </button>
-                <div className="text-lg font-semibold">FSL</div>
+
+                {/* Centered Logo */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
+                    FSL
+                </div>
+
+                {/* Spacer to balance layout */}
                 <div className="w-6" />
             </div>
 
