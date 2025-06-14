@@ -8,6 +8,7 @@ export function CreateRoom() {
     const [fights, setFights] = useState([]);
     const navigate = useNavigate();
     const { user, token } = useUser();
+    const [isSending, setIsSending] = useState(false);
 
     const handleNumFightsChange = (e) => {
         if (e.target.value == "") {
@@ -37,6 +38,7 @@ export function CreateRoom() {
     };
 
     const handleSubmit = async (e) => {
+        setIsSending(true);
         e.preventDefault();
         const payload = {
             name: roomName,
@@ -227,8 +229,13 @@ export function CreateRoom() {
                     ))}
 
                     <button
+                        disabled={isSending}
                         type="submit"
-                        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded"
+                        className={`${
+                            isSending
+                                ? "bg-gray-600"
+                                : "bg-purple-600 hover:bg-purple-700"
+                        } text-white font-semibold py-2 px-4 rounded`}
                     >
                         Submit Room
                     </button>
