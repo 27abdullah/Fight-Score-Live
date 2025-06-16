@@ -24,6 +24,7 @@ export function ScorePage() {
     const [currentFight, setCurrentFight] = useState(0);
     const navigate = useNavigate();
     const socket = useRef(null);
+    const [scorePageState, setScorePageState] = useState([]);
 
     useEffect(() => {
         if (!user || !token || !roomId) {
@@ -57,6 +58,29 @@ export function ScorePage() {
             setWinner(() => state.winner);
             setRoomName(() => state.name);
             setCurrentFight(() => state.currentFight);
+
+            //Init state for rounds
+            setScorePageState(() =>
+                Array.from({ length: state.totalRounds }, (_, i) => {
+                    const roundNum = i + 1;
+                    const savedScoreA = sessionStorage.getItem(
+                        `${roomId}/${state.currentFight}/${roundNum}/scoreA`
+                    );
+                    const savedScoreB = sessionStorage.getItem(
+                        `${roomId}/${state.currentFight}/${roundNum}/scoreB`
+                    );
+
+                    return {
+                        scoreA:
+                            savedScoreA != null ? JSON.parse(savedScoreA) : 10,
+                        scoreB:
+                            savedScoreB != null ? JSON.parse(savedScoreB) : 10,
+                        votesA: 0,
+                        votesB: 0,
+                        median: 0,
+                    };
+                })
+            );
         };
         socket.current.on("init", init);
 
@@ -94,6 +118,16 @@ export function ScorePage() {
     }, [user, roomId, token]);
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
+
+    // NOTE: This is not a typical state setter: cannot do setX(() => newValue) directly.
+    // Instead use: setX(newValue).
+    const updateRoundState = (index, field, value) => {
+        setScorePageState((prev) => {
+            const updated = [...prev];
+            updated[index] = { ...updated[index], [field]: value };
+            return updated;
+        });
+    };
 
     if (loading) {
         return <Loading />;
@@ -144,6 +178,26 @@ export function ScorePage() {
                             roomId={roomId}
                             winner={winner}
                             currentFight={currentFight}
+                            scoreA={scorePageState[i - 1].scoreA}
+                            setScoreA={(val) =>
+                                updateRoundState(i - 1, "scoreA", val)
+                            }
+                            scoreB={scorePageState[i - 1].scoreB}
+                            setScoreB={(val) =>
+                                updateRoundState(i - 1, "scoreB", val)
+                            }
+                            votesA={scorePageState[i - 1].votesA}
+                            setVotesA={(val) =>
+                                updateRoundState(i - 1, "votesA", val)
+                            }
+                            votesB={scorePageState[i - 1].votesB}
+                            setVotesB={(val) =>
+                                updateRoundState(i - 1, "votesB", val)
+                            }
+                            median={scorePageState[i - 1].median}
+                            setMedian={(val) =>
+                                updateRoundState(i - 1, "median", val)
+                            }
                         />
                     ))}
                 </div>

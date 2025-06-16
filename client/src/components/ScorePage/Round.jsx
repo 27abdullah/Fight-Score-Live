@@ -11,24 +11,19 @@ export function Round({
     roomId,
     winner,
     currentFight,
+    scoreA,
+    setScoreA,
+    scoreB,
+    setScoreB,
+    votesA,
+    setVotesA,
+    votesB,
+    setVotesB,
+    median,
+    setMedian,
 }) {
     const [active, setActive] = useState(false);
-    const [scoreA, setScoreA] = useState(() => {
-        const savedScoreA = sessionStorage.getItem(
-            `${roomId}/${currentFight}/${blockRound}/scoreA`
-        );
-        return savedScoreA != null ? JSON.parse(savedScoreA) : 10;
-    });
-    const [scoreB, setScoreB] = useState(() => {
-        const savedScoreB = sessionStorage.getItem(
-            `${roomId}/${currentFight}/${blockRound}/scoreB`
-        );
-        return savedScoreB != null ? JSON.parse(savedScoreB) : 10;
-    });
     const [changed, setChanged] = useState(false);
-    const [votesA, setVotesA] = useState(0);
-    const [votesB, setVotesB] = useState(0);
-    const [median, setMedian] = useState(0);
 
     useEffect(() => {
         if (currentRound >= blockRound && changed) {
@@ -45,9 +40,9 @@ export function Round({
 
     useEffect(() => {
         function handleStats(stats) {
-            setVotesA(() => Number(stats.votesA));
-            setVotesB(() => Number(stats.votesB));
-            setMedian(() => Number(stats.medianDiff));
+            setVotesA(Number(stats.votesA));
+            setVotesB(Number(stats.votesB));
+            setMedian(Number(stats.medianDiff));
         }
 
         socket.current.on(`stats/${blockRound}`, handleStats);
@@ -60,7 +55,7 @@ export function Round({
             if (savedScoreA != null && savedScoreA >= 0 && savedScoreA <= 10) {
                 setScoreA(savedScoreA);
             } else {
-                setScoreA("");
+                setScoreA(10);
             }
             const savedScoreB = sessionStorage.getItem(
                 `${roomId}/${currentFight}/${blockRound}/scoreB`
@@ -68,14 +63,12 @@ export function Round({
             if (savedScoreB != null && savedScoreB >= 0 && savedScoreB <= 10) {
                 setScoreB(savedScoreB);
             } else {
-                setScoreB("");
+                setScoreB(10);
             }
 
             // Get aggregate stats
-            socket.current.emit("pullStats", blockRound, roomId, (response) => {
-                setVotesA(() => Number(response.votesA));
-                setVotesB(() => Number(response.votesB));
-                // Median diff also available
+            socket.current.emit("pullStats", blockRound, roomId, (stats) => {
+                handleStats(stats);
             });
         }
 
