@@ -63,7 +63,7 @@ class CardState {
                 })
             ),
             medians: await Promise.all(
-                this.redisKeys("median").map(async (key) => {
+                this.redisKeys("medianDiff").map(async (key) => {
                     const value = await this.redis.get(key);
                     return Number(value ?? 0);
                 })
@@ -200,21 +200,21 @@ class CardState {
     }
 
     async getPrevRoundStats() {
-        // Save and get the median of the differences
+        // Save and get the medianDiff of the differences
         const diffs = await this.redis.lRange(
             `${this.id}/${this.currentRound - 1}/diffs`,
             0,
             -1
         );
         diffs.sort((a, b) => Number(a) - Number(b));
-        let median = diffs[Math.floor(diffs.length / 2)];
-        if (median !== undefined) {
+        let medianDiff = diffs[Math.floor(diffs.length / 2)];
+        if (medianDiff !== undefined) {
             await this.redis.set(
-                `${this.id}/${this.currentRound - 1}/median`,
-                median
+                `${this.id}/${this.currentRound - 1}/medianDiff`,
+                medianDiff
             );
         } else {
-            median = null;
+            medianDiff = null;
         }
 
         return {
@@ -224,7 +224,7 @@ class CardState {
             votesB: await this.redis.get(
                 `${this.id}/${this.currentRound - 1}/votesB`
             ),
-            median: median,
+            medianDiff: medianDiff,
         };
     }
 
@@ -236,15 +236,15 @@ class CardState {
         const votesB = Promise.all(
             this.redisKeys("votesB").map(async (key) => this.redis.del(key))
         );
-        const median = Promise.all(
-            this.redisKeys("median").map(async (key) => this.redis.del(key))
+        const medianDiff = Promise.all(
+            this.redisKeys("medianDiff").map(async (key) => this.redis.del(key))
         );
         const diff = Promise.all(
             this.redisKeys("diffs").map(async (key) => this.redis.del(key))
         );
         const winner = this.redis.del(`${this.id}/winner`);
 
-        await Promise.all([votesA, votesB, median, diff, winner]);
+        await Promise.all([votesA, votesB, medianDiff, diff, winner]);
     }
 
     async clearLiveState() {

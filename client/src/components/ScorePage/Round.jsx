@@ -19,7 +19,7 @@ export function Round({
     setVotesA,
     votesB,
     setVotesB,
-    median,
+    medianDiff,
     setMedian,
 }) {
     const [active, setActive] = useState(false);
@@ -113,6 +113,7 @@ export function Round({
                     <BarGraph
                         votesA={votesA}
                         votesB={votesB}
+                        medianDiff={medianDiff}
                         direction={true}
                     />
                 </div>
@@ -145,6 +146,7 @@ export function Round({
                     <BarGraph
                         votesA={votesA}
                         votesB={votesB}
+                        medianDiff={medianDiff}
                         direction={false}
                     />
                 </div>

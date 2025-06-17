@@ -85,7 +85,7 @@ export function ScorePage() {
                             savedScoreB != null ? JSON.parse(savedScoreB) : 10,
                         votesA: 0,
                         votesB: 0,
-                        median: 0,
+                        medianDiff: 0,
                     };
                 })
             );
@@ -202,9 +202,9 @@ export function ScorePage() {
                             setVotesB={(val) =>
                                 updateRoundState(i - 1, "votesB", val)
                             }
-                            median={scorePageState[i - 1].median}
+                            medianDiff={scorePageState[i - 1].medianDiff}
                             setMedian={(val) =>
-                                updateRoundState(i - 1, "median", val)
+                                updateRoundState(i - 1, "medianDiff", val)
                             }
                         />
                     ))}

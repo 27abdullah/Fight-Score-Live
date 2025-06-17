@@ -97,7 +97,7 @@ const configureSocket = (server, gameController) => {
                     `${cardState.id}/${round}/votesB`
                 ),
                 medianDiff: await redisClient.get(
-                    `${cardState.id}/${round}/median`
+                    `${cardState.id}/${round}/medianDiff`
                 ),
             });
         });
