@@ -25,6 +25,14 @@ export function ScorePage() {
     const navigate = useNavigate();
     const socket = useRef(null);
     const [scorePageState, setScorePageState] = useState([]);
+    const [authReady, setAuthReady] = useState(false);
+
+    useEffect(() => {
+        if (!user || !token || !roomId) {
+            return;
+        }
+        setAuthReady(true);
+    }, []);
 
     useEffect(() => {
         if (!user || !token || !roomId) {
@@ -115,7 +123,7 @@ export function ScorePage() {
             socket.current.off("hostMessage", setHostMessage);
             socket.current.disconnect();
         };
-    }, [user, roomId, token]);
+    }, [authReady]);
 
     const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
 
