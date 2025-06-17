@@ -147,6 +147,10 @@ export function ScorePage() {
 
     return (
         <Grid
+            state={scorePageState}
+            currentRound={currentRound}
+            fighterA={fighterA}
+            fighterB={fighterB}
             Banner={
                 <ScrollingBanner
                     items={

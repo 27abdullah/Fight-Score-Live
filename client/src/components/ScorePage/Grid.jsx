@@ -1,4 +1,25 @@
-export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
+export default function Grid({
+    Banner,
+    NameTagA,
+    NameTagB,
+    Rounds,
+    state,
+    currentRound,
+    fighterA,
+    fighterB,
+}) {
+    const totalAVotes = state
+        .slice(0, currentRound)
+        .reduce((acc, round) => acc + round.votesA, 0);
+
+    const totalBVotes = state
+        .slice(0, currentRound)
+        .reduce((acc, round) => acc + round.votesB, 0);
+    const totalMedianDiff = state
+        .slice(0, currentRound)
+        .reduce((acc, round) => acc + round.medianDiff, 0);
+    const up = totalMedianDiff > 0 ? fighterA : fighterB;
+
     return (
         <div className="flex flex-col h-screen w-screen overflow-hidden">
             {/* Top: Banner and NameTagA */}
@@ -13,7 +34,12 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
                 <div className="rounded bg-slate-600 overflow-hidden min-h-0 min-w-0 flex flex-col">
                     {/* Mobile-only sidebar below Rounds */}
                     <div className="md:hidden p-4 bg-purple-900 rounded h-[25%]">
-                        Mobile Sidebar
+                        <br />
+                        {`A Votes: ${totalAVotes}`}
+                        <br />
+                        {`B Votes: ${totalBVotes}`}
+                        <br />
+                        {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
                     </div>
 
                     {/* Rounds */}
@@ -26,7 +52,12 @@ export default function Grid({ Banner, NameTagA, NameTagB, Rounds }) {
 
                 {/* Fixed Sidebar (only visible on md+) */}
                 <div className="hidden md:block rounded bg-red-900 overflow-auto p-4 max-h-full">
-                    Right Sidebar
+                    <br />
+                    {`A Votes: ${totalAVotes}`}
+                    <br />
+                    {`B Votes: ${totalBVotes}`}
+                    <br />
+                    {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
                 </div>
             </div>
 
