@@ -55,7 +55,7 @@ export function Round({
             if (savedScoreA != null && savedScoreA >= 0 && savedScoreA <= 10) {
                 setScoreA(savedScoreA);
             } else {
-                setScoreA(10);
+                setScoreA("");
             }
             const savedScoreB = sessionStorage.getItem(
                 `${roomId}/${currentFight}/${blockRound}/scoreB`
@@ -63,7 +63,7 @@ export function Round({
             if (savedScoreB != null && savedScoreB >= 0 && savedScoreB <= 10) {
                 setScoreB(savedScoreB);
             } else {
-                setScoreB(10);
+                setScoreB("");
             }
 
             // Get aggregate stats
