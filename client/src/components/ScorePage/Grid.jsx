@@ -35,9 +35,9 @@ export default function Grid({
                     {/* Mobile-only sidebar below Rounds */}
                     <div className="md:hidden p-4 bg-purple-900 rounded h-[25%]">
                         <br />
-                        {`A Votes: ${totalAVotes}`}
+                        {`${fighterA} Votes: ${totalAVotes}`}
                         <br />
-                        {`B Votes: ${totalBVotes}`}
+                        {`${fighterB} Votes: ${totalBVotes}`}
                         <br />
                         {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
                     </div>
@@ -53,9 +53,9 @@ export default function Grid({
                 {/* Fixed Sidebar (only visible on md+) */}
                 <div className="hidden md:block rounded bg-red-900 overflow-auto p-4 max-h-full">
                     <br />
-                    {`A Votes: ${totalAVotes}`}
+                    {`${fighterA} Votes: ${totalAVotes}`}
                     <br />
-                    {`B Votes: ${totalBVotes}`}
+                    {`${fighterB} Votes: ${totalBVotes}`}
                     <br />
                     {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
                 </div>
