@@ -16,7 +16,8 @@ export function ScorePage() {
     const [loading, setLoading] = useState(true);
     const [fighterA, setFighterA] = useState("");
     const [fighterB, setFighterB] = useState("");
-    const [winner, setWinner] = useState(""); // Winner is "A", "B", "Draw", or "". Only set when STATE == FINISHED
+    const [winnerName, setWinnerName] = useState(""); // Winner is fighterA, fighterB, "Draw", or "". Only set when STATE == FINISHED
+    const [winnerFighter, setWinnerFighter] = useState(""); // Winner is "A", "B", "Draw", or "".
     const { id: roomId } = useParams();
     const { user, token } = useUser();
     const [hostMessage, setHostMessage] = useState("");
@@ -26,6 +27,7 @@ export function ScorePage() {
     const socket = useRef(null);
     const [scorePageState, setScorePageState] = useState([]);
     const [authReady, setAuthReady] = useState(false);
+    const [state, setState] = useState(0); // IN_PROGRESS 0, FINISHED 1, SET_WINNER 2
 
     useEffect(() => {
         if (!user || !token || !roomId) {
@@ -33,6 +35,21 @@ export function ScorePage() {
         }
         setAuthReady(true);
     }, []);
+
+    useEffect(() => {
+        if (winnerFighter == "") return;
+        setState(1); // Set state to FINISHED
+        if (winnerFighter === "A") {
+            setWinnerName(fighterA);
+        } else if (winnerFighter === "B") {
+            setWinnerName(fighterB);
+        } else if (winnerFighter === "Draw") {
+            setWinnerName("Draw");
+        } else {
+            console.log(winnerFighter);
+            setWinnerName("OOPS");
+        }
+    }, [winnerFighter]);
 
     useEffect(() => {
         if (!user || !token || !roomId) {
@@ -63,9 +80,10 @@ export function ScorePage() {
             setFighterA(() => state.fighterA);
             setFighterB(() => state.fighterB);
             setLoading(() => false);
-            setWinner(() => state.winner);
             setRoomName(() => state.name);
             setCurrentFight(() => state.currentFight);
+            setState(() => state.state);
+            setWinnerFighter(state.winner);
 
             //Init state for rounds
             setScorePageState(() =>
@@ -97,7 +115,7 @@ export function ScorePage() {
         };
         socket.current.on("clearStorage", clearStorage);
 
-        socket.current.on("winner", setWinner);
+        socket.current.on("winner", setWinnerFighter);
 
         socket.current.on("endCard", () => {
             sessionStorage.clear();
@@ -118,7 +136,7 @@ export function ScorePage() {
             socket.current.off("incRound", incRound);
             socket.current.off("init", init);
             socket.current.off("clearStorage", clearStorage);
-            socket.current.off("winner", setWinner);
+            socket.current.off("winner", setWinnerFighter);
             socket.current.off("endCard");
             socket.current.off("hostMessage", setHostMessage);
             socket.current.disconnect();
@@ -141,8 +159,32 @@ export function ScorePage() {
         return <Loading />;
     }
 
-    if (winner != "") {
-        return <WinnerScreen winner={winner} />;
+    if (state == 1) {
+        // If first mount and pullstats not run in Round component, pull stats for all rounds here
+        // Assume first mount when votesA and votesB are both 0
+        if (scorePageState[0].votesA === 0 && scorePageState[0].votesB === 0) {
+            console.log("Pulling stats for all rounds");
+            Array.from(
+                { length: currentRound - 1 + 1 },
+                (_, i) => 1 + i
+            ).forEach((i) => {
+                socket.current.emit("pullStats", i, roomId, (stats) => {
+                    updateRoundState(i, "votesA", Number(stats.votesA));
+                    updateRoundState(i, "votesB", Number(stats.votesB));
+                    updateRoundState(i, "medianDiff", Number(stats.medianDiff));
+                });
+            });
+        }
+
+        return (
+            <WinnerScreen
+                winnerName={winnerName}
+                state={scorePageState}
+                currentRound={currentRound}
+                fighterA={fighterA}
+                fighterB={fighterB}
+            />
+        );
     }
 
     return (
@@ -176,8 +218,8 @@ export function ScorePage() {
                     }
                 />
             }
-            NameTagA={<NameTag name={fighterA} id={"A"} isWinner={winner} />}
-            NameTagB={<NameTag name={fighterB} id={"B"} isWinner={winner} />}
+            NameTagA={<NameTag name={fighterA} id={"A"} />}
+            NameTagB={<NameTag name={fighterB} id={"B"} />}
             Rounds={
                 <div className="flex items-center justify-center h-[75vh]">
                     {blocks.map((i) => (
@@ -188,7 +230,6 @@ export function ScorePage() {
                             totalRounds={totalRounds}
                             socket={socket}
                             roomId={roomId}
-                            winner={winner}
                             currentFight={currentFight}
                             scoreA={scorePageState[i - 1].scoreA}
                             setScoreA={(val) =>

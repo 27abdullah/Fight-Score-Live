@@ -9,7 +9,6 @@ export function Round({
     totalRounds,
     socket,
     roomId,
-    winner,
     currentFight,
     scoreA,
     setScoreA,
@@ -126,7 +125,6 @@ export function Round({
                         setScore={setScoreA}
                         setChanged={setChanged}
                         changed={changed}
-                        winner={winner}
                         direction={true}
                     />
                     <RoundNumber blockRound={blockRound} />
@@ -138,7 +136,6 @@ export function Round({
                         setScore={setScoreB}
                         setChanged={setChanged}
                         changed={changed}
-                        winner={winner}
                         direction={false}
                     />
                 </div>

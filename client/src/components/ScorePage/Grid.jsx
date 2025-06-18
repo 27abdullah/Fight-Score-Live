@@ -39,7 +39,8 @@ export default function Grid({
                         <br />
                         {`${fighterB} Votes: ${totalBVotes}`}
                         <br />
-                        {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
+                        {totalMedianDiff != 0 &&
+                            `${up} is up ${Math.abs(totalMedianDiff)} points!`}
                     </div>
 
                     {/* Rounds */}
@@ -57,7 +58,8 @@ export default function Grid({
                     <br />
                     {`${fighterB} Votes: ${totalBVotes}`}
                     <br />
-                    {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
+                    {totalMedianDiff != 0 &&
+                        `${up} is up ${Math.abs(totalMedianDiff)} points!`}{" "}
                 </div>
             </div>
 
