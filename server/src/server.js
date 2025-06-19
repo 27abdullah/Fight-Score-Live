@@ -9,7 +9,11 @@ const cron = require("node-cron");
 const { connectDatabase } = require("./config/mongodb");
 const { redisClient } = require("./config/redis");
 const configureSocket = require("./config/socket");
-const { setupUserRoutes, displayLiveFights } = require("./routes/user");
+const {
+    setupUserRoutes,
+    displayLiveFights,
+    pastCards,
+} = require("./routes/user");
 const { gameController } = require("./state/gameController");
 const { logHttp } = require("./config/logger");
 const {
@@ -132,6 +136,7 @@ app.get("/api/test", test);
 
 // User routes
 app.get("/api/live-fights", displayLiveFights);
+app.get("/api/past-cards", pastCards);
 
 // Error handling middleware
 app.use(errorHandler);
