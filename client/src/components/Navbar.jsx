@@ -42,6 +42,9 @@ export function Navbar() {
             <Link to="/about" onClick={handleNavClick}>
                 <button className={buttonClass}>About</button>
             </Link>
+            <Link to="/past-cards" onClick={handleNavClick}>
+                <button className={buttonClass}>Past Cards</button>
+            </Link>
             {!loading && !user && (
                 <>
                     <Link to="/login" onClick={handleNavClick}>
@@ -68,12 +71,12 @@ export function Navbar() {
     return (
         <nav ref={navRef} className="bg-gray-900 text-white w-full relative">
             {/* Desktop Navbar */}
-            <div className="hidden sm:flex justify-center items-center py-4 space-x-4">
+            <div className="hidden md:flex justify-center items-center py-4 space-x-4">
                 {navItems}
             </div>
 
             {/* Mobile Navbar Header */}
-            <div className="sm:hidden relative flex items-center justify-between px-4 py-3">
+            <div className="md:hidden relative flex items-center justify-between px-4 py-3">
                 {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
@@ -93,7 +96,7 @@ export function Navbar() {
 
             {/* Slide-down mobile overlay */}
             <div
-                className={`sm:hidden absolute top-full left-0 w-full bg-gray-900 z-40 overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`md:hidden absolute top-full left-0 w-full bg-gray-900 z-40 overflow-hidden transition-all duration-300 ease-in-out ${
                     menuOpen ? "max-h-96 py-2" : "max-h-0"
                 }`}
             >

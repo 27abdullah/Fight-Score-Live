@@ -12,6 +12,7 @@ import CreateRoom from "./pages/CreateRoom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import HostRoom from "./pages/HostRoom";
+import PastCards from "./pages/PastCards";
 
 export function App() {
     return (
@@ -70,6 +71,7 @@ export function App() {
                                 </AuthenticatedRoute>
                             }
                         />
+                        <Route path="/past-cards/" element={<PastCards />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
