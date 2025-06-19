@@ -120,7 +120,14 @@ export function ScorePage() {
         socket.current.on("endCard", () => {
             sessionStorage.clear();
             socket.current.disconnect();
-            navigate("/");
+            navigate(`/`, {
+                state: {
+                    flashMessage: {
+                        message: `Thank you for scoring ${roomName}!`,
+                        type: "success",
+                    },
+                },
+            });
         });
 
         socket.current.on("hostMessage", (message) => {
