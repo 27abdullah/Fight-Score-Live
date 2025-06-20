@@ -33,7 +33,14 @@ export default function SocialMediaTags() {
                 >
                     <path d="M40,0H10C4.486,0,0,4.486,0,10v30c0,5.514,4.486,10,10,10h30c5.514,0,10-4.486,10-10V10C50,4.486,45.514,0,40,0z M39,17h-3 c-2.145,0-3,0.504-3,2v3h6l-1,6h-5v20h-7V28h-3v-6h3v-3c0-4.677,1.581-8,7-8c2.902,0,6,1,6,1V17z"></path>
                 </svg>
-                <span className="mx-3">FightScoreLive</span>
+                <a
+                    href="https://www.facebook.com/share/19db29knBH/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mx-3 hover:underline"
+                >
+                    FightScoreLive
+                </a>
             </span>
             <span className="px-10 text-lg flex items-center ">
                 <svg
@@ -45,7 +52,14 @@ export default function SocialMediaTags() {
                 >
                     <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
                 </svg>
-                <span className="mx-3">FightScoreLive</span>
+                <a
+                    href="https://x.com/FightScoreLive?t=zxTwf1VT-Fk80bh4FC5Meg&s=09"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mx-3 hover:underline"
+                >
+                    FightScoreLive
+                </a>
             </span>
             <span className="px-10 text-lg flex items-center ">
                 <svg
