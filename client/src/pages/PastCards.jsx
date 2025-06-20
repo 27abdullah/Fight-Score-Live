@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Card from "../components/PastCards/Card";
 
 export default function PastCards() {
     const [pastCards, setPastCards] = useState([]);
@@ -25,7 +26,10 @@ export default function PastCards() {
             }
 
             const json = await response.json();
-            setPastCards(json.data || []);
+            const data = json.data || [];
+            // sort past cards by createdAt in descending order
+            data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPastCards(data);
             setLoading(false);
         };
 
@@ -50,68 +54,14 @@ export default function PastCards() {
 
             <div className="max-w-3xl mx-auto space-y-4">
                 {pastCards.map((card, index) => (
-                    <div
+                    <Card
                         key={card._id}
-                        className="bg-slate-600 shadow rounded-lg overflow-hidden"
-                    >
-                        <button
-                            onClick={() => toggleAccordion(index)}
-                            className={`${
-                                colours[index % colours.length]
-                            } w-full px-6 py-4 text-left focus:outline-none focus:ring flex justify-between items-center`}
-                        >
-                            <div>
-                                <h2 className="text-lg font-semibold">
-                                    {card.name}
-                                </h2>
-                                <p className="text-sm ">Owner: {card.owner}</p>
-                            </div>
-                            <span className="text-xl">
-                                {openCardIndex === index ? "▲" : "▼"}
-                            </span>
-                        </button>
-
-                        {openCardIndex === index && (
-                            <div className=" px-6 py-4 space-y-4">
-                                {card.fights.length === 0 ? (
-                                    <p className="">No fights in this card.</p>
-                                ) : (
-                                    card.fights.map((fight, i) => (
-                                        <div
-                                            key={i}
-                                            className="bg-black rounded p-3"
-                                        >
-                                            <p className="font-medium">
-                                                {fight.fighterA} vs{" "}
-                                                {fight.fighterB}
-                                            </p>
-                                            <p className="text-sm text-gray-300">
-                                                Sport: {fight.sport}
-                                            </p>
-                                            <p className="text-sm text-gray-300">
-                                                Rounds: {fight.totalRounds}
-                                            </p>
-                                            {fight.outcome?.winner && (
-                                                <p className="text-sm text-green-700 mt-1">
-                                                    Winner:{" "}
-                                                    {fight.outcome.winner} via{" "}
-                                                    {fight.outcome.way}
-                                                    {fight.outcome.round &&
-                                                        `${
-                                                            fight.outcome
-                                                                .round >
-                                                            fight.totalRounds
-                                                                ? "Decision"
-                                                                : ` in ${fight.outcome.round}`
-                                                        }`}
-                                                </p>
-                                            )}
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        )}
-                    </div>
+                        card={card}
+                        index={index}
+                        openCardIndex={openCardIndex}
+                        toggleAccordion={toggleAccordion}
+                        colours={colours}
+                    />
                 ))}
             </div>
         </div>
