@@ -29,6 +29,16 @@ export function ScorePage() {
     const [authReady, setAuthReady] = useState(false);
     const [state, setState] = useState(0); // IN_PROGRESS 0, FINISHED 1, SET_WINNER 2
 
+    // NOTE: This is not a typical state setter: cannot do setX(() => newValue) directly.
+    // Instead use: setX(newValue).
+    const updateRoundState = (index, field, value) => {
+        setScorePageState((prev) => {
+            const updated = [...prev];
+            updated[index] = { ...updated[index], [field]: value };
+            return updated;
+        });
+    };
+
     useEffect(() => {
         if (!user || !token || !roomId) {
             return;
@@ -150,39 +160,39 @@ export function ScorePage() {
         };
     }, [authReady]);
 
-    const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
+    useEffect(() => {
+        if (state == 1) {
+            // If first mount and pullstats not run in Round component, pull stats for all rounds here
+            // Assume first mount when votesA and votesB are both 0
+            if (
+                scorePageState[0].votesA === 0 &&
+                scorePageState[0].votesB === 0
+            ) {
+                Array.from(
+                    { length: currentRound - 1 + 1 },
+                    (_, i) => 1 + i
+                ).forEach((i) => {
+                    socket.current.emit("pullStats", i, roomId, (stats) => {
+                        updateRoundState(i, "votesA", Number(stats.votesA));
+                        updateRoundState(i, "votesB", Number(stats.votesB));
+                        updateRoundState(
+                            i,
+                            "medianDiff",
+                            Number(stats.medianDiff)
+                        );
+                    });
+                });
+            }
+        }
+    }, [state]);
 
-    // NOTE: This is not a typical state setter: cannot do setX(() => newValue) directly.
-    // Instead use: setX(newValue).
-    const updateRoundState = (index, field, value) => {
-        setScorePageState((prev) => {
-            const updated = [...prev];
-            updated[index] = { ...updated[index], [field]: value };
-            return updated;
-        });
-    };
+    const blocks = Array.from({ length: totalRounds }, (_, i) => i + 1);
 
     if (loading) {
         return <Loading />;
     }
 
-    if (state == 1) {
-        // If first mount and pullstats not run in Round component, pull stats for all rounds here
-        // Assume first mount when votesA and votesB are both 0
-        if (scorePageState[0].votesA === 0 && scorePageState[0].votesB === 0) {
-            console.log("Pulling stats for all rounds");
-            Array.from(
-                { length: currentRound - 1 + 1 },
-                (_, i) => 1 + i
-            ).forEach((i) => {
-                socket.current.emit("pullStats", i, roomId, (stats) => {
-                    updateRoundState(i, "votesA", Number(stats.votesA));
-                    updateRoundState(i, "votesB", Number(stats.votesB));
-                    updateRoundState(i, "medianDiff", Number(stats.medianDiff));
-                });
-            });
-        }
-
+    if (state === 1) {
         return (
             <WinnerScreen
                 winnerName={winnerName}
