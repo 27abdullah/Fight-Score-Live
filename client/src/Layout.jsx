@@ -30,14 +30,14 @@ export function Layout() {
         : "";
 
     return (
-        <div className="flex flex-col h-screen w-screen">
+        <div className="flex flex-col h-screen w-screen overflow-x-hidden">
             <Navbar />
             <FlashBar
                 message={flashMessage?.message}
                 type={flashMessage?.type}
             />
             <main
-                className={`flex-grow flex flex-col ${overflow} items-center justify-center`}
+                className={`flex-grow flex flex-col ${overflow} items-center justify-center p-2`}
             >
                 <Outlet />
             </main>
