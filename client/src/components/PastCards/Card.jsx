@@ -62,13 +62,15 @@ export default function Card({
                                     </p>
                                     {fight.outcome?.winner && (
                                         <p className="text-sm text-green-700 mt-1">
-                                            Winner: {fight.outcome.winner} via{" "}
-                                            {fight.outcome.way}
+                                            {fight.outcome.winner == "A"
+                                                ? fight.fighterA
+                                                : fight.fighterB}{" "}
+                                            via {fight.outcome.way}
                                             {fight.outcome.round &&
                                                 `${
                                                     fight.outcome.round >
                                                     fight.totalRounds
-                                                        ? "Decision"
+                                                        ? ""
                                                         : ` in ${fight.outcome.round}`
                                                 }`}
                                         </p>
