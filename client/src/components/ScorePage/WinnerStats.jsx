@@ -23,11 +23,11 @@ export default function WinnerStats({
             <div className="text-3xl">{winnerName}</div>
             <div className="text-sm">
                 <br />
-                {`${fighterA} Votes: ${totalAVotes}`}
+                {`${fighterA} 📈 ${totalAVotes} votes`}
                 <br />
-                {`${fighterB} Votes: ${totalBVotes}`}
+                {`${fighterB} 📈 ${totalBVotes} votes`}
                 <br />
-                {`${up} is up ${Math.abs(totalMedianDiff)} points!`}
+                {`${up} was up ${Math.abs(totalMedianDiff)} points!`}
             </div>
         </div>
     );

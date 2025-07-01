@@ -1,3 +1,5 @@
+import StatsTab from "./StatsTab";
+
 export default function Grid({
     Banner,
     NameTagA,
@@ -33,14 +35,15 @@ export default function Grid({
                 {/* Scrollable Rounds Section */}
                 <div className="rounded bg-slate-600 overflow-hidden min-h-0 min-w-0 flex flex-col">
                     {/* Mobile-only sidebar below Rounds */}
-                    <div className="md:hidden p-4 bg-purple-900 rounded h-[25%]">
-                        <br />
-                        {`${fighterA} Votes: ${totalAVotes}`}
-                        <br />
-                        {`${fighterB} Votes: ${totalBVotes}`}
-                        <br />
-                        {totalMedianDiff != 0 &&
-                            `${up} is up ${Math.abs(totalMedianDiff)} points!`}
+                    <div className="md:hidden p-4 bg-red-900 rounded h-[25%]">
+                        <StatsTab
+                            fighterA={fighterA}
+                            fighterB={fighterB}
+                            totalAVotes={totalAVotes}
+                            totalBVotes={totalBVotes}
+                            up={up}
+                            totalMedianDiff={totalMedianDiff}
+                        />
                     </div>
 
                     {/* Rounds */}
@@ -53,13 +56,14 @@ export default function Grid({
 
                 {/* Fixed Sidebar (only visible on md+) */}
                 <div className="hidden md:block rounded bg-red-900 overflow-auto p-4 max-h-full">
-                    <br />
-                    {`${fighterA} Votes: ${totalAVotes}`}
-                    <br />
-                    {`${fighterB} Votes: ${totalBVotes}`}
-                    <br />
-                    {totalMedianDiff != 0 &&
-                        `${up} is up ${Math.abs(totalMedianDiff)} points!`}{" "}
+                    <StatsTab
+                        fighterA={fighterA}
+                        fighterB={fighterB}
+                        totalAVotes={totalAVotes}
+                        totalBVotes={totalBVotes}
+                        up={up}
+                        totalMedianDiff={totalMedianDiff}
+                    />
                 </div>
             </div>
 

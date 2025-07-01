@@ -34,22 +34,22 @@ export default function Broadcast({ user, roomId, token }) {
     };
 
     return (
-        <div className="flex items-center justify-center mt-4 rounded-lg">
+        <div className="flex items-center justify-center mt-4 rounded-lg pl-4 pr-4">
             <input
                 type="text"
                 maxLength={20}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="px-4 py-2 border w-full rounded-lg focus:outline-none focus:border-blue-700"
+                className="px-4 py-2 border w-full rounded-lg focus:outline-none focus:border-yellow-700 bg-zinc-800"
                 placeholder="Type here..."
             />
             <button
                 disabled={wait}
                 onClick={handleClick}
-                className={`px-4 py-2 mx-2  text-white rounded-lg ${
+                className={`px-4 py-2 mx-2 rounded-lg ${
                     wait
                         ? "bg-gray-500 cursor-not-allowed"
-                        : "bg-red-900 hover:bg-red-1000"
+                        : "bg-red-900 hover:border-yellow-700"
                 }`}
             >
                 Broadcast

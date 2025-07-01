@@ -48,6 +48,9 @@ export function BarGraph({ votesA, votesB, medianDiff, direction }) {
                 style={{ transform: direction ? "scaleY(1)" : "scaleY(-1)" }}
             >
                 <motion.path
+                    style={{
+                        filter: "drop-shadow(2px 2px 2px rgba(0,0,0,0.2))",
+                    }}
                     d={pathD}
                     fill={fill}
                     initial={{ opacity: 0 }}

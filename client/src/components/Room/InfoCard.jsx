@@ -20,15 +20,13 @@ function InfoCard({
 
     return (
         <div className="max-w-m p-10 bg-highlightBackground border border-headerPurple rounded-lg shadow-sm">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <h5 className="mb-2 text-2xl font-bold tracking-tight">
                 {eventName}
             </h5>
-            <p className="mt-2 font-normal text-gray-700 dark:text-gray-400">
+            <p className="mt-2 font-normal ">
                 {`Live: ${fighterA} vs ${fighterB}`}
             </p>
-            <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-                {`Round: ${currentRound}`}
-            </p>
+            <p className="mb-4 font-normal ">{`Round: ${currentRound}`}</p>
 
             {user?.id === owner ? (
                 <HostRoomButton

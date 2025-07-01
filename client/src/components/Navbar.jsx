@@ -30,7 +30,7 @@ export function Navbar() {
     };
 
     const buttonClass =
-        "px-4 py-2 text-left w-full hover:border-transparent hover:md:border-blue-500";
+        "px-4 py-2 text-center w-full hover:border-transparent hover:md:border-blue-500";
     const navItems = (
         <>
             <Link to="/" onClick={handleNavClick}>
@@ -69,7 +69,7 @@ export function Navbar() {
     );
 
     return (
-        <nav ref={navRef} className="bg-gray-900 text-white w-full relative">
+        <nav ref={navRef} className="bg-gray-900 w-full relative">
             {/* Desktop Navbar */}
             <div className="hidden md:flex justify-center items-center py-4 space-x-4">
                 {navItems}
@@ -80,7 +80,9 @@ export function Navbar() {
                 {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className="text-white text-2xl border-b border-black"
+                    className={`text-2xl border-b  ${
+                        menuOpen ? "border-orange-700" : "border-black"
+                    }`}
                 >
                     ☰
                 </button>
@@ -100,7 +102,9 @@ export function Navbar() {
                     menuOpen ? "max-h-96 py-2" : "max-h-0"
                 }`}
             >
-                <div className="flex flex-col px-4 space-y-1">{navItems}</div>
+                <div className="flex flex-col px-4 space-y-1 mb-6">
+                    {navItems}
+                </div>
             </div>
         </nav>
     );

@@ -1,20 +1,21 @@
 export function About() {
+    const tabClass =
+        "shadow-lg bg-highlightBackground rounded-lg p-10 w-full max-w-2xl";
+    const headerClass = "text-headerPurple text-3xl font-bold mb-4";
+    const paraClass = "text-xl";
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen space-y-10 p-5">
-            <div className="shadow-lg bg-highlightBackground rounded-lg p-6 w-full max-w-2xl">
-                <h1 className="text-headerPurple text-3xl font-bold mb-4">
-                    About Us
-                </h1>
-                <p className="text-xl">
+            <div className={tabClass}>
+                <h1 className={headerClass}>About Us</h1>
+                <p className={paraClass}>
                     Welcome to Fight Score Live! Use this website to score the
                     biggest boxing and mma fights round-by-round, live.
                 </p>
             </div>
-            <div className="shadow-lg bg-highlightBackground rounded-lg p-6 w-full  max-w-2xl">
-                <h1 className="text-headerPurple text-3xl font-bold mb-4">
-                    How to Score Fights (Live)
-                </h1>
-                <p className="text-xl">
+            <div className={tabClass}>
+                <h1 className={headerClass}>How to Score Fights (Live)</h1>
+                <p className={paraClass}>
                     Boxing and MMA fights are scored on a 10 point system.
                     Typically, the fighter you think won the round gets a 10,
                     while the loser gets a 9. In boxing, for every knockdown,
@@ -23,7 +24,7 @@ export function About() {
                     e.g., 10-8 if one fighter completely dominated the other.
                 </p>
                 <br></br>
-                <p className="text-xl">
+                <p className={paraClass}>
                     Click the ScorePage button on the top navigation bar to go
                     to the score page. On the ScorePage, each column corresponds
                     to a round and each row corresponds to that fighter's scores
@@ -39,7 +40,7 @@ export function About() {
                     won who most scorers on this website thought won.
                 </p>
                 <br></br>
-                <p className="text-xl">
+                <p className={paraClass}>
                     Joining midway through a fight is perfectly fine! All the
                     rounds you missed out on scoring will appear blank.
                 </p>

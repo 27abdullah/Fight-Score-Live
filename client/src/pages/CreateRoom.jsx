@@ -83,7 +83,7 @@ export function CreateRoom() {
             });
         }
     };
-
+    const inputColour = "bg-zinc-700 text-white";
     return token == null ? (
         <h1>Loading</h1>
     ) : (
@@ -108,7 +108,7 @@ export function CreateRoom() {
                             type="text"
                             value={roomName}
                             onChange={(e) => setRoomName(e.target.value)}
-                            className="w-full p-2 border rounded"
+                            className={`w-full p-2 border rounded ${inputColour}`}
                             required
                             maxLength={25}
                         />
@@ -124,7 +124,7 @@ export function CreateRoom() {
                             max="20"
                             value={numFights || ""}
                             onChange={handleNumFightsChange}
-                            className="w-full p-2 border rounded"
+                            className={`w-full p-2 border rounded ${inputColour}`}
                             required
                         />
                     </div>
@@ -148,7 +148,7 @@ export function CreateRoom() {
                                         e.target.value
                                     )
                                 }
-                                className="w-full p-2 border rounded mb-2"
+                                className={`w-full p-2 border rounded mb-2 ${inputColour}`}
                             >
                                 <option value="Boxing">Boxing</option>
                                 <option value="MMA">MMA</option>
@@ -186,7 +186,7 @@ export function CreateRoom() {
                                         );
                                     }
                                 }}
-                                className="w-full p-2 border rounded mb-2"
+                                className={`w-full p-2 border rounded mb-2 ${inputColour}`}
                                 required
                             />
 
@@ -203,7 +203,7 @@ export function CreateRoom() {
                                         e.target.value
                                     )
                                 }
-                                className="w-full p-2 border rounded mb-2"
+                                className={`w-full p-2 border rounded mb-2 ${inputColour}`}
                                 required
                                 maxLength={30}
                             />
@@ -221,7 +221,7 @@ export function CreateRoom() {
                                         e.target.value
                                     )
                                 }
-                                className="w-full p-2 border rounded"
+                                className={`w-full p-2 border rounded ${inputColour}`}
                                 required
                                 maxLength={30}
                             />
