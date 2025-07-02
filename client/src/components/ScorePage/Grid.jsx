@@ -9,6 +9,8 @@ export default function Grid({
     currentRound,
     fighterA,
     fighterB,
+    socket,
+    roomId,
 }) {
     const totalAVotes = state
         .slice(0, currentRound)
@@ -37,12 +39,15 @@ export default function Grid({
                     {/* Mobile-only sidebar below Rounds */}
                     <div className="md:hidden p-4 bg-red-900 rounded h-[25%]">
                         <StatsTab
+                            socket={socket}
+                            roomId={roomId}
                             fighterA={fighterA}
                             fighterB={fighterB}
                             totalAVotes={totalAVotes}
                             totalBVotes={totalBVotes}
                             up={up}
                             totalMedianDiff={totalMedianDiff}
+                            isMobile={true}
                         />
                     </div>
 
@@ -57,12 +62,15 @@ export default function Grid({
                 {/* Fixed Sidebar (only visible on md+) */}
                 <div className="hidden md:block rounded bg-red-900 overflow-auto p-4 max-h-full">
                     <StatsTab
+                        socket={socket}
+                        roomId={roomId}
                         fighterA={fighterA}
                         fighterB={fighterB}
                         totalAVotes={totalAVotes}
                         totalBVotes={totalBVotes}
                         up={up}
                         totalMedianDiff={totalMedianDiff}
+                        isMobile={false}
                     />
                 </div>
             </div>

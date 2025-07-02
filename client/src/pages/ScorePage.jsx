@@ -133,7 +133,7 @@ export function ScorePage() {
             navigate(`/`, {
                 state: {
                     flashMessage: {
-                        message: `Thank you for scoring ${roomName}!`,
+                        message: `Thank you for scoring!`,
                         type: "success",
                     },
                 },
@@ -210,6 +210,8 @@ export function ScorePage() {
             currentRound={currentRound}
             fighterA={fighterA}
             fighterB={fighterB}
+            socket={socket}
+            roomId={roomId}
             Banner={
                 <ScrollingBanner
                     items={

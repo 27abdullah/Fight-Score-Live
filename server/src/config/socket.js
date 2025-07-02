@@ -110,6 +110,15 @@ const configureSocket = (server, gameController) => {
             const state = cardState.jsonify();
             callback(state);
         });
+
+        socket.on("emailSubscribe", async (email, id) => {
+            if (!email || !id) return;
+            if (!(await gameController.hasId(id))) return;
+
+            const cardState = await gameController.getCard(id);
+            if (cardState == null) return;
+            cardState.addEmail(email);
+        });
     });
 
     return io;

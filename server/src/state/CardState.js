@@ -5,6 +5,7 @@ const {
     FINISHED,
     SET_WINNER,
 } = require("../utils");
+const { sendEmails } = require("../config/mailgun");
 
 /**
  * This class should do all the state validatino (IN_PROGRESS, FINISHED, etc.) and not
@@ -160,6 +161,18 @@ class CardState {
         this.winner = winner;
         await this.persist(this.currentRound, outcome);
         await this.updateRedis(this.jsonify(), "setWinner");
+
+        // If penultimate fight, email subscribers
+        if (this.currentFight == this.totalFights - 2) {
+            const emails = await this.redis.sMembers(`${this.id}/emails`);
+            if (emails.length == 0) {
+                return true;
+            }
+            const subject = `Catch ${this.name}'s main event @ FightScore.Live!`;
+            const text = `You have subscribed to FightScore.Live for ${this.name}. The next fight is the main event! Catch it live at http://fightscore.live/score-page/${this.id}`;
+            await sendEmails(emails, subject, text);
+        }
+
         return true;
     }
 
@@ -248,16 +261,29 @@ class CardState {
     }
 
     async clearLiveState() {
-        await this.redis.del(this.id, (err, reply) => {
-            if (err) {
-                console.error("Error deleting key:", err);
-                return false;
-            }
-        });
+        const state = this.redis.del(this.id);
+        const emails = this.redis.del(`${this.id}/emails`);
+
+        await Promise.all([state, emails]);
     }
 
     async clear() {
         await Promise.all([this.clearFightStats(), this.clearLiveState()]);
+    }
+
+    async addEmail(email) {
+        if (!email || !email.includes("@")) {
+            return false;
+        }
+
+        // Add email to the set of emails for this card
+        await this.redis.sAdd(`${this.id}/emails`, email, (err, reply) => {
+            if (err) {
+                console.error("Error adding email to redis:", err);
+            }
+        });
+
+        return true;
     }
 
     async roundResults(scoreA, scoreB, round, userId) {
