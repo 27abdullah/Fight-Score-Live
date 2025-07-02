@@ -80,7 +80,7 @@ export function Navbar() {
                 {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className={`text-2xl border-b  ${
+                    className={`text-2xl border-b px-3 py-2 rounded-2xl ${
                         menuOpen ? "border-orange-700" : "border-black"
                     }`}
                 >
