@@ -44,6 +44,13 @@ const {
     fetchRoom,
     hostMessage,
 } = require("./routes/moderator");
+const {
+    endOldCardsJob,
+    addTokensJob,
+    MIDNIGHTLY,
+    WEEKLY,
+} = require("./config/cron");
+const supabase = require("./config/supabaseClient");
 
 const app = express();
 const server = http.createServer(app);
@@ -151,12 +158,12 @@ const startServer = async () => {
             console.log("Server listening on port 4000");
         });
 
-        cron.schedule("0 0 * * *", async () => {
-            try {
-                await gameController.endOldCards();
-            } catch (error) {
-                console.error("Error ending old cards (cron):", error);
-            }
+        // Start cron jobs
+        cron.schedule(MIDNIGHTLY, () => {
+            endOldCardsJob(gameController);
+        });
+        cron.schedule(WEEKLY, () => {
+            addTokensJob(supabase);
         });
     } catch (error) {
         console.error("Error starting server:", error);
