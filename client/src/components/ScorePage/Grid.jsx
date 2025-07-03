@@ -25,7 +25,7 @@ export default function Grid({
     const up = totalMedianDiff > 0 ? fighterA : fighterB;
 
     return (
-        <div className="flex flex-col h-screen w-screen overflow-hidden">
+        <div className="flex flex-col h-screen w-screen overflow-hidden bg-zeus">
             {/* Top: Banner and NameTagA */}
             <div className="flex flex-col gap-2 pt-2 pb-2">
                 <div className="rounded overflow-hidden">{Banner}</div>
@@ -33,11 +33,11 @@ export default function Grid({
             </div>
 
             {/* Main content with Rounds + Sidebar */}
-            <div className="flex-grow min-h-0 min-w-0 pt-2 pb-2 flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-2">
+            <div className="flex-grow min-h-0 min-w-0 p-4 flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-2">
                 {/* Scrollable Rounds Section */}
-                <div className="rounded bg-slate-600 overflow-hidden min-h-0 min-w-0 flex flex-col">
+                <div className="rounded overflow-hidden min-h-0 min-w-0 flex flex-col gap-2">
                     {/* Mobile-only sidebar below Rounds */}
-                    <div className="md:hidden p-4 bg-red-900 rounded h-[25%]">
+                    <div className="md:hidden p-4 rounded h-[25%] bg-dune">
                         <StatsTab
                             socket={socket}
                             roomId={roomId}
@@ -52,7 +52,7 @@ export default function Grid({
                     </div>
 
                     {/* Rounds */}
-                    <div className="flex flex-1 overflow-x-auto overflow-y-hidden">
+                    <div className="flex flex-1 overflow-x-auto overflow-y-hidden bg-dune rounded">
                         <div className="flex items-center gap-4 px-4 h-full min-w-max mx-auto">
                             {Rounds}
                         </div>
@@ -60,7 +60,7 @@ export default function Grid({
                 </div>
 
                 {/* Fixed Sidebar (only visible on md+) */}
-                <div className="hidden md:block rounded bg-red-900 overflow-auto p-4 max-h-full">
+                <div className="hidden md:block rounded bg-dune overflow-auto p-4 max-h-full">
                     <StatsTab
                         socket={socket}
                         roomId={roomId}

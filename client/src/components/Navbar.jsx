@@ -30,7 +30,7 @@ export function Navbar() {
     };
 
     const buttonClass =
-        "px-4 py-2 text-center w-full hover:border-transparent hover:md:border-blue-500";
+        "px-4 text-center text-zeus font-extrabold text-md w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
     const navItems = (
         <>
             <Link to="/" onClick={handleNavClick}>
@@ -69,14 +69,14 @@ export function Navbar() {
     );
 
     return (
-        <nav ref={navRef} className="bg-gray-900 w-full relative">
+        <nav ref={navRef} className="bg-white w-full relative">
             {/* Desktop Navbar */}
-            <div className="hidden md:flex justify-center items-center py-4 space-x-4">
+            <div className="hidden md:flex justify-center items-center space-x-4 py-1">
                 {navItems}
             </div>
 
             {/* Mobile Navbar Header */}
-            <div className="md:hidden relative flex items-center justify-between px-4 py-3">
+            <div className="md:hidden relative flex items-center justify-between px-4 py-1">
                 {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}

@@ -20,7 +20,7 @@ export function Block({
                     blockRound == currentRound
                         ? changed
                             ? "border-4 border-green-500 rounded-md"
-                            : "border-4 border-orange-500 rounded-md"
+                            : "border-4 border-rich_carmine rounded-md"
                         : ""
                 }`}
             >

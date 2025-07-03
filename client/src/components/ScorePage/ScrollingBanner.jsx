@@ -4,7 +4,7 @@ import SocialMediaTags from "./SocialMediaTags";
 
 export default function ScrollingBanner({ items }) {
     return (
-        <div className="overflow-hidden bg-red-900 text-white py-2 bg-opacity-65 border-t-2 border-b-2 border-black">
+        <div className="overflow-hidden bg-rich_carmine text-white font-semibold py-2 bg-opacity-70 border-t-2 border-b-2 border-dune">
             <div className="relative whitespace-nowrap w-full overflow-hidden">
                 <motion.div
                     className="inline-flex gap-4 min-w-full"

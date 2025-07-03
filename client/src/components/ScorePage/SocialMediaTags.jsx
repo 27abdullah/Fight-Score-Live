@@ -1,4 +1,5 @@
 export default function SocialMediaTags() {
+    const textClassName = "mx-3 hover:underline text-white font-semibold";
     return (
         <>
             <span className="px-10 text-lg flex items-center">
@@ -15,7 +16,7 @@ export default function SocialMediaTags() {
                     href="https://www.instagram.com/fightscore.live/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mx-3 hover:underline"
+                    className={textClassName}
                 >
                     FightScore.Live
                 </a>
@@ -37,7 +38,7 @@ export default function SocialMediaTags() {
                     href="https://www.facebook.com/share/19db29knBH/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mx-3 hover:underline"
+                    className={textClassName}
                 >
                     FightScoreLive
                 </a>
@@ -56,7 +57,7 @@ export default function SocialMediaTags() {
                     href="https://x.com/FightScoreLive?t=zxTwf1VT-Fk80bh4FC5Meg&s=09"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mx-3 hover:underline"
+                    className={textClassName}
                 >
                     FightScoreLive
                 </a>

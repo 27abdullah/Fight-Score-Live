@@ -37,7 +37,7 @@ export function Layout() {
                 type={flashMessage?.type}
             />
             <main
-                className={`flex-grow flex flex-col ${overflow} items-center justify-center p-2`}
+                className={`flex-grow flex flex-col ${overflow} items-center justify-center p-2 bg-zeus`}
             >
                 <Outlet />
             </main>
