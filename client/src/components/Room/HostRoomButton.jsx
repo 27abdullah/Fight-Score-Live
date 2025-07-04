@@ -60,7 +60,10 @@ export default function HostRoomButton({
                 </svg>
             </a>
             {/* <p className="w-20 text-right">{sport}</p> */}
-            <button className="bg-black text-xs p-3" onClick={deleteCard}>
+            <button
+                className="bg-black text-white text-xs p-3"
+                onClick={deleteCard}
+            >
                 Delete
             </button>
         </div>

@@ -141,7 +141,7 @@ export function Navbar() {
 
             {/* Slide-down mobile overlay */}
             <div
-                className={`md:hidden absolute top-full left-0 w-full bg-white z-40 overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`md:hidden absolute top-full left-0 w-full bg-white border-rich_carmine border-b-2 z-40 overflow-hidden transition-all duration-300 ease-in-out ${
                     menuOpen ? "max-h-96 py-2" : "max-h-0"
                 }`}
             >

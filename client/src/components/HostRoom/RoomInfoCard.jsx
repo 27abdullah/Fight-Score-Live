@@ -13,7 +13,7 @@ function RoomInfoCard({ roomData, token, roomId, user }) {
 
     return (
         <div>
-            <div className="shadow-lg bg-highlightBackground rounded-lg p-10">
+            <div className="shadow-lg bg-card rounded-lg p-10">
                 <div className="flex justify-between items-center mb-4 text-3xl">
                     <span>{fighterA}</span>
                     <span>{"/"}</span>

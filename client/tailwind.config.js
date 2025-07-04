@@ -7,7 +7,7 @@ module.exports = {
                 buttonPurple: "#535bf2",
                 background: "#242424",
                 headerPurple: "#978bd1",
-                highlightBackground: "#1a1a1a",
+                card: "#1a1a1a",
                 rich_carmine: "#ec003f",
                 dodger: "#2b7fff",
                 cadmium: "#ff7d26",

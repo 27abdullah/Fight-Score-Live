@@ -75,7 +75,7 @@ function Controls({ roomData, roomId, setRoomData, token, setStats }) {
     }
 
     return (
-        <div className="flex flex-col space-y-4 p-10 bg-highlightBackground text-white rounded-lg">
+        <div className="flex flex-col space-y-4 p-10 bg-card text-white rounded-lg">
             {roomData.state == FINISHED &&
             roomData.totalFights > roomData.currentFight + 1 ? (
                 <NextFight handleRequest={handleRequest} />

@@ -5,13 +5,8 @@ export default function PastCards() {
     const [pastCards, setPastCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [openCardIndex, setOpenCardIndex] = useState(null);
-    const colours = [
-        "bg-blue-900", // deep blue
-        "bg-slate-900", // cool dark slate blue
-        "bg-indigo-900", // dark indigo
-        "bg-cyan-900", // dark cyan blue
-        "bg-sky-900", // dark sky blue
-    ];
+
+    const colours = ["bg-card border-rich_carmine", "bg-card border-white"];
 
     useEffect(() => {
         const fetchPastCards = async () => {

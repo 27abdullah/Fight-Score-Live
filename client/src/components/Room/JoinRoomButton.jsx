@@ -22,7 +22,7 @@ export default function JoinRoomButton({ id, sport, handleNavigate }) {
                     />
                 </svg>
             </a>
-            <p className="w-20 text-right">{sport}</p>
+            <p className="w-20 text-center px-3 py-2 border-zeus">{sport}</p>
         </div>
     );
 }

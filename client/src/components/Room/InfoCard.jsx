@@ -19,7 +19,7 @@ function InfoCard({
     };
 
     return (
-        <div className="max-w-m p-10 bg-highlightBackground border border-headerPurple rounded-lg shadow-sm">
+        <div className="max-w-m p-10 bg-dune border-4 rounded-lg shadow-sm">
             <h5 className="mb-2 text-2xl font-bold tracking-tight">
                 {eventName}
             </h5>

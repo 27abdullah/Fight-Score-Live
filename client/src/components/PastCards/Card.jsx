@@ -8,7 +8,7 @@ export default function Card({
     colours,
 }) {
     return (
-        <div className="bg-slate-600 shadow rounded-lg overflow-hidden">
+        <div className="bg-dune shadow rounded-lg overflow-hidden">
             <button
                 onClick={() => toggleAccordion(index)}
                 className={`${
@@ -61,7 +61,7 @@ export default function Card({
                                         Rounds: {fight.totalRounds}
                                     </p>
                                     {fight.outcome?.winner && (
-                                        <p className="text-sm text-green-700 mt-1">
+                                        <p className="text-sm text-rich_carmine mt-1">
                                             {fight.outcome.winner == "A"
                                                 ? fight.fighterA
                                                 : fight.fighterB}{" "}
