@@ -1,12 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "../hooks/useUser";
-import Logo from "../assets/logo_b.svg?react";
+import Logo from "../assets/logo.png";
 
 export function Navbar() {
     const { user, loading } = useUser();
     const [menuOpen, setMenuOpen] = useState(false);
     const navRef = useRef(null);
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        setMenuOpen(false);
+        navigate("/");
+    };
+
+    const logo = (
+        <button
+            onClick={handleLogoClick}
+            className="p-0 bg-transparent border-none focus:outline-none hover:border-none focus:border-none focus-ring-0 transition-none"
+        >
+            <img src={Logo} className="h-16 w-auto pb-2 pt-3" />
+        </button>
+    );
 
     // Close on outside click
     useEffect(() => {
@@ -32,11 +47,9 @@ export function Navbar() {
 
     const buttonClass =
         "px-4 text-center text-zeus font-extrabold text-md w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
-    const navItems = (
+
+    const leftItems = (
         <>
-            <Link to="/" onClick={handleNavClick}>
-                <button className={buttonClass}>Home</button>
-            </Link>
             <Link to="/rooms" onClick={handleNavClick}>
                 <button className={buttonClass}>Rooms</button>
             </Link>
@@ -46,6 +59,11 @@ export function Navbar() {
             <Link to="/past-cards" onClick={handleNavClick}>
                 <button className={buttonClass}>Past Cards</button>
             </Link>
+        </>
+    );
+
+    const rightItems = (
+        <>
             {!loading && !user && (
                 <>
                     <Link to="/login" onClick={handleNavClick}>
@@ -72,8 +90,16 @@ export function Navbar() {
     return (
         <nav ref={navRef} className="bg-white w-full relative">
             {/* Desktop Navbar */}
-            <div className="hidden md:flex justify-center items-center space-x-4 py-1">
-                {navItems}
+
+            <div className="hidden md:grid grid-cols-5 items-center py-1 w-full mx-auto">
+                <div className="flex justify-end space-x-1 col-span-2">
+                    {leftItems}
+                </div>
+                {/* Center logo */}
+                <div className="flex justify-center">{logo}</div>={" "}
+                <div className="flex justify-start space-x-2 col-span-2">
+                    {rightItems}
+                </div>
             </div>
 
             {/* Mobile Navbar Header */}
@@ -102,12 +128,12 @@ export function Navbar() {
                 </button>
 
                 {/* Centered Logo */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
-                    <Logo className="h-40 w-40" />
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    {logo}
                 </div>
 
                 {/* Spacer to balance layout */}
-                <div className="w-6" />
+                <div className="w-5" />
             </div>
 
             {/* Slide-down mobile overlay */}
@@ -117,7 +143,8 @@ export function Navbar() {
                 }`}
             >
                 <div className="flex flex-col px-4 space-y-1 mb-2">
-                    {navItems}
+                    {leftItems}
+                    {rightItems}
                 </div>
             </div>
         </nav>
