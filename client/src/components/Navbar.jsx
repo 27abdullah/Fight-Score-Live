@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "../hooks/useUser";
+import Logo from "../assets/logo_b.svg?react";
 
 export function Navbar() {
     const { user, loading } = useUser();
@@ -76,20 +77,33 @@ export function Navbar() {
             </div>
 
             {/* Mobile Navbar Header */}
-            <div className="md:hidden relative flex items-center justify-between px-4 py-1">
+            <div className="md:hidden relative flex items-center justify-between px-4 py-3">
                 {/* Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className={`text-2xl border-b px-3 py-2 rounded-2xl ${
-                        menuOpen ? "border-orange-700" : "border-black"
+                    className={`text-2xl border-b p-1 rounded-2xl ${
+                        menuOpen ? "text-rich_carmine" : ""
                     }`}
                 >
-                    ☰
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 6h16M4 12h16m-7 6h7"
+                        />
+                    </svg>
                 </button>
 
                 {/* Centered Logo */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
-                    FSL
+                    <Logo className="h-40 w-40" />
                 </div>
 
                 {/* Spacer to balance layout */}
@@ -98,11 +112,11 @@ export function Navbar() {
 
             {/* Slide-down mobile overlay */}
             <div
-                className={`md:hidden absolute top-full left-0 w-full bg-gray-900 z-40 overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`md:hidden absolute top-full left-0 w-full bg-white z-40 overflow-hidden transition-all duration-300 ease-in-out ${
                     menuOpen ? "max-h-96 py-2" : "max-h-0"
                 }`}
             >
-                <div className="flex flex-col px-4 space-y-1 mb-6">
+                <div className="flex flex-col px-4 space-y-1 mb-2">
                     {navItems}
                 </div>
             </div>
