@@ -95,8 +95,11 @@ export function Navbar() {
                 <div className="flex justify-end space-x-1 col-span-2">
                     {leftItems}
                 </div>
+
                 {/* Center logo */}
-                <div className="flex justify-center">{logo}</div>={" "}
+                <div className="flex justify-center">{logo}</div>
+
+                {/* Right items (span 2 columns, align left) */}
                 <div className="flex justify-start space-x-2 col-span-2">
                     {rightItems}
                 </div>
