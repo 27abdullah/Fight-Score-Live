@@ -1,12 +1,15 @@
 export function NameTag({ name, id }) {
     const shadow =
         id === "A"
-            ? `drop-shadow-[0_0_10px_rgba(255,0,0,0.2)]`
-            : `drop-shadow-[0_0_10px_rgba(0,0,255,0.2)]`;
+            ? `drop-shadow-[0_0_4px_rgba(43,127,255,0.3)]`
+            : `drop-shadow-[0_0_2px_rgba(255,125,38,0.3)]`;
+    const colour = id === "A" ? "dodger" : "cadmium";
     return (
         <div className="flex items-center justify-center w-full h-full">
-            <h1 className={`text-2xl sm:text-3xl md:text-3xl  ${shadow} `}>
-                {`👊 ${name} 👊`}
+            <h1
+                className={`text-lg sm:text-xl md:text-2xl text-black font-bold py-1 ${shadow}`}
+            >
+                {name}
             </h1>
         </div>
     );

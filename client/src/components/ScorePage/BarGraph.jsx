@@ -11,8 +11,8 @@ export function BarGraph({ votesA, votesB, medianDiff, direction }) {
     const [roundScore, setRoundScore] = useState(0);
 
     const fill = direction
-        ? "rgba(220, 38, 38, 0.9)" // red-500
-        : "rgba(59, 130, 246, 0.9)"; // blue-500
+        ? "rgba(43, 127, 255, 0.8)" // red-500
+        : "rgba(255, 125, 38, 0.8)"; // blue-500
 
     useEffect(() => {
         if (direction) {
@@ -27,7 +27,7 @@ export function BarGraph({ votesA, votesB, medianDiff, direction }) {
     if (total === 0 || stats <= 0) return null;
 
     return (
-        <div className="relative w-20 sm:w-20 md:w-24 h-[10vh] md:h-[15vh]">
+        <div className="relative w-20 md:w-24 h-[10vh] md:h-[15vh]">
             {/* Number overlay */}
             {roundScore > 0 && (
                 <div
