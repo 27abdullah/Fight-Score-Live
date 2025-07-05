@@ -3,7 +3,7 @@ export default function JoinRoomButton({ id, sport, handleNavigate }) {
         <div className="flex items-center gap-4 justify-end">
             <a
                 onClick={() => handleNavigate("score-page", id)}
-                className="inline-flex hover:text-blue-200 hover:cursor-pointer items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                className="inline-flex hover:cursor-pointer items-center px-3 py-2 text-sm font-medium text-center text-white bg-rich_carmine rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none hover:text-white"
             >
                 Join room
                 <svg

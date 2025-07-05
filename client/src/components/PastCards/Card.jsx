@@ -32,8 +32,10 @@ export default function Card({
                     </p>
                 </div>
                 <span
-                    className={`text-xl text-${
-                        colours[index % colours.length]
+                    className={`text-xl  ${
+                        openCardIndex === index
+                            ? "text-rich_carmine"
+                            : "text-black"
                     }`}
                 >
                     {openCardIndex === index ? "▲" : "▼"}

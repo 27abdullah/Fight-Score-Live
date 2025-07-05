@@ -19,10 +19,10 @@ function InfoCard({
     };
 
     return (
-        <div className="max-w-md rounded-xl overflow-hidden shadow bg-white">
+        <div className="max-w-md rounded-xl overflow-hidden shadow  ">
             {/* Header */}
             <div className="bg-white p-4 border-b border-b-black">
-                <h5 className="text-xl font-semibold text-center text-gray-800 tracking-tight">
+                <h5 className="text-xl font-bold font-industry_demi text-center text-black tracking-tight">
                     {eventName}
                 </h5>
             </div>
@@ -30,10 +30,7 @@ function InfoCard({
             {/* Body */}
             <div className="bg-dune p-7 text-white text-md">
                 <p className="mb-2">{`Round: ${currentRound}`}</p>
-                <p className="mb-4">
-                    <span className="text-rich_carmine">Live:</span>
-                    {` ${fighterA} vs ${fighterB}`}
-                </p>
+                <p className="mb-4">{`Live: ${fighterA} vs ${fighterB}`}</p>
 
                 {user?.id === owner ? (
                     <HostRoomButton
