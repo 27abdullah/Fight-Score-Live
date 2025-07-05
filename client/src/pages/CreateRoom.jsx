@@ -89,10 +89,10 @@ export function CreateRoom() {
     ) : (
         <div className="flex flex-col items-center justify-center min-h-screen space-y-10 pt-10 pb-10">
             <div className="shadow-lg bg-white text-black rounded-lg p-8 w-full max-w-2xl">
-                <h1 className="text-rich_carmine text-3xl font-bold mb-4">
+                <h1 className="text-rich_carmine text-3xl font-bold mb-4 font-industry_demi">
                     Create a Room
                 </h1>
-                <p className="text-xl">
+                <p className="text-lg">
                     Create a room to start scoring fights with your friends! The
                     last fight in the below list should correspond to the
                     headliner event.

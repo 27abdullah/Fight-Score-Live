@@ -1,7 +1,7 @@
 export function Home() {
     return (
         <>
-            <h1>Fight Score Live</h1>
+            <h1 className="font-inter_regular">Fight Score Live</h1>
         </>
     );
 }

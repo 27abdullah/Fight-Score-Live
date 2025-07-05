@@ -1,7 +1,8 @@
 export function About() {
     const tabClass = "shadow-lg rounded-2xl w-full max-w-3xl overflow-hidden";
     const headerClass = "bg-white  border-b-2 border-black p-6 md:p-8";
-    const headerText = "text-2xl md:text-3xl font-bold text-black";
+    const headerText =
+        "text-2xl md:text-3xl font-bold text-black font-industry_demi";
     const bodyClass = "bg-dune p-6 md:p-8";
     const paraClass = "text-white text-base md:text-lg leading-relaxed";
 

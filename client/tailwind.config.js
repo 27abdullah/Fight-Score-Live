@@ -14,6 +14,11 @@ module.exports = {
                 zeus: "#212121",
                 dune: "#333333",
             },
+            fontFamily: {
+                sans: ["InterRegular", "ui-sans-serif", "system-ui"],
+                industry_demi: ["IndustryDemi", "sans-serif"],
+                inter_regular: ["InterRegular", "sans-serif"],
+            },
         },
     },
     plugins: [],

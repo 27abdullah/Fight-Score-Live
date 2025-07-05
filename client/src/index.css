@@ -51,7 +51,7 @@ button {
     transition: border-color 0.25s;
 }
 button:hover {
-    border-color: #d70040;
+    border-color: #000000;
 }
 button:focus,
 button:focus-visible {
@@ -66,8 +66,23 @@ body {
 
 body {
     display: flex;
+    @apply font-sans;
     justify-content: center; /* Horizontally center */
     align-items: center; /* Vertically center */
     flex-direction: column; /* Stack elements vertically */
     min-height: 100vh; /* Ensure body fills the viewport */
+}
+
+@font-face {
+    font-family: "IndustryDemi";
+    src: url("./assets/fonts/IndustryDemi.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "InterRegular";
+    src: url("./assets/fonts/InterRegular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }

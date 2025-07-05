@@ -16,7 +16,7 @@ export default function Card({
                 } bg-white w-full px-6 py-4 text-left focus:outline-none flex justify-between items-center`}
             >
                 <div>
-                    <h2 className="text-lg text-center text-black font-bold">
+                    <h2 className="text-lg text-center text-black font-bold font-industry_demi">
                         {card.name}
                     </h2>
                     <p className="text-sm text-black">

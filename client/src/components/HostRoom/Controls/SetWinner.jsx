@@ -11,7 +11,7 @@ export default function SetWinner({
                 disabled={!winner}
                 className={`px-4 py-2 rounded ${
                     winner
-                        ? "bg-blue-600 hover:bg-blue-700"
+                        ? "bg-dodger hover:bg-blue-700"
                         : "bg-gray-500 cursor-not-allowed"
                 }`}
                 onClick={() => handleRequest("set-winner", "POST", { winner })}

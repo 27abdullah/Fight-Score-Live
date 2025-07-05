@@ -40,7 +40,7 @@ export default function Profile() {
 
     return (
         <div className="max-w-4xl mx-auto mt-12 p-10 bg-white rounded-xl shadow-lg border border-gray-200">
-            <h1 className="text-4xl font-extrabold mb-8 text-gray-900 border-b pb-4">
+            <h1 className="text-4xl font-extrabold mb-8 text-gray-900 border-b pb-4 font-industry_demi">
                 Profile
             </h1>
 

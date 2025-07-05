@@ -46,7 +46,7 @@ export function Navbar() {
     };
 
     const buttonClass =
-        "px-4 text-center text-zeus font-extrabold text-md w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
+        "font-industry_demi px-4 text-center text-zeus font-extrabold text-lg w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
 
     const leftItems = (
         <>

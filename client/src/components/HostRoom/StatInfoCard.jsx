@@ -8,7 +8,7 @@ function StatInfoCard({ stats, roomData }) {
     return (
         currentRound &&
         currentRound !== 1 && (
-            <div className="flex flex-col space-y-4 p-10 bg-card text-white rounded-lg">
+            <div className="flex flex-col space-y-4 p-10 bg-dune text-white rounded-lg">
                 <h2 className="text-2xl">Previous Round Stats</h2>
                 <p>
                     {roomData?.fighterA}: {stats.votesA || 0} votes
