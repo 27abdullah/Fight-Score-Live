@@ -6,7 +6,7 @@ export default function PastCards() {
     const [loading, setLoading] = useState(true);
     const [openCardIndex, setOpenCardIndex] = useState(null);
 
-    const colours = ["bg-card border-rich_carmine", "bg-card border-white"];
+    const colours = ["rich_carmine", "black"];
 
     useEffect(() => {
         const fetchPastCards = async () => {
@@ -44,10 +44,10 @@ export default function PastCards() {
     }
 
     return (
-        <div className="min-h-screen  p-4 md:p-8">
+        <div className="min-h-screen p-4 md:p-8">
             <h1 className="text-3xl font-bold text-center mb-6">Past Cards</h1>
 
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="mx-auto space-y-5">
                 {pastCards.map((card, index) => (
                     <Card
                         key={card._id}

@@ -15,8 +15,17 @@ export default function Login() {
             email,
             password,
         });
-        if (error) alert(error.message);
-        else navigate("/profile");
+        if (error) {
+            navigate(`/login`, {
+                state: {
+                    flashMessage: {
+                        message: error.message,
+                        type: "error",
+                    },
+                },
+            });
+            return;
+        } else navigate("/profile");
     };
 
     return (
@@ -54,7 +63,7 @@ export default function Login() {
                 {activeTab === "email" ? (
                     <form
                         onSubmit={handleLogin}
-                        className="flex flex-col space-y-7"
+                        className="flex flex-col space-y-7 "
                     >
                         <input
                             type="email"
@@ -62,7 +71,7 @@ export default function Login() {
                             placeholder="Email"
                             required
                             autoComplete="email"
-                            className="px-5 py-4 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rich_carmine focus:border-rich_carmine transition"
+                            className="px-5 py-4 border border-gray-300 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rich_carmine focus:border-rich_carmine transition"
                         />
                         <input
                             type="password"
@@ -70,7 +79,7 @@ export default function Login() {
                             placeholder="Password"
                             required
                             autoComplete="current-password"
-                            className="px-5 py-4 border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rich_carmine focus:border-rich_carmine transition"
+                            className="px-5 py-4 border border-gray-300 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rich_carmine focus:border-rich_carmine transition"
                         />
 
                         <button

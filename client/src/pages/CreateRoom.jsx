@@ -83,12 +83,12 @@ export function CreateRoom() {
             });
         }
     };
-    const inputColour = "bg-zinc-700 text-white";
+    const inputColour = "bg-zeus text-white";
     return token == null ? (
         <h1>Loading</h1>
     ) : (
         <div className="flex flex-col items-center justify-center min-h-screen space-y-10 pt-10 pb-10">
-            <div className="shadow-lg bg-card rounded-lg p-6 w-full max-w-2xl">
+            <div className="shadow-lg bg-white text-black rounded-lg p-8 w-full max-w-2xl">
                 <h1 className="text-rich_carmine text-3xl font-bold mb-4">
                     Create a Room
                 </h1>
@@ -98,7 +98,7 @@ export function CreateRoom() {
                     headliner event.
                 </p>
             </div>
-            <div className="shadow-lg bg-card rounded-lg p-6 w-full max-w-2xl">
+            <div className="shadow-lg bg-dune text-white rounded-lg p-8 w-full max-w-2xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block text-lg font-medium mb-1">
@@ -234,7 +234,7 @@ export function CreateRoom() {
                         className={`${
                             isSending
                                 ? "bg-gray-600"
-                                : "bg-red-800 hover:bg-red-900"
+                                : "bg-rich_carmine hover:bg-red-900"
                         } text-white font-semibold py-2 px-4 rounded`}
                     >
                         Submit Room

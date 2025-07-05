@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Navbar } from "./components/navbar";
+import { Navbar } from "./components/Navbar";
 import { FlashBar } from "./components/FlashBar";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ export function Layout() {
             const timeout = setTimeout(() => {
                 setFlashMessage(null);
                 navigate(location.pathname, { replace: true, state: {} });
-            }, 1800);
+            }, 2000);
 
             return () => {
                 clearTimeout(timeout);

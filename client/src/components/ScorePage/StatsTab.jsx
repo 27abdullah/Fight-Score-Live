@@ -36,7 +36,7 @@ export default function StatsTab({
     }
 
     return (
-        <div className="flex flex-row min-h-full items-stretch justify-between">
+        <div className="flex flex-row min-h-full text-white items-stretch justify-between">
             <div>
                 {`${fighterA} 📈 ${totalAVotes} votes`}
                 <br />

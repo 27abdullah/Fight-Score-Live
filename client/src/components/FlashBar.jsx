@@ -12,7 +12,7 @@ export function FlashBar({ message, type = "info" }) {
 
     return (
         <div
-            className={`mx-auto mt-1 mb-1 max-full rounded-lg shadow-md border-l-4 px-6 py-4 text-md font-medium ${typeStyle}`}
+            className={`fixed left-1/2 bottom-[80%] transform -translate-x-1/2 w-max rounded-lg shadow-md border-l-4 px-6 py-4 text-md font-medium ${typeStyle} z-[9999]`}
         >
             {message}
         </div>

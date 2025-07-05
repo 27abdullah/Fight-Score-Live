@@ -8,18 +8,18 @@ export default function Card({
     colours,
 }) {
     return (
-        <div className="bg-dune shadow rounded-lg overflow-hidden">
+        <div className="bg-dune shadow rounded-lg overflow-hidden w-full max-w-3xl">
             <button
                 onClick={() => toggleAccordion(index)}
-                className={`${
+                className={`border-${
                     colours[index % colours.length]
-                } w-full px-6 py-4 text-left focus:outline-none focus:ring flex justify-between items-center`}
+                } bg-white w-full px-6 py-4 text-left focus:outline-none flex justify-between items-center`}
             >
                 <div>
-                    <h2 className="text-lg text-center font-bold">
+                    <h2 className="text-lg text-center text-black font-bold">
                         {card.name}
                     </h2>
-                    <p className="text-sm ">
+                    <p className="text-sm text-black">
                         Created:{" "}
                         {new Date(card.createdAt).toLocaleString(undefined, {
                             year: "numeric",
@@ -31,7 +31,11 @@ export default function Card({
                         })}
                     </p>
                 </div>
-                <span className="text-xl">
+                <span
+                    className={`text-xl text-${
+                        colours[index % colours.length]
+                    }`}
+                >
                     {openCardIndex === index ? "▲" : "▼"}
                 </span>
             </button>
@@ -50,7 +54,7 @@ export default function Card({
                             <p>No fights in this card.</p>
                         ) : (
                             card.fights.map((fight, i) => (
-                                <div key={i} className="bg-black rounded p-3">
+                                <div key={i} className="rounded p-3 bg-dune">
                                     <p className="font-medium">
                                         {fight.fighterA} vs {fight.fighterB}
                                     </p>

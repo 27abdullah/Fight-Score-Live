@@ -91,7 +91,7 @@ export function Navbar() {
         <nav ref={navRef} className="bg-white w-full relative">
             {/* Desktop Navbar */}
 
-            <div className="hidden md:grid grid-cols-5 items-center py-1 w-full mx-auto">
+            <div className="hidden md:grid grid-cols-5 items-center py-1 w-full mx-auto border-rich_carmine border-b-2">
                 <div className="flex justify-end space-x-1 col-span-2">
                     {leftItems}
                 </div>
