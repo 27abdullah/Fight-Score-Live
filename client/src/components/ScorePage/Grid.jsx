@@ -31,6 +31,18 @@ export default function Grid({
 
             {/* Middle: Main Content + Stats */}
             <div className="flex-grow min-h-0 min-w-0 p-4 flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-2">
+                {/* Main Content: Fighters and Rounds */}
+                <div className="flex flex-1 overflow-hidden flex-col bg-dune shadow-lg rounded-lg">
+                    <div className="bg-white">{NameTagA}</div>
+                    {/* Scrollable Rounds Section */}
+                    <div className="flex flex-1 overflow-x-auto overflow-y-hidden bg-dune rounded">
+                        <div className="flex items-center gap-4 px-4 h-full min-w-max mx-auto">
+                            {Rounds}
+                        </div>
+                    </div>
+                    <div className="bg-white">{NameTagB}</div>
+                </div>
+
                 {/* < md Stats */}
                 <div className="md:hidden p-4 h-[20%] bg-dune shdadow-lg rounded-lg">
                     <StatsTab
@@ -44,18 +56,6 @@ export default function Grid({
                         totalMedianDiff={totalMedianDiff}
                         isMobile={true}
                     />
-                </div>
-
-                {/* Main Content: Fighters and Rounds */}
-                <div className="flex flex-1 overflow-hidden flex-col bg-dune shadow-lg rounded-lg">
-                    <div className="bg-white">{NameTagA}</div>
-                    {/* Scrollable Rounds Section */}
-                    <div className="flex flex-1 overflow-x-auto overflow-y-hidden bg-dune rounded">
-                        <div className="flex items-center gap-4 px-4 h-full min-w-max mx-auto">
-                            {Rounds}
-                        </div>
-                    </div>
-                    <div className="bg-white">{NameTagB}</div>
                 </div>
 
                 {/* md+ Stats */}
