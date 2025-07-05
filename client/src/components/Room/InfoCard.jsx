@@ -19,7 +19,7 @@ function InfoCard({
     };
 
     return (
-        <div className="max-w-md rounded-xl overflow-hidden shadow  ">
+        <div className="max-w-md rounded-xl overflow-hidden shadow-lg">
             {/* Header */}
             <div className="bg-white p-4 border-b border-b-black">
                 <h5 className="text-xl font-bold font-industry_demi text-center text-black tracking-tight">

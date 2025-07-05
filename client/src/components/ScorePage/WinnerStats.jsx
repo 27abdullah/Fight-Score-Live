@@ -18,16 +18,19 @@ export default function WinnerStats({
     const up = totalMedianDiff > 0 ? fighterA : fighterB;
 
     return (
-        <div className="text-lg sm:text-2xl truncate">
-            <div className="italic text-xl">Winner</div>
-            <div className="text-3xl">{winnerName}</div>
-            <div className="text-sm">
-                <br />
-                {`${fighterA} 📈 ${totalAVotes} votes`}
-                <br />
-                {`${fighterB} 📈 ${totalBVotes} votes`}
-                <br />
-                {`${up} was up ${Math.abs(totalMedianDiff)} points!`}
+        <div className="min-w-full min-h-full mx-auto p-10 bg-dune rounded-3xl select-non shadow-lg text-white">
+            <div className="italic text-lg sm:text-xl font-industry_demi mb-1">
+                Winner
+            </div>
+            <div className="text-xl text-center md:text-2xl truncate mb-4 text-white bg-gradient-to-r p-5 rounded-lg to-rich_carmine from-red-800">
+                {winnerName}
+            </div>
+            <div className="text-sm sm:text-base space-y-1 leading-relaxed e">
+                <div>{`${fighterA} 📈 ${totalAVotes} votes`}</div>
+                <div>{`${fighterB} 📈 ${totalBVotes} votes`}</div>
+                <div className="mt-2 font-semibold text-indigo-300">{`${up} was up ${Math.abs(
+                    totalMedianDiff
+                )} points!`}</div>
             </div>
         </div>
     );

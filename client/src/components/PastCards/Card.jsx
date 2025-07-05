@@ -8,7 +8,7 @@ export default function Card({
     colours,
 }) {
     return (
-        <div className="bg-dune shadow rounded-lg overflow-hidden w-full max-w-3xl">
+        <div className="bg-dune shadow-lg rounded-lg overflow-hidden w-full max-w-3xl">
             <button
                 onClick={() => toggleAccordion(index)}
                 className={`border-${
