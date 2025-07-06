@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../config/supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import GoogleProvider from "../config/OAuth/GoogleOAuth";
 
 export default function Login() {
@@ -39,12 +39,12 @@ export default function Login() {
                 </h1>
 
                 {/* Tabs */}
-                <div className="flex  border-gray-300 mb-10 space-x-6">
+                <div className="flex border-gray-300 mb-10 space-x-6">
                     <button
                         onClick={() => setActiveTab("email")}
-                        className={`flex-1 py-3 text-center font-semibold transition ${
+                        className={`flex-1 py-3 text-center font-semibold transition text-sm md:text-lg ${
                             activeTab === "email"
-                                ? " border-rich_carmine text-rich_carmine"
+                                ? "border-rich_carmine text-rich_carmine"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                     >
@@ -52,9 +52,9 @@ export default function Login() {
                     </button>
                     <button
                         onClick={() => setActiveTab("google")}
-                        className={`flex-1 py-3 text-center font-semibold transition ${
+                        className={`flex-1 py-3 text-center font-semibold transition text-sm md:text-lg ${
                             activeTab === "google"
-                                ? " border-rich_carmine text-rich_carmine"
+                                ? "border-rich_carmine text-rich_carmine"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                     >
@@ -64,42 +64,62 @@ export default function Login() {
 
                 {/* Tab content */}
                 {activeTab === "email" ? (
-                    <form
-                        onSubmit={handleLogin}
-                        className="flex flex-col space-y-7 "
-                    >
-                        <input
-                            type="email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
-                            required
-                            autoComplete="email"
-                            className={inputClassName}
-                        />
-                        <input
-                            type="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
-                            required
-                            autoComplete="current-password"
-                            className={inputClassName}
-                        />
-
-                        <button
-                            type="submit"
-                            className="w-full bg-rich_carmine hover:bg-rich_carmine/90 text-white font-bold py-4 rounded-lg shadow-md transition duration-300"
+                    <>
+                        <form
+                            onSubmit={handleLogin}
+                            className="flex flex-col space-y-7"
                         >
-                            Log In
-                        </button>
-                    </form>
+                            <input
+                                type="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
+                                required
+                                autoComplete="email"
+                                className={inputClassName}
+                            />
+                            <input
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
+                                required
+                                autoComplete="current-password"
+                                className={inputClassName}
+                            />
+
+                            <button
+                                type="submit"
+                                className="w-full bg-rich_carmine hover:bg-rich_carmine/90 text-white font-bold py-4 rounded-lg shadow-md transition duration-300"
+                            >
+                                Log In
+                            </button>
+                        </form>
+                        <div className="mt-4 text-center text-sm text-gray-500">
+                            <Link
+                                to="/signup"
+                                className="text-rich_carmine hover:underline"
+                            >
+                                Don't have an account? Sign up
+                            </Link>
+                        </div>
+                    </>
                 ) : (
-                    <div className="flex flex-col items-center space-y-8 px-6">
-                        <p className="text-center text-gray-700 text-lg max-w-sm">
-                            Log in quickly and securely using your Google
-                            account.
-                        </p>
-                        <GoogleProvider />
-                    </div>
+                    <>
+                        <div className="flex flex-col items-center space-y-8 px-6">
+                            <p className="text-center text-gray-700 text-lg max-w-sm">
+                                Log in quickly and securely using your Google
+                                account.
+                            </p>
+                            <GoogleProvider />
+                        </div>
+                        <div className="mt-4 text-center text-sm text-gray-500">
+                            <Link
+                                to="/signup"
+                                className="text-rich_carmine hover:underline"
+                            >
+                                Don't have an account? Sign up
+                            </Link>
+                        </div>
+                    </>
                 )}
             </div>
         </div>
