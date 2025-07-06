@@ -2,6 +2,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { FlashBar } from "./components/FlashBar";
 import { useEffect, useState } from "react";
+import Footer from "./components/Footer";
 
 export function Layout() {
     const location = useLocation();
@@ -29,6 +30,10 @@ export function Layout() {
         ? "overflow-hidden"
         : "";
 
+    const showFooter = /^\/(about|rooms|past-cards|profile|create-room)?$/.test(
+        location.pathname
+    );
+
     return (
         <div className="flex flex-col h-screen w-screen overflow-x-hidden">
             <Navbar />
@@ -41,6 +46,7 @@ export function Layout() {
             >
                 <Outlet />
             </main>
+            {showFooter && <Footer />}
         </div>
     );
 }
