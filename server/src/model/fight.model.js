@@ -33,7 +33,7 @@ const fightSchema = new mongoose.Schema(
             max: MAX_TOTAL_ROUNDS,
         },
         stats: {
-            medians: {
+            medianDiff: {
                 type: [Number],
                 default: [],
             },

@@ -63,10 +63,10 @@ class CardState {
                     return Number(value ?? 0);
                 })
             ),
-            medians: await Promise.all(
+            medianDiff: await Promise.all(
                 this.redisKeys("medianDiff").map(async (key) => {
                     const value = await this.redis.get(key);
-                    return Number(value ?? 0);
+                    return value == null ? null : Number(value);
                 })
             ),
             diffs: await Promise.all(

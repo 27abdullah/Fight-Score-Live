@@ -87,7 +87,7 @@ export function CreateRoom() {
     return token == null ? (
         <h1>Loading</h1>
     ) : (
-        <div className="flex flex-col items-center justify-center min-h-screen space-y-10 py-10 px-6">
+        <div className="flex flex-col items-center justify-center space-y-10 py-10 px-6">
             <div className="shadow-lg bg-white  rounded-lg p-8 w-full max-w-2xl">
                 <h1 className="text-rich_carmine text-3xl font-bold mb-4 font-industry_demi">
                     Create a Room
