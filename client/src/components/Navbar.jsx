@@ -46,7 +46,7 @@ export function Navbar() {
     };
 
     const buttonClass =
-        "font-industry_demi px-4 text-center text-zeus font-extrabold text-lg w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
+        "font-industry_demi px-2 text-center text-zeus font-extrabold text-lg w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
 
     const leftItems = (
         <>
@@ -64,6 +64,9 @@ export function Navbar() {
 
     const rightItems = (
         <>
+            <Link to="/athletes" onClick={handleNavClick}>
+                <button className={buttonClass}>Athletes</button>
+            </Link>
             {!loading && !user && (
                 <>
                     <Link to="/login" onClick={handleNavClick}>
@@ -92,7 +95,7 @@ export function Navbar() {
             {/* Desktop Navbar */}
 
             <div className="hidden md:grid grid-cols-5 items-center py-1 w-full mx-auto border-rich_carmine border-b-2">
-                <div className="flex justify-end space-x-1 col-span-2">
+                <div className="flex justify-end space-x-9 col-span-2">
                     {leftItems}
                 </div>
 
@@ -100,7 +103,7 @@ export function Navbar() {
                 <div className="flex justify-center">{logo}</div>
 
                 {/* Right items (span 2 columns, align left) */}
-                <div className="flex justify-start space-x-2 col-span-2">
+                <div className="flex justify-start space-x-9 col-span-2">
                     {rightItems}
                 </div>
             </div>

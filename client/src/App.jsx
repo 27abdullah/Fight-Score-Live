@@ -13,6 +13,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import HostRoom from "./pages/HostRoom";
 import PastCards from "./pages/PastCards";
+import Athletes from "./pages/Athletes";
 
 export function App() {
     return (
@@ -72,6 +73,7 @@ export function App() {
                             }
                         />
                         <Route path="/past-cards/" element={<PastCards />} />
+                        <Route path="/athletes/" element={<Athletes />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

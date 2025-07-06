@@ -45,7 +45,7 @@ export default function PastCards() {
 
     return (
         <div className="min-h-screen p-4 md:p-8">
-            <h1 className="text-3xl font-bold text-center mb-10 font-industry_demi">
+            <h1 className="text-4xl font-bold text-center mb-10 font-industry_demi">
                 Past Cards
             </h1>
 

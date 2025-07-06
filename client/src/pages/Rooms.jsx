@@ -35,7 +35,9 @@ function Rooms() {
 
     return (
         <div className="flex flex-col items-center space-y-10">
-            <h1 className="text-3xl font-bold text-center mb-6">Rooms</h1>
+            <h1 className="text-4xl font-bold text-center mb-6 font-industry_demi">
+                Rooms
+            </h1>
             {liveRooms.map((room, i) => (
                 <InfoCard
                     key={i}

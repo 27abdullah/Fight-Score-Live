@@ -30,9 +30,10 @@ export function Layout() {
         ? "overflow-hidden"
         : "";
 
-    const showFooter = /^\/(about|rooms|past-cards|profile|create-room)?$/.test(
-        location.pathname
-    );
+    const showFooter =
+        /^\/(about|rooms|past-cards|profile|create-room|athletes)?$/.test(
+            location.pathname
+        );
 
     return (
         <div className="flex flex-col h-screen w-screen overflow-x-hidden">
