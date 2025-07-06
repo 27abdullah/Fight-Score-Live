@@ -56,7 +56,10 @@ export default function Card({
                             <p>No fights in this card.</p>
                         ) : (
                             card.fights.map((fight, i) => (
-                                <div key={i} className="rounded p-3 bg-dune">
+                                <div
+                                    key={i}
+                                    className="p-3 bg-dune border-zeus border-b-2"
+                                >
                                     <p className="font-medium">
                                         {fight.fighterA} vs {fight.fighterB}
                                     </p>

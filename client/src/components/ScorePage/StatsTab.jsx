@@ -68,7 +68,7 @@ export default function StatsTab({
                                 </g>
                             </svg>
                         </button>
-                        <span class="absolute whitespace-nowrap top-full right-0 my-2 hidden group-hover:block bg-gray-700 text-white text-sm px-2 py-1 rounded shadow-lg transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                        <span className="absolute whitespace-nowrap top-full right-0 my-2 hidden group-hover:block bg-gray-700 text-white text-sm px-2 py-1 rounded shadow-lg transition-opacity duration-200 opacity-0 group-hover:opacity-100">
                             Email me for main event!
                         </span>
                     </div>
