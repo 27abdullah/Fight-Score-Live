@@ -8,15 +8,15 @@ export default function Card({
     colours,
 }) {
     return (
-        <div className="bg-dune shadow-lg rounded-lg overflow-hidden w-full max-w-3xl">
+        <div className="bg-dune shadow-lg rounded-lg overflow-hidden w-full max-w-3xl mx-auto text-center">
             <button
                 onClick={() => toggleAccordion(index)}
                 className={`border-${
                     colours[index % colours.length]
-                } bg-white w-full px-6 py-4 text-left focus:outline-none flex justify-between items-center`}
+                } bg-white w-full px-6 py-7 focus:outline-none flex justify-between items-center`}
             >
-                <div>
-                    <h2 className="text-lg text-center text-black font-bold font-industry_demi">
+                <div className="mx-auto">
+                    <h2 className="text-lg text-black font-bold font-industry_demi">
                         {card.name}
                     </h2>
                     <p className="text-sm text-black">

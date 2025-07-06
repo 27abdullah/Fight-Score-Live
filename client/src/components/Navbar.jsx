@@ -19,7 +19,7 @@ export function Navbar() {
             onClick={handleLogoClick}
             className="p-0 bg-transparent border-none focus:outline-none hover:border-none focus:border-none focus-ring-0 transition-none"
         >
-            <img src={Logo} className="h-16 w-auto pb-2 pt-3" />
+            <img src={Logo} className="h-16 w-auto py-2" />
         </button>
     );
 
@@ -45,18 +45,24 @@ export function Navbar() {
         setMenuOpen(false);
     };
 
+    const linkClass = "my-auto";
+
     const buttonClass =
         "font-industry_demi px-2 text-center text-zeus font-extrabold text-lg w-full hover:border-transparent hover:md:underline bg-transparent focus:outline-none";
 
     const leftItems = (
         <>
-            <Link to="/rooms" onClick={handleNavClick}>
+            <Link to="/rooms" onClick={handleNavClick} className={linkClass}>
                 <button className={buttonClass}>Rooms</button>
             </Link>
-            <Link to="/about" onClick={handleNavClick}>
+            <Link to="/about" onClick={handleNavClick} className={linkClass}>
                 <button className={buttonClass}>About</button>
             </Link>
-            <Link to="/past-cards" onClick={handleNavClick}>
+            <Link
+                to="/past-cards"
+                onClick={handleNavClick}
+                className={linkClass}
+            >
                 <button className={buttonClass}>Past Cards</button>
             </Link>
         </>
@@ -64,25 +70,41 @@ export function Navbar() {
 
     const rightItems = (
         <>
-            <Link to="/athletes" onClick={handleNavClick}>
+            <Link to="/athletes" onClick={handleNavClick} className={linkClass}>
                 <button className={buttonClass}>Athletes</button>
             </Link>
             {!loading && !user && (
                 <>
-                    <Link to="/login" onClick={handleNavClick}>
+                    <Link
+                        to="/login"
+                        onClick={handleNavClick}
+                        className={linkClass}
+                    >
                         <button className={buttonClass}>Login</button>
                     </Link>
-                    <Link to="/signup" onClick={handleNavClick}>
+                    <Link
+                        to="/signup"
+                        onClick={handleNavClick}
+                        className={linkClass}
+                    >
                         <button className={buttonClass}>Sign Up</button>
                     </Link>
                 </>
             )}
             {!loading && user && (
                 <>
-                    <Link to="/profile" onClick={handleNavClick}>
+                    <Link
+                        to="/profile"
+                        onClick={handleNavClick}
+                        className={linkClass}
+                    >
                         <button className={buttonClass}>Profile</button>
                     </Link>
-                    <Link to="/create-room" onClick={handleNavClick}>
+                    <Link
+                        to="/create-room"
+                        onClick={handleNavClick}
+                        className={linkClass}
+                    >
                         <button className={buttonClass}>Create Room</button>
                     </Link>
                 </>
