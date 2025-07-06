@@ -32,7 +32,7 @@ export default function Login() {
         "bg-dune px-5 py-4 border border-gray-300 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rich_carmine focus:border-rich_carmine transition";
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-6 py-12">
+        <div className="flex items-center justify-center px-6 py-12">
             <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-12 border border-gray-200">
                 <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center font-industry_demi">
                     Log In
