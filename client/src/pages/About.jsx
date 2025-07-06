@@ -18,14 +18,45 @@ export function About() {
                 <div className={bodyClass}>
                     <p className={paraClass}>
                         Welcome to Fight Score Live! Use this website to score
-                        the biggest boxing and MMA fights round-by-round, live.
+                        the biggest combat sports fights round-by-round, live.
+                    </p>
+                    <div className="my-4" />
+                    <p className={paraClass}>
+                        FSL is a passion project of mine so please let me know
+                        if you have any feedback or suggestions. You can reach
+                        me at contact@fightscore.live.
                     </p>
                 </div>
             </div>
 
             <div className={tabClass}>
                 <div className={headerClass}>
-                    <h1 className={headerText}>How to Score Fights Live</h1>
+                    <h1 className={headerText}>How To</h1>
+                </div>
+                <div className={bodyClass}>
+                    <p className={paraClass}>
+                        FSL works by allowing a user, the Host, to create a room
+                        for a particular fight or fights. Other users can join
+                        this room and score the fights. The Host controls the
+                        room: when a fight starts, stops, what the outcome is
+                        and when to switch to the next fight.
+                    </p>
+                    <div className="my-4" />
+                    <p className={paraClass}>
+                        To create a room, click the Create Room button on the
+                        top navigation bar. This will take you to the CreateRoom
+                        page. Here, you can enter the fight details. Creating a
+                        room costs a room token. Your total is available in your
+                        profile page. Every week all users are given 5 free room
+                        tokens. If you run out but want to create more rooms
+                        please contact me.
+                    </p>
+                </div>
+            </div>
+
+            <div className={tabClass}>
+                <div className={headerClass}>
+                    <h1 className={headerText}>Scoring</h1>
                 </div>
                 <div className={bodyClass}>
                     <p className={paraClass}>
@@ -34,7 +65,7 @@ export function About() {
                         10, while the loser gets a 9. In boxing, for every
                         knockdown, the knocked down fighter is deducted a point.
                         In MMA, this is not the case; damage is what you further
-                        deduct points for — e.g., 10-8 if one fighter completely
+                        deduct points for e.g., 10-8 if one fighter completely
                         dominated the other.
                     </p>
 

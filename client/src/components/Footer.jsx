@@ -6,7 +6,10 @@ export default function Footer() {
                 reserved.
             </p>
             <p className="text-xs">
-                Enquiries, bugs, suggestions: contact@fightscore.live
+                Enquiries, bugs, suggestions:{" "}
+                <a href="mailto:contact@fightscore.live">
+                    contact@fightscore.live
+                </a>
             </p>
         </footer>
     );
