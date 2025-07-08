@@ -1,11 +1,24 @@
 const redis = require("redis");
 
-const redisClient = redis.createClient({
-    socket: {
-        host: process.env.REDIS_HOST || "localhost",
-        port: parseInt(process.env.REDIS_PORT) || 6379,
-    },
-});
+let redisConn;
+if (process.env.NODE_ENV !== "production") {
+    redisConn = {
+        socket: {
+            host: process.env.REDIS_HOST || "localhost",
+            port: parseInt(process.env.REDIS_PORT) || 6379,
+        },
+    };
+} else {
+    redisConn = {
+        socket: {
+            host: process.env.REDIS_HOST || "localhost",
+            port: parseInt(process.env.REDIS_PORT) || 6379,
+        },
+        password: process.env.REDIS_PASSWORD,
+    };
+}
+
+const redisClient = redis.createClient(redisConn);
 
 redisClient.on("connect", () => {
     console.log("Connected to Redis");

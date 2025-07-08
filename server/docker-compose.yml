@@ -18,18 +18,3 @@ services:
             MONGO_INITDB_ROOT_USERNAME: admin
             MONGO_INITDB_ROOT_PASSWORD: password
         restart: always
-    server:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: fsl-server
-        ports:
-            - "4000:4000"
-        depends_on:
-            - redis
-            - mongodb
-        env_file:
-            - .env.production
-        restart: always
-        volumes:
-            - ./logs.txt:/logs.txt

@@ -1,0 +1,36 @@
+services:
+    redis:
+        image: redis:latest
+        container_name: fsl-redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./data/redis:/data
+        command: ["redis-server", "--requirepass", "jumshf67"]
+        restart: always
+    mongodb:
+        image: mongo:latest
+        container_name: fsl-mongodb
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./data/mongodb:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ncoucnw92
+            MONGO_INITDB_ROOT_PASSWORD: vifjidnlkkdm812
+        restart: always
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: fsl-server
+        ports:
+            - "4000:4000"
+        depends_on:
+            - redis
+            - mongodb
+        env_file:
+            - .env.production
+        restart: always
+        volumes:
+            - ./logs.txt:/logs.txt

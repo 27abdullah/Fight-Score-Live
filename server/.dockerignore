@@ -6,6 +6,7 @@ Dockerfile
 .env
 .env.*
 docker-compose.yml
+docker-compose-prod.yml
 nodemon.json
 data
 endpoint.http
