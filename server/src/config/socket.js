@@ -28,7 +28,7 @@ const isValidUserId = async (req) => {
 
 const configureSocket = (server, gameController) => {
     const io = new Server(server, {
-        cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
+        cors: { origin: process.env.CORS_ORIGIN, methods: ["GET", "POST"] },
         allowRequest: async (req, callback) => {
             if (await isValidUserId(req)) {
                 callback(null, true);

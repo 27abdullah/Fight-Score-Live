@@ -1,6 +1,8 @@
 const express = require("express");
 const http = require("http");
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 const rateLimit = require("express-rate-limit");
 const cors = require("./config/cors");
 const helmet = require("helmet");

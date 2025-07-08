@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+supabase_config
+Dockerfile
+.dockerignore
+.env
+.env.*
+docker-compose.yml
+nodemon.json
+data
+endpoint.http
+logs.txt
