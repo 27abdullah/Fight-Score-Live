@@ -34,8 +34,8 @@ function Rooms() {
     }
 
     return (
-        <div className="flex flex-col items-center space-y-10">
-            <h1 className="text-4xl font-bold text-center mb-6 font-industry_demi">
+        <div className="flex flex-col items-center space-y-10 mb-10">
+            <h1 className="text-4xl font-bold text-center my-6 font-industry_demi">
                 Rooms
             </h1>
             {liveRooms.map((room, i) => (
