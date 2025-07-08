@@ -8,7 +8,7 @@ export function About() {
     const paraClass = "text-white text-base md:text-lg leading-relaxed";
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-zeus p-16 md:p-20 space-y-12">
+        <div className="flex flex-col items-center justify-center bg-zeus p-16 md:p-20 space-y-12">
             <div className={tabClass}>
                 <div className={headerClass}>
                     <h1 className={headerText}>
